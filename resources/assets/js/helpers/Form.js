@@ -75,7 +75,7 @@ class Form {
                 url: url,
                 data: this.data(),
                 success: response => {
-                    resolve(response.data);
+                    resolve(response);
                 },
                 error: error => {
                     reject(error.responseJSON);

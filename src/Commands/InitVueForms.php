@@ -26,6 +26,5 @@ class InitVueForms extends Command {
     public function handle() {
         \Artisan::call('vendor:publish', ['--tag' => 'vue-forms', '--force' => true]);
         echo "VueForms resources published." . PHP_EOL;
-        \Artisan::call('vue-i18n:generate');
     }
 }

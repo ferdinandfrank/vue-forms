@@ -52,7 +52,6 @@
 
                     if (regions.hasOwnProperty(this.name)) {
                         this.submitValue = regions[this.name];
-                        this.onInput();
                     }
 
                 });

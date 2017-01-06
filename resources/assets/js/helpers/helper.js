@@ -168,3 +168,34 @@ window.titleCase = function (str) {
     // Directly return the joined string
     return splitStr.join(' ');
 };
+
+/**
+ * Gets the child components of the specified vue component.
+ *
+ * @param vueComponent
+ * @returns {Array}
+ */
+window.getListOfChildren = function (vueComponent) {
+    let children = [];
+    vueComponent.$children.forEach((child) => {
+        children.push(child);
+        children = children.concat(getListOfChildren(child));
+    });
+    return children;
+};
+
+/**
+ * Gets the parent components of the specified vue component.
+ *
+ * @param vueComponent
+ * @returns {Array}
+ */
+window.getListOfParents = function (vueComponent) {
+    let parents = [];
+    let parent = vueComponent.$parent;
+    if (parent) {
+        parents.push(parent);
+        parents = parents.concat(getListOfParents(parent));
+    }
+    return parents;
+};

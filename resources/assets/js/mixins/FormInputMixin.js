@@ -70,6 +70,9 @@ module.exports = {
 
             // States if the input's value is invalid.
             invalid: false,
+
+            // The parent components of the component.
+            parents: ''
         }
     },
 
@@ -108,13 +111,17 @@ module.exports = {
     mounted: function () {
         this.$nextTick(function () {
             this.submitValue = this.value;
+            this.parents = getListOfParents(this);
         })
     },
 
     watch: {
         submitValue: function (val) {
-            if (this.$parent.hasOwnProperty("form")) {
-                this.$parent.form[this.name] = val;
+            for (let index in this.parents) {
+                let parent = this.parents[index];
+                if (parent.hasOwnProperty("form")) {
+                    parent.form[this.name] = val;
+                }
             }
 
             window.eventHub.$emit(this.name + '-input-changed', val);
@@ -161,8 +168,11 @@ module.exports = {
         },
 
         validateParentForm: function () {
-            if (isFunction(this.$parent.updateFormSubmitPermission)) {
-                this.$parent.updateFormSubmitPermission();
+            for (let index in this.parents) {
+                let parent = this.parents[index];
+                if (isFunction(parent.updateFormSubmitPermission)) {
+                    parent.updateFormSubmitPermission();
+                }
             }
         },
 
@@ -217,10 +227,23 @@ module.exports = {
         },
 
         /**
+         * Resets the input's value.
+         */
+        reset: function () {
+            this.submitValue = this.value;
+            this.labelMessage = null;
+            this.invalid = false;
+            this.valid = !this.required || this.value;
+        },
+
+        /**
          * Clears the input's value.
          */
         clear: function () {
             this.submitValue = '';
+            this.labelMessage = null;
+            this.invalid = false;
+            this.valid = !this.required;
         },
 
         /**

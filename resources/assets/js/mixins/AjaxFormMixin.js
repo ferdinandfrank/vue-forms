@@ -404,28 +404,15 @@ module.exports = {
          */
         updateFormSubmitPermission: function () {
             let allInputsValid = true;
-            let children = this.getListOfChildren(this);
-            children.forEach((child) => {
+            let children = getListOfChildren(this);
+            for (let index in children) {
+                let child = children[index];
                 if (child.hasOwnProperty("valid") && !child.valid) {
                     allInputsValid = false;
                 }
-            });
-            this.valid = allInputsValid;
-        },
+            }
 
-        /**
-         * Gets the children components of the form.
-         *
-         * @param component
-         * @returns {Array}
-         */
-        getListOfChildren: function (component) {
-            let children = [];
-            component.$children.forEach((child) => {
-                children.push(child);
-                children = children.concat(this.getListOfChildren(child));
-            });
-            return children;
+            this.valid = allInputsValid;
         },
 
         /**

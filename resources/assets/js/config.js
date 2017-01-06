@@ -1,5 +1,5 @@
 
-import locales from './../../../js/locales';
+import locales from './locales';
 let supportedLocales = ['en', 'de'];
 
 import VueInternationalization from "vue-i18n";

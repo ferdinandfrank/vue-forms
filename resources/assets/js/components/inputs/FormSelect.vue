@@ -4,7 +4,6 @@
                 :name="submitName"
                 @focus="activate"
                 @blur="deactivate"
-                @input="onInput"
                 :placeholder="showPlaceholder ? placeholder : ''"
                 ref="input"
                 :disabled="disabled"

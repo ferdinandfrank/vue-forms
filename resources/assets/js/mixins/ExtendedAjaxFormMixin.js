@@ -17,6 +17,12 @@ module.exports = {
             default: false
         },
 
+        // Set to true, if the form's inputs shall be reset after the submit.
+        reset: {
+            type: Boolean,
+            default: false
+        },
+
         // If the form is used to create a new entity, this property is used to extract the route key of the created entity
         // and append it on the updateAction property, so a full update url for the entity will be created and the future
         // submit can successfully be treated as an update for the entity.
@@ -64,6 +70,11 @@ module.exports = {
                 this.clearInputs();
             }
 
+            // Reset the form inputs
+            if (this.reset) {
+                this.resetInputs();
+            }
+
             this.removeElement();
         },
 
@@ -90,10 +101,28 @@ module.exports = {
             }
         },
 
+        /**
+         * Clears the values of the child input component's.
+         */
         clearInputs: function () {
-            for (let child in this.getListOfChildren(this)) {
+            let children = getListOfChildren(this);
+            for (let index in children) {
+                let child = children[index];
                 if (isFunction(child.clear)) {
                     child.clear();
+                }
+            }
+        },
+
+        /**
+         * Resets the values of the child input component's.
+         */
+        resetInputs: function () {
+            let children = getListOfChildren(this);
+            for (let index in children) {
+                let child = children[index];
+                if (isFunction(child.reset)) {
+                    child.reset();
                 }
             }
         },
@@ -107,12 +136,13 @@ module.exports = {
         getChildInputComponentByName: function (inputName) {
             let childInputComponent = null;
 
-            let children = this.getListOfChildren(this);
-            children.forEach((child) => {
+            let children = getListOfChildren(this);
+            for (let index in children) {
+                let child = children[index];
                 if (child.hasOwnProperty("name") && child.name == inputName) {
                     childInputComponent = child;
                 }
-            });
+            }
 
             return childInputComponent;
         },
