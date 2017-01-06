@@ -1,0 +1,77 @@
+<template>
+    <div class="form-group" ref="inputWrapper" :class="{ 'has-error': invalid && !valid, 'has-success': valid && submitValue }">
+        <textarea :id="name + '-input'"
+                  :name="name"
+                  :style="{display: 'none'}"
+                  v-model="submitValue"
+                  ref="input"></textarea>
+        <div data-editable :data-name="name" class="codearea" @click="editContent" v-html="submitValue">
+
+        </div>
+        <label :for="name + '-input'" v-if="showLabel" ref="inputLabel" :data-message="labelMessage">
+            <span>{{ label }}</span>
+            <i v-if="showHelp" @click="openHelp" class="fa fa-fw fa-question help"></i>
+        </label>
+    </div>
+</template>
+
+<script>
+    import formInputMixin from '../../mixins/FormInputMixin';
+    export default{
+        mixins: [formInputMixin],
+
+        data: function () {
+            return {
+                // The predefined value of the input, that gets submitted.
+                submitValue: this.value,
+
+                // The editor instance.
+                editor: ''
+            }
+        },
+
+        mounted() {
+            this.$nextTick(function () {
+
+                $(window).click(() => {
+                    if (!$(event.target).closest('.ct-widget').length) {
+                        this.saveContent();
+                    }
+                });
+
+                this.editor = ContentTools.EditorApp.get();
+                this.editor.init('[data-editable]', 'data-name');
+
+                this.editor.addEventListener('saved', (ev) => {
+
+                    // Check that something changed
+                    let regions = ev.detail().regions;
+                    if (Object.keys(regions).length == 0) {
+                        return;
+                    }
+
+                    if (regions.hasOwnProperty(this.name)) {
+                        this.submitValue = regions[this.name];
+                        this.onInput();
+                    }
+
+                });
+            });
+        },
+
+        methods: {
+            editContent: function (event) {
+                event.stopPropagation();
+                if (!this.editor.isEditing()) {
+                    this.editor.start();
+                }
+            },
+            saveContent: function () {
+                if (this.editor.isEditing()) {
+                    this.editor.stop(true);
+                }
+            }
+        }
+    }
+
+</script>
