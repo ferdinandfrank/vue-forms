@@ -13,10 +13,14 @@
         mixins: [removeElementMixin],
 
         props: {
+
+            // The color class of the button.
             color: {
                 type: String,
                 default: 'error'
             },
+
+            // The size class of the button.
             size: {
                 type: String,
                 default: 'small'

@@ -15,11 +15,9 @@
         methods: {
 
             /**
-             * Will be called if the form was successfully submitted.
-             *
-             * @param response The response from the server.
+             * Will be called if the form has been successfully submitted.
              */
-            onSuccess: function (response) {
+            onSuccess: function () {
                 this.removeElement();
             }
         }

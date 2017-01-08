@@ -1,5 +1,5 @@
 <template>
-    <div class="form-group" ref="inputWrapper" :class="{ 'has-error': invalid && !valid, 'has-success': valid && submitValue }">
+    <div class="form-group" ref="inputWrapper" :class="{ 'has-error': hasError, 'has-success': hasSuccess }">
         <select :id="name + '-input'"
                 :name="submitName"
                 @focus="activate"
@@ -35,6 +35,12 @@
             multiple: {
                 type: Boolean,
                 default: false
+            },
+
+            // The predefined value of the input.
+            // See data: 'submitValue'
+            value: {
+                type: Array|String|Number
             }
         },
 
@@ -46,6 +52,19 @@
                     return this.name + '[]';
                 }
                 return this.name;
+            },
+
+            // States if a success layout shall be shown on the input.
+            hasSuccess: function () {
+                if (this.valid && this.submitValue) {
+                    return typeof this.submitValue === 'string' || typeof this.submitValue === 'number' || this.submitValue.length > 0
+                }
+                return false;
+            },
+
+            // States if an error layout shall be shown on the input.
+            hasError: function () {
+                return this.invalid && !this.valid;
             }
         },
 
@@ -53,18 +72,14 @@
             this.$nextTick(function () {
                 $(this.$refs.input).select2();
 
-                let selected = $(this.$refs.input).find('option:selected').first();
-                if (selected.length) {
-                    this.submitValue = selected.val();
-                    this.addSuccess();
-                }
+                this.submitValue = this.value;
+                $(this.$refs.input).val(this.value);
+                $(this.$refs.input).trigger('change');
 
                 $(this.$refs.input).on("change", (event) => {
-                    this.submitValue = event.added.id;
+                    this.submitValue = $(this.$refs.input).val();
                 });
             });
         },
-
-        methods: {}
     }
 </script>

@@ -14,13 +14,18 @@
         mixins: [ajaxFormMixin, removeElementMixin],
 
         props: {
+
+            // The color class of the button.
             color: {
                 type: String,
                 default: 'error'
             },
+
+            // The size class of the button.
             size: {
                 type: String
             },
+
             // The method to use for the submit.
             // See computed property: 'submitMethod'
             method: {
@@ -40,7 +45,7 @@
         methods: {
 
             /**
-             * Will be called if the form was successfully submitted.
+             * Will be called if the form has been successfully submitted.
              */
             onSuccess: function () {
                 this.removeElement();

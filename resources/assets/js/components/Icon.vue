@@ -5,7 +5,8 @@
 <script>
     export default{
         props: {
-            // The icon key
+
+            // The icon class.
             icon: {
                 type: String,
                 required: true

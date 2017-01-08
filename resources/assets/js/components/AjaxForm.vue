@@ -1,6 +1,3 @@
-<!--
-    Creates a form and submits its inputs via ajax.
--->
 <template>
     <form :action="submitAction" :method="submitMethod" @submit.prevent="submit">
         <slot></slot>

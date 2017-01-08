@@ -105,6 +105,12 @@ module.exports = {
         // The text to show to the user, if the input is required and the user did not enter a value.
         requiredMessage: function () {
             return this.getLocalizationString('required', {'attribute': this.name});
+        },
+
+        // The name of the input. Will also be the name of the value, when the form gets submitted.
+        // Info: This value is based upon the 'name' property.
+        submitName: function () {
+            return this.name;
         }
     },
 
@@ -120,7 +126,7 @@ module.exports = {
             for (let index in this.parents) {
                 let parent = this.parents[index];
                 if (parent.hasOwnProperty("form")) {
-                    parent.form[this.name] = val;
+                    parent.form[this.submitName] = val;
                 }
             }
 

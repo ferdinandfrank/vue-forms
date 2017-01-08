@@ -27,19 +27,18 @@
         mixins: [checkboxInputMixin],
         props: {
 
-            // The size of the switch
+            // The size of the switch.
             size: {
                 type: String,
                 default: 'sm'
             },
 
-            // The color of the switch
+            // The color of the switch.
             color: {
                 type: String,
                 default: 'primary'
             },
         }
     }
-
 
 </script>

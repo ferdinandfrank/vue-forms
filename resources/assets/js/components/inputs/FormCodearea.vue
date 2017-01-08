@@ -5,9 +5,7 @@
                   :style="{display: 'none'}"
                   v-model="submitValue"
                   ref="input"></textarea>
-        <div data-editable :data-name="name" class="codearea" @click="editContent" v-html="submitValue">
-
-        </div>
+        <div data-editable :data-name="name" class="codearea" @click="editContent" v-html="submitValue"></div>
         <label :for="name + '-input'" v-if="showLabel" ref="inputLabel" :data-message="labelMessage">
             <span>{{ label }}</span>
             <i v-if="showHelp" @click="openHelp" class="fa fa-fw fa-question help"></i>
@@ -22,8 +20,6 @@
 
         data: function () {
             return {
-                // The predefined value of the input, that gets submitted.
-                submitValue: this.value,
 
                 // The editor instance.
                 editor: ''
@@ -44,7 +40,7 @@
 
                 this.editor.addEventListener('saved', (ev) => {
 
-                    // Check that something changed
+                    // Check if something changed
                     let regions = ev.detail().regions;
                     if (Object.keys(regions).length == 0) {
                         return;
@@ -59,12 +55,16 @@
         },
 
         methods: {
+
+            // Allows to edit the content
             editContent: function (event) {
                 event.stopPropagation();
                 if (!this.editor.isEditing()) {
                     this.editor.start();
                 }
             },
+
+            // Saves the edited content
             saveContent: function () {
                 if (this.editor.isEditing()) {
                     this.editor.stop(true);

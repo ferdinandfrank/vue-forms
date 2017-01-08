@@ -53,7 +53,7 @@
         mounted() {
             this.$nextTick(function () {
 
-                // Necessary, because setting the type directly is not possible with vue.
+                // Necessary, because of setting the type directly is not possible with vue.
                 $(this.$refs.input).attr('type', this.type);
             })
         },

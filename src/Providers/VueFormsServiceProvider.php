@@ -32,7 +32,6 @@ class VueFormsServiceProvider extends ServiceProvider {
         }
 
         $this->publishes([
-            VUE_FORMS_BASE_PATH . '/resources/lang' => resource_path('lang/'),
             VUE_FORMS_BASE_PATH . '/resources/assets' => resource_path('/assets/vendor/vue-forms'),
         ], 'vue-forms');
     }

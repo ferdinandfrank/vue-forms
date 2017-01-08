@@ -3,9 +3,13 @@
 Vue Forms provides a collection of vue.js form and input components to create pretty ajax requests.
 
 ### Requirements
-
+##### Mandatory Requirements
 - [PHP](https://php.net) >= 5.6
 - An existing [Laravel 5.3](https://laravel.com/docs/master/installation) project
+
+##### Optional Requirements
+- **[ContentTools](http://getcontenttools.com/) >= 1.3:** Necessary for the component _FormCodearea_
+- **[Bootstrap 3 Datepicker](https://eonasdan.github.io/bootstrap-datetimepicker/) >= 4.17.43:** Necessary for the components _FormDateInput_ and _FormDateTimeInput_
 
 ### Installation
 
@@ -59,7 +63,7 @@ adapt the path to your own localization file in `/resources/assets/vendor/vue-fo
     });
     ```
  
- 6. Now you can run `gulp` as usual.
+6. Now you can run `gulp` as usual.
     
     
 ... full documentation coming soon

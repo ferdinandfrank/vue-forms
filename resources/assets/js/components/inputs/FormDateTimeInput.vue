@@ -37,7 +37,6 @@
     import datePickerMixin from '../../mixins/DatePickerMixin';
     export default{
         mixins: [formInputMixin, datePickerMixin],
-        props: {},
 
         mounted: function () {
             this.$nextTick(function () {
