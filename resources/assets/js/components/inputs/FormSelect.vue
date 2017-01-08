@@ -4,7 +4,6 @@
                 :name="submitName"
                 @focus="activate"
                 @blur="deactivate"
-                :placeholder="showPlaceholder ? placeholder : ''"
                 ref="input"
                 :disabled="disabled"
                 :multiple="multiple"
@@ -70,13 +69,19 @@
 
         mounted() {
             this.$nextTick(function () {
-                $(this.$refs.input).select2();
+                let placeholder = this.showPlaceholder ? this.placeholder : null;
+                $(this.$refs.input).select2({
+                    placeholder: placeholder
+                });
 
-                this.submitValue = this.value;
-                $(this.$refs.input).val(this.value);
+                if (this.value != null) {
+                    $(this.$refs.input).val(this.value);
+                }
+
+                this.submitValue = $(this.$refs.input).val();
                 $(this.$refs.input).trigger('change');
 
-                $(this.$refs.input).on("change", (event) => {
+                $(this.$refs.input).on("change", () => {
                     this.submitValue = $(this.$refs.input).val();
                 });
             });

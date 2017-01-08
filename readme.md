@@ -37,8 +37,11 @@ Vue Forms provides a collection of vue.js form and input components to create pr
     
 4. On default an localization file (`locales.js`) is used to show localized texts on the alerts. Feel free to 
 adapt the path to your own localization file in `/resources/assets/vendor/vue-forms/js/config.js`. 
-    
-5. Since the Vue Forms components are written in vue.js 2.0 you'll need to use webpack or another bundler to get the code ready for the browser. You can then bundle these with your existing scripts in your projects gulpfile.js, for example:
+
+5. Delete the components, that you don't want to use. Please notice that some components like _FormCodearea_ and _FormDateInput_ have some requirements (Check the section "Optional Requirements"), 
+so if you don't want to use these components und you don't fulfill these requirements, you have to delete these components, otherwise you will get an error, when running `gulp`.
+
+6. Since the Vue Forms components are written in vue.js 2.0 you'll need to use webpack or another bundler to get the code ready for the browser. You can then bundle these with your existing scripts in your projects gulpfile.js, for example:
 
     ```javascript
     const elixir = require('laravel-elixir');
@@ -63,7 +66,7 @@ adapt the path to your own localization file in `/resources/assets/vendor/vue-fo
     });
     ```
  
-6. Now you can run `gulp` as usual.
+7. Now you can run `gulp` as usual.
     
     
 ... full documentation coming soon
