@@ -61,7 +61,19 @@ module.exports = {
 
         // The text to show to the user, if the confirmation input does not have the same value as this input.
         confirmedMessage: function () {
-            return this.getLocalizationString('confirmed');
+            let confirmNameLength = this.name.length - '_confirmation'.length;
+            let confirmName = this.name.substring(0, confirmNameLength);
+            return this.getLocalizationString('confirmed', {'attribute': confirmName});
+        },
+
+        // States if the max length counter shall be shown on the input.
+        showMaxLengthCounter: function () {
+            return this.maxLength && !this.showMinLengthCounter;
+        },
+
+        // States if the min length counter shall be shown on the input.
+        showMinLengthCounter: function () {
+            return this.minLength && this.submitValue.length < this.minLength;
         }
     },
 

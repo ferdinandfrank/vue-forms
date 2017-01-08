@@ -96,7 +96,7 @@ module.exports = {
          * @param errorMsg
          */
         addErrorToInputComponent: function (inputComponent, errorMsg) {
-            if (isFunction(inputComponent.addError)) {
+            if (inputComponent && isFunction(inputComponent.addError)) {
                 inputComponent.addError(errorMsg);
             }
         },

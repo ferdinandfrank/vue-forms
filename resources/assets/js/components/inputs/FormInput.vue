@@ -24,10 +24,10 @@
             <span>{{ label }}</span>
             <i v-if="showHelp" @click="openHelp" class="fa fa-fw fa-question help"></i>
         </label>
-        <span class="counter" :class="submitValue.length > maxLength ? 'error' : 'success'" v-if="maxLength">
+        <span class="counter" :class="submitValue.length > maxLength ? 'error' : 'success'" v-if="showMaxLengthCounter">
             {{ submitValue.length + '/' + maxLength }}
         </span>
-        <span class="counter" :class="submitValue.length < minLength ? 'error' : 'success'" v-if="minLength">
+        <span class="counter" :class="submitValue.length < minLength ? 'error' : 'success'" v-if="showMinLengthCounter">
             {{ submitValue.length + '/' + minLength }}
         </span>
         <slot></slot>

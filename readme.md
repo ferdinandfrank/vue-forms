@@ -68,5 +68,8 @@ so if you don't want to use these components und you don't fulfill these require
  
 7. Now you can run `gulp` as usual.
     
-    
-... full documentation coming soon
+### Documentation
+The following components are included in the Vue Forms composer package:
+
+#### Ajax Form
+Represents a standard form component.
