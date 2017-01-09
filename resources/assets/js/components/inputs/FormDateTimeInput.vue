@@ -33,7 +33,7 @@
 </template>
 
 <script>
-    import formInputMixin from '../../mixins/FormInputMixin';
+    import formInputMixin from '../../mixins/TextFormInputMixin';
     import datePickerMixin from '../../mixins/DatePickerMixin';
     export default{
         mixins: [formInputMixin, datePickerMixin],

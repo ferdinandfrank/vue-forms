@@ -134,6 +134,10 @@ module.exports = {
             this.checkInput();
             this.validateParentForm();
         },
+
+        value: function (val) {
+            this.submitValue = val;
+        }
     },
 
     methods: {
