@@ -72,7 +72,10 @@ module.exports = {
             invalid: false,
 
             // The parent components of the component.
-            parents: ''
+            parents: '',
+
+            // States if the input is currently focused.
+            active: false
         }
     },
 
@@ -123,6 +126,7 @@ module.exports = {
 
     watch: {
         submitValue: function (val) {
+
             for (let index in this.parents) {
                 let parent = this.parents[index];
                 if (parent.hasOwnProperty("form")) {
@@ -131,8 +135,13 @@ module.exports = {
             }
 
             window.eventHub.$emit(this.name + '-input-changed', val);
-            this.checkInput();
-            this.validateParentForm();
+
+            // Only check input if the input wasn't cleared
+            if (val || this.active) {
+                this.checkInput();
+                this.validateParentForm();
+            }
+
         },
 
         value: function (val) {
@@ -147,6 +156,7 @@ module.exports = {
          */
         activate: function () {
             $(this.$refs.inputWrapper).addClass('active');
+            this.active = true;
         },
 
         /**
@@ -154,6 +164,7 @@ module.exports = {
          */
         deactivate: function () {
             $(this.$refs.inputWrapper).removeClass('active');
+            this.active = false;
         },
 
         /**
