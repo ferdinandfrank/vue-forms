@@ -11,6 +11,7 @@ Vue Forms provides a collection of vue.js form and input components to create pr
 ##### Optional Requirements
 - **[ContentTools](http://getcontenttools.com/) >= 1.3:** Necessary for the component _FormCodearea_
 - **[Bootstrap 3 Datepicker](https://eonasdan.github.io/bootstrap-datetimepicker/) >= 4.17.43:** Necessary for the components _FormDateInput_ and _FormDateTimeInput_
+- **[Font Awesome](http://fontawesome.io/icons/):** Necessary to show help icons next to the inputs.
 
 ### Installation
 
