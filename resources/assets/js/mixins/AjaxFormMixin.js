@@ -292,16 +292,38 @@ module.exports = {
         },
 
         /**
+         * Handles the successful response from the server.
+         *
+         * @param response The response from the server.
+         */
+        handleSuccess: function (response) {
+            if (this.submitMethod == 'get') {
+                updateHrefParamsWithData(this.form.data());
+            }
+
+            if (this.appendResponse) {
+                appendData(this.appendResponse, response);
+            }
+
+            if (this.prependResponse) {
+                prependData(this.prependResponse, response);
+            }
+
+            if (this.replaceResponse) {
+                replaceData(this.replaceResponse, response);
+            }
+
+            this.redirectUser();
+            this.onSuccess(response);
+        },
+
+        /**
          * Handles the response from the server, after the form has been submitted.
          *
          * @param success {@code true} if the submit was successful, {@code false} otherwise.
          * @param response The response from the server.
          */
         handleResponse: function (success, response) {
-
-            if (this.submitMethod == 'get') {
-                updateHrefParamsWithData(this.form.data());
-            }
 
             // Check the success type, show the corresponding alerts and call the corresponding callback methods.
             if (!success) {
@@ -311,12 +333,10 @@ module.exports = {
 
                 if (this.showAlert) {
                     showAlert('success', this.alertTitle, this.alertMessage, this.alertDuration, () => {
-                        this.redirectUser();
-                        this.onSuccess(response);
+                        this.handleSuccess(response);
                     });
                 } else {
-                    this.redirectUser();
-                    this.onSuccess(response);
+                    this.handleSuccess(response);
                 }
             }
 
