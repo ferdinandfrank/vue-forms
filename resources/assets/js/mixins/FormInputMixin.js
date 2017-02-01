@@ -123,6 +123,13 @@ module.exports = {
 
     watch: {
         submitValue: function (val) {
+
+            // Convert booleans to integer
+            if(typeof(val) === "boolean"){
+                this.submitValue = val ? 1 : 0;
+                return;
+            }
+
             for (let index in this.parents) {
                 let parent = this.parents[index];
                 if (parent.hasOwnProperty("form")) {
@@ -131,8 +138,12 @@ module.exports = {
             }
 
             window.eventHub.$emit(this.name + '-input-changed', val);
-            this.checkInput();
-            this.validateParentForm();
+
+            // Only check input if the input wasn't cleared
+            if (val || this.active) {
+                this.checkInput();
+                this.validateParentForm();
+            }
         },
 
         value: function (val) {
