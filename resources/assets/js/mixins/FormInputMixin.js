@@ -49,8 +49,14 @@ module.exports = {
         },
 
         // The path of the page to send the user if he clicks the help icon on the input.
-        // No icon will be shown if this property isn't set.
+        // No icon will be shown if this property and the property 'helpTooltip' isn't set.
         helpPath: {
+            type: String
+        },
+
+        // The tooltip to show if the user hovers over the help icon.
+        // No icon will be shown if this property and the property 'helpPath' isn't set.
+        helpTooltip: {
             type: String
         }
     },
@@ -59,7 +65,7 @@ module.exports = {
         return {
 
             // States if a help icon shall be displayed next to the input.
-            showHelp: this.helpPath ? true : false,
+            showHelp: this.helpPath || this.helpTooltip ? true : false,
 
             submitValue: '',
 
@@ -244,7 +250,9 @@ module.exports = {
          * Opens the help page for the input.
          */
         openHelp: function () {
-            window.open(this.helpPath, '_blank');
+            if (this.helpPath) {
+                window.open(this.helpPath, '_blank');
+            }
         },
 
         /**

@@ -1,5 +1,4 @@
-import Form from "./../helpers/Form";
-
+let Form = require('./../helpers/Form');
 module.exports = {
 
     props: {

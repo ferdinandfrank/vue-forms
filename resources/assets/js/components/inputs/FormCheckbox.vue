@@ -7,7 +7,10 @@
                v-model="submitValue"/>
         <label :for="name + '-input'" v-if="showLabel" ref="inputLabel" :data-message="labelMessage">
             <span>{{ label }}</span>
-            <i v-if="showHelp" @click="openHelp" class="fa fa-fw fa-question help"></i>
+            <span v-if="showHelp" class="tooltip">
+                <i @click="openHelp" class="fa fa-fw fa-question help"></i>
+                <span v-if="helpTooltip" class="tooltip-text">{{ helpTooltip }}</span>
+            </span>
         </label>
     </div>
 </template>

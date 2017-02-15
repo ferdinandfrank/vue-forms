@@ -20,7 +20,10 @@
 
         <label :for="name + '-input'" v-if="showLabel" ref="inputLabel" :data-message="labelMessage">
             <span>{{ label }}</span>
-            <i v-if="showHelp" @click="openHelp" class="fa fa-fw fa-question help"></i>
+            <span v-if="showHelp" class="tooltip">
+                <i @click="openHelp" class="fa fa-fw fa-question help"></i>
+                <span v-if="helpTooltip" class="tooltip-text">{{ helpTooltip }}</span>
+            </span>
         </label>
     </div>
 </template>
@@ -70,19 +73,26 @@
         mounted() {
             this.$nextTick(function () {
                 let placeholder = this.showPlaceholder ? this.placeholder : null;
-                $(this.$refs.input).select2({
+                let input = $(this.$refs.input);
+
+                input.select2({
                     placeholder: placeholder
                 });
 
                 if (this.value != null) {
-                    $(this.$refs.input).val(this.value);
+                    input.val(this.value);
                 }
 
-                this.submitValue = $(this.$refs.input).val();
-                $(this.$refs.input).trigger('change');
+                if (!input.val()) {
+                    input.val(input.find('option:first-child').val());
+                }
 
-                $(this.$refs.input).on("change", () => {
-                    this.submitValue = $(this.$refs.input).val();
+                this.submitValue = input.val();
+
+                input.trigger('change');
+
+                input.on("change", () => {
+                    this.submitValue = input.val();
                 });
             });
         },

@@ -1,5 +1,4 @@
-import formInputMixin from "./FormInputMixin";
-
+let formInputMixin = require('./FormInputMixin');
 module.exports = {
 
     mixins: [formInputMixin],

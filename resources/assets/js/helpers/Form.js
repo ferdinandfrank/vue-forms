@@ -1,4 +1,4 @@
-class Form {
+module.exports = class Form {
 
     /**
      * Create a new Form instance.
@@ -83,9 +83,7 @@ class Form {
             });
         });
     }
-}
-
-export default Form;
+};
 
 
 

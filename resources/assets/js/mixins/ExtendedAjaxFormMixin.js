@@ -2,9 +2,8 @@
  *  Ajax Form Mixin for ajax forms, which have inputs and a submit button as part of their content.
  */
 
-import ajaxFormMixin from "./AjaxFormMixin";
-import removeElementMixin from "./RemoveElementMixin";
-
+let ajaxFormMixin = require('./ajaxFormMixin');
+let removeElementMixin = require('./RemoveElementMixin');
 module.exports = {
 
     mixins: [ajaxFormMixin, removeElementMixin],
