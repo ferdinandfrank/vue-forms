@@ -1,8 +1,8 @@
 <?php
 
-namespace EpicArrow\VueForms\Providers;
+namespace FerdinandFrank\VueForms\Providers;
 
-use EpicArrow\VueForms\Commands\InitVueForms;
+use FerdinandFrank\VueForms\Commands\InitVueForms;
 use Illuminate\Support\ServiceProvider;
 
 /**

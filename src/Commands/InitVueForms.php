@@ -1,6 +1,6 @@
 <?php
 
-namespace EpicArrow\VueForms\Commands;
+namespace FerdinandFrank\VueForms\Commands;
 
 use Illuminate\Console\Command;
 

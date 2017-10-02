@@ -24,7 +24,14 @@
     },
     "autoload": {
         "psr-4": {
-            "EpicArrow\\VueForms\\": "src/"
+            "FerdinandFrank\\VueForms\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "FerdinandFrank\\VueForms\\VueFormsServiceProvider"
+            ]
         }
     },
     "minimum-stability": "dev"
