@@ -1,17 +1,12 @@
 <template>
     <div class="form-group" ref="inputWrapper" :class="{ 'has-error': hasError, 'has-success': hasSuccess }">
-        <select :id="name + '-input'"
-                :name="submitName"
-                @focus="activate"
-                @blur="deactivate"
-                ref="input"
-                :disabled="disabled"
-                :multiple="multiple"
-                class="form-control">
+        <select :id="name + '-input'" :name="submitName" @focus="activate" @blur="deactivate" ref="input"
+                :disabled="disabled" :multiple="multiple" class="form-control">
             <slot></slot>
         </select>
 
-        <button type="submit" v-if="icon && addonSubmit" class="form-group-addon" :style="{cursor: valid ? 'pointer' : 'not-allowed'}">
+        <button type="submit" v-if="icon && addonSubmit" class="form-group-addon"
+                :style="{cursor: valid ? 'pointer' : 'not-allowed'}">
             <icon :icon="icon"></icon>
         </button>
         <span v-if="icon && !addonSubmit" class="form-group-addon">
@@ -22,7 +17,7 @@
             <span>{{ label }}</span>
             <span v-if="showHelp" class="tooltip">
                 <i @click="openHelp" class="fa fa-fw fa-question help"></i>
-                <span v-if="helpTooltip" class="tooltip-text">{{ helpTooltip }}</span>
+                <span v-if="tooltipText" class="tooltip-text">{{ tooltipText }}</span>
             </span>
         </label>
     </div>
@@ -30,7 +25,8 @@
 
 <script>
     import formInputMixin from '../../mixins/TextFormInputMixin';
-    export default{
+
+    export default {
         mixins: [formInputMixin],
         props: {
             // True, if multiple values can be selected.
@@ -42,7 +38,7 @@
             // The predefined value of the input.
             // See data: 'submitValue'
             value: {
-                type: Array|String|Number
+                type: Array | String | Number
             }
         },
 

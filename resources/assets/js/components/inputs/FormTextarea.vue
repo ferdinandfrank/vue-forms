@@ -1,17 +1,13 @@
 <template>
-    <div class="form-group" ref="inputWrapper" :class="{ 'has-error': invalid && !valid, 'has-success': valid && submitValue }">
-        <textarea :id="name + '-input'"
-                  :name="name"
-                  v-model="submitValue"
-                  class="form-control"
-                  :class="icon ? 'has-addon' : ''"
-                  :disabled="disabled"
-                  :placeholder="showPlaceholder ? placeholder : ''"
-                  ref="input"
-                  @focus="activate"
+    <div class="form-group" ref="inputWrapper"
+         :class="{ 'has-error': invalid && !valid, 'has-success': valid && submitValue }">
+        <textarea :id="name + '-input'" :name="name" v-model="submitValue" class="form-control"
+                  :class="icon ? 'has-addon' : ''" :disabled="disabled"
+                  :placeholder="showPlaceholder ? placeholder : ''" ref="input" @focus="activate"
                   @blur="deactivate"></textarea>
 
-        <button type="submit" v-if="icon && addonSubmit" class="form-group-addon" :style="{cursor: valid ? 'pointer' : 'not-allowed'}">
+        <button type="submit" v-if="icon && addonSubmit" class="form-group-addon"
+                :style="{cursor: valid ? 'pointer' : 'not-allowed'}">
             <icon :icon="icon"></icon>
         </button>
         <span v-if="icon && !addonSubmit" class="form-group-addon">
@@ -22,7 +18,7 @@
             <span>{{ label }}</span>
             <span v-if="showHelp" class="tooltip">
                 <i @click="openHelp" class="fa fa-fw fa-question help"></i>
-                <span v-if="helpTooltip" class="tooltip-text">{{ helpTooltip }}</span>
+                <span v-if="tooltipText" class="tooltip-text">{{ tooltipText }}</span>
             </span>
         </label>
         <span class="counter" :class="submitValue.length > maxLength ? 'error' : 'success'" v-if="showMaxLengthCounter">
@@ -37,7 +33,8 @@
 
 <script>
     import formInputMixin from '../../mixins/TextFormInputMixin';
-    export default{
+
+    export default {
         mixins: [formInputMixin],
     }
 

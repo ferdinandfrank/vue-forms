@@ -1,19 +1,12 @@
 <template>
-    <div class="form-group" ref="inputWrapper" :class="{ 'has-error': invalid && !valid, 'has-success': valid && submitValue }">
-        <input :id="name + '-input'"
-               type="text"
-               :name="name"
-               v-model="submitValue"
-               class="form-control"
-               :class="icon ? 'has-addon' : ''"
-               :placeholder="showPlaceholder ? placeholder : ''"
-               :step="step"
-               :disabled="disabled"
-               ref="input"
-               @focus="activate"
-               @blur="deactivate">
+    <div class="form-group" ref="inputWrapper"
+         :class="{ 'has-error': invalid && !valid, 'has-success': valid && submitValue }">
+        <input :id="name + '-input'" type="text" :name="name" v-model="submitValue" class="form-control"
+               :class="icon ? 'has-addon' : ''" :placeholder="showPlaceholder ? placeholder : ''" :step="step"
+               :disabled="disabled" ref="input" @focus="activate" @blur="deactivate">
 
-        <button type="submit" v-if="icon && addonSubmit" class="form-group-addon" :style="{cursor: valid ? 'pointer' : 'not-allowed'}">
+        <button type="submit" v-if="icon && addonSubmit" :id="name + '-input-submit-button'" class="form-group-addon"
+                :style="{cursor: valid ? 'pointer' : 'not-allowed'}">
             <icon :icon="icon"></icon>
         </button>
         <span v-if="icon && !addonSubmit" class="form-group-addon">
@@ -24,7 +17,7 @@
             <span>{{ label }}</span>
             <span v-if="showHelp" class="tooltip">
                 <i @click="openHelp" class="fa fa-fw fa-question help"></i>
-                <span v-if="helpTooltip" class="tooltip-text">{{ helpTooltip }}</span>
+                <span v-if="tooltipText" class="tooltip-text">{{ tooltipText }}</span>
             </span>
         </label>
         <span class="counter" :class="submitValue.length > maxLength ? 'error' : 'success'" v-if="showMaxLengthCounter">
@@ -39,7 +32,8 @@
 
 <script>
     import formInputMixin from '../../mixins/TextFormInputMixin';
-    export default{
+
+    export default {
         mixins: [formInputMixin],
         props: {
 
@@ -69,7 +63,7 @@
              * @returns {boolean}
              */
             checkComponentSpecific: function () {
-                if (this.type == 'email' && !isValidEmail(this.submitValue)) {
+                if (this.type === 'email' && !isValidEmail(this.submitValue)) {
                     this.addError(this.getLocalizationString('email', {'attribute': this.name}, true));
                     return false;
                 }

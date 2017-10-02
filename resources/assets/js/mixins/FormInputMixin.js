@@ -1,4 +1,4 @@
-module.exports = {
+export default {
 
     props: {
 
@@ -78,7 +78,10 @@ module.exports = {
             invalid: false,
 
             // The parent components of the component.
-            parents: ''
+            parents: '',
+
+            // States if the input is currently focused.
+            active: false
         }
     },
 
@@ -117,6 +120,15 @@ module.exports = {
         // Info: This value is based upon the 'name' property.
         submitName: function () {
             return this.name;
+        },
+
+        // The text to show when hovering over the help icon
+        tooltipText: function () {
+            return this.helpTooltip ? this.helpTooltip : this.$t('action.click_to_show_help');
+        },
+
+        contentChanged: function () {
+            return this.submitValue !== this.value;
         }
     },
 
@@ -131,7 +143,7 @@ module.exports = {
         submitValue: function (val) {
 
             // Convert booleans to integer
-            if(typeof(val) === "boolean"){
+            if (typeof(val) === "boolean") {
                 this.submitValue = val ? 1 : 0;
                 return;
             }
@@ -150,6 +162,7 @@ module.exports = {
                 this.checkInput();
                 this.validateParentForm();
             }
+
         },
 
         value: function (val) {
@@ -164,6 +177,7 @@ module.exports = {
          */
         activate: function () {
             $(this.$refs.inputWrapper).addClass('active');
+            this.active = true;
         },
 
         /**
@@ -171,6 +185,7 @@ module.exports = {
          */
         deactivate: function () {
             $(this.$refs.inputWrapper).removeClass('active');
+            this.active = false;
         },
 
         /**
@@ -296,8 +311,16 @@ module.exports = {
                 defaultKey = 'validation.' + type;
             }
 
+            // Validate props
+            if (props !== null && props.hasOwnProperty('attribute')) {
+                let attribute = props.attribute;
+                let attributeLangKey = 'validation.attributes.' + attribute;
+                let attributeReplacement = this.$t(attributeLangKey);
+                props.attribute = attributeReplacement === attributeLangKey ? attribute : attributeReplacement;
+            }
+
             let text = this.$t(key, props);
-            if (text == key) {
+            if (text === key) {
                 text = this.$t(defaultKey, props);
             }
 

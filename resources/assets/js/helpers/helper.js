@@ -1,56 +1,14 @@
+/***********************************************************
+ Vue Forms: Helper
+ --------------------------
+ Defines helper functions for the vue form components
+ ************************************************************/
+
 // Alerts
 import Alert from "./Alert";
-// AJAX Form Submits
-import FormSubmit from "./Form";
-
-window.showAlert = function (type, title, message, timer = 3000, callback) {
-    new Alert(type, title, message).show(timer);
-    if (isFunction(callback)) {
-        setTimeout(() => {
-            callback();
-        }, timer);
-    }
-};
-
-window.showConfirm = function (type, title, message, confirmAction = null, cancelAction = null, confirmButtonText = null, cancelButtonText = null) {
-    new Alert(type, title, message).confirm(confirmAction, cancelAction, confirmButtonText, cancelButtonText);
-};
-
-window.sendFormData = function (form, callback) {
-    new FormSubmit(form).send(callback);
-};
-
-window.sendInputs = function (wrapper, action, method, callback) {
-    new FormSubmit(wrapper, action, method).send(callback);
-};
-
-
-/**
- * Sends the specified data to the specified url with the specified method.
- *
- * @param url
- * @param method
- * @param data
- * @param successCallback
- * @param errorCallback
- */
-window.sendRequest = function (url, method = 'get', data = null, successCallback, errorCallback) {
-
-    $.ajax({
-        type: method,
-        url: url,
-        data: data,
-        success: function (response) {
-            if (isFunction(successCallback)) {
-                successCallback(response);
-            }
-        },
-        error: function (response) {
-            if (isFunction(errorCallback)) {
-                errorCallback(response);
-            }
-        }
-    });
+window.Alert = Alert;
+window.showAlert = function (message, title, type = 'success', buttonText = false, timer = 3000) {
+    new Alert(message, title, type).show(buttonText, timer);
 };
 
 /**
@@ -99,7 +57,7 @@ window.replaceData = function (element, data) {
  * @returns {boolean}
  */
 window.isFunction = function (functionToCheck) {
-    return typeof functionToCheck == 'function';
+    return typeof functionToCheck === 'function';
 };
 
 /**
@@ -122,7 +80,7 @@ window.replaceChar = function (s, n, t) {
  */
 window.serializeData = function (data) {
     let str = [];
-    for(let key in data)
+    for (let key in data)
         if (data.hasOwnProperty(key)) {
             str.push(encodeURIComponent(key) + "=" + encodeURIComponent(data[key]));
         }

@@ -37,7 +37,7 @@
         computed: {
 
             // The submit button of the form. Used to show the loader as soon as the submit request is pending.
-            button: function() {
+            button: function () {
                 return $(this.$el);
             },
         },
@@ -53,4 +53,3 @@
         }
     }
 </script>
-#

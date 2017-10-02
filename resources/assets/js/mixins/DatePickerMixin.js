@@ -1,4 +1,4 @@
-module.exports = {
+export default {
     props: {
         // The value of the date picker.
         // See property 'submitDate'.

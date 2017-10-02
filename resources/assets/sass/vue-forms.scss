@@ -1,4 +1,3 @@
-@import "node_modules/sweetalert/dist/sweetalert";
 
 /*********************
   Tooltip
@@ -47,23 +46,25 @@
 .tooltip .tooltip-text {
     text-align: center;
     position: absolute;
-    z-index: 1;
+    z-index: 10000;
+    visibility: hidden;
     opacity: 0;
-    transition: opacity 1s;
+    transition: visibility 0s, opacity 0.5s linear;
     background-color: black;
     color: #fff;
-    width: 120px;
+    width: 150px;
     padding: 5px;
     border-radius: 6px;
 
     /* Tooltip top specific */
     bottom: 100%;
     left: 50%;
-    margin-left: -60px; /* Use half of the width (120/2 = 60), to center the tooltip */
+    margin-left: -75px; /* Use half of the width (120/2 = 60), to center the tooltip */
 }
 
-.tooltip:hover .tooltip-text {
+.tooltip > *:first-child:hover~.tooltip-text {
     opacity: 1;
+    visibility: visible;
 }
 
 .tooltip .tooltip-text::after {

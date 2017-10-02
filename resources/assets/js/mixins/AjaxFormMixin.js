@@ -1,5 +1,7 @@
-let Form = require('./../helpers/Form');
-module.exports = {
+import Form from "./../helpers/Form";
+import Alert from "../helpers/Alert";
+
+export default {
 
     props: {
         // The default submit action of the form.
@@ -20,6 +22,12 @@ module.exports = {
         // Note: There will always be a confirm message, if the method is set to 'delete'.
         // See computed property: 'showConfirm'
         confirm: {
+            type: Boolean,
+            default: false
+        },
+
+        // States if even a success alert needs to be confirmed before it disappears.
+        confirmSuccess: {
             type: Boolean,
             default: false
         },
@@ -96,13 +104,13 @@ module.exports = {
         // If this property is not set, no redirect will occur.
         redirect: {
             type: String
-        }
+        },
     },
 
     computed: {
 
         // The submit button of the form. Used to show the loader as soon as the submit request is pending.
-        button: function() {
+        button: function () {
             return $(this.$el).find('button[type=submit]');
         },
 
@@ -117,7 +125,7 @@ module.exports = {
         // Will be determined by the 'alertKey' property and the method of the next submit.
         // Will only be of use if the 'alert' property is set to true.
         alertMessage: function () {
-            if ((this.submitMethod == 'delete' || this.submitMethod == 'put')
+            if ((this.submitMethod === 'delete' || this.submitMethod === 'put')
                 && this.objectName) {
                 return this.getLocalizationString('alert', 'content', {name: this.objectName});
             }
@@ -136,7 +144,7 @@ module.exports = {
         // Will be determined by the 'alertKey' property and the method of the next submit.
         // Will only be of use if the 'confirm' property is set to true.
         confirmMessage: function () {
-            if ((this.submitMethod == 'delete' || this.submitMethod == 'put')
+            if ((this.submitMethod === 'delete' || this.submitMethod === 'put')
                 && this.objectName) {
                 return this.getLocalizationString('confirm', 'content', {name: this.objectName});
             }
@@ -161,7 +169,7 @@ module.exports = {
         // Holds the state, if a confirm message shall be shown before the submit.
         // Note: A confirm message will always be shown, if the method is set to 'delete'.
         showConfirm: function () {
-            if (!this.confirm && this.submitMethod == 'delete') {
+            if (!this.confirm && this.submitMethod === 'delete') {
                 return true;
             }
             return this.confirm;
@@ -170,7 +178,7 @@ module.exports = {
         // Holds the state, if an alert message shall be shown after the submit.
         // Note: An alert message won't be shown, if the method is set to 'get'.
         showAlert: function () {
-            if (this.submitMethod == 'get' && this.alertKey == 'default') {
+            if (this.submitMethod === 'get' && this.alertKey === 'default') {
                 return false;
             }
             return this.alert;
@@ -235,18 +243,13 @@ module.exports = {
 
             // Let the user confirm his submit action, if a confirm was defined in the properties.
             if (this.showConfirm) {
-                showConfirm(
-                    this.confirmType,
-                    this.confirmTitle,
-                    this.confirmMessage,
-                    () => {
+                new Alert(this.confirmMessage, this.confirmTitle, this.confirmType).confirm(this.confirmAccept, this.confirmCancel).then((confirmed) => {
+                    if (confirmed) {
                         this.startLoader();
                         this.sendData();
-                    },
-                    null,
-                    this.confirmAccept,
-                    this.confirmCancel
-                );
+                    }
+                });
+
             } else {
                 this.startLoader();
                 this.sendData();
@@ -280,6 +283,7 @@ module.exports = {
         sendData: function () {
             // Let the parent chain know, that the submit will be processed.
             window.eventHub.$emit('submitting_' + this.callbackName, this);
+            window.eventHub.$emit('ajaxFormSubmit', this);
 
             this.form.submit(this.submitMethod, this.submitAction)
                 .then(response => {
@@ -296,7 +300,7 @@ module.exports = {
          * @param response The response from the server.
          */
         handleSuccess: function (response) {
-            if (this.submitMethod == 'get') {
+            if (this.submitMethod === 'get') {
                 updateHrefParamsWithData(this.form.data());
             }
 
@@ -331,7 +335,9 @@ module.exports = {
             } else {
 
                 if (this.showAlert) {
-                    showAlert('success', this.alertTitle, this.alertMessage, this.alertDuration, () => {
+                    let buttonText = this.confirmSuccess ? this.$t('confirm.default.info.accept') : false;
+                    let alertDuration = this.confirmSuccess ? null : this.alertDuration;
+                    new Alert(this.alertMessage, this.alertTitle, 'success').show(buttonText, alertDuration).then(() => {
                         this.handleSuccess(response);
                     });
                 } else {
@@ -364,7 +370,11 @@ module.exports = {
          */
         redirectUser: function () {
             if (this.redirect) {
+                let isSamePage = this.redirect.startsWith(window.location.href);
                 window.location.href = this.redirect;
+                if (isSamePage) {
+                    window.location.reload(true);
+                }
             }
         },
 
@@ -374,16 +384,17 @@ module.exports = {
          * @param response The error response of the server.
          */
         showErrorMessage: function (response) {
+
             // Check if an error message shall be shown to the user.
-            if (this.showAlert && this.alertError) {
+            if (this.showAlert || this.alertError) {
                 let msg = null;
 
                 // Extract the error message from the response
-                if(response && response.hasOwnProperty('msg')) {
+                if (response && response.hasOwnProperty('msg')) {
                     msg = response['msg'];
                 } else if (response) {
                     for (let key in response) {
-                        if(response.hasOwnProperty(key)) {
+                        if (response.hasOwnProperty(key)) {
                             msg = response[key];
                             break;
                         }
@@ -394,7 +405,9 @@ module.exports = {
                     msg = this.$t('alert.error.' + this.submitMethod + '.content', {name: this.objectName})
                 }
 
-                showAlert('error', this.$t('alert.error.' + this.submitMethod + '.title', {name: this.objectName}), msg, this.alertDuration);
+                let title = this.$t('alert.error.' + this.submitMethod + '.title', {name: this.objectName});
+
+                new Alert(msg, title, 'error').show(this.$t('confirm.default.error.accept'), this.alertDuration);
             }
         },
 
@@ -410,7 +423,7 @@ module.exports = {
             let key = alertType + '.' + this.alertKey + '.' + this.submitMethod + '.' + type;
             let defaultKey = alertType + '.default.' + this.submitMethod + '.' + type;
             let text = this.$t(key, params);
-            if (key == text) {
+            if (key === text) {
                 text = this.$t(defaultKey, params);
             }
 
@@ -439,14 +452,16 @@ module.exports = {
          *
          * @param response The response from the server.
          */
-        onSuccess: function (response) {},
+        onSuccess: function (response) {
+        },
 
         /**
          * Will be called if an error occurred on the form submit.
          *
          * @param response The response from the server.
          */
-        onError: function (response) {},
+        onError: function (response) {
+        },
     }
 };
 

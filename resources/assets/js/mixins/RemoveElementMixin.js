@@ -1,4 +1,4 @@
-module.exports = {
+export default {
 
     props: {
         // The selector of the element to remove.

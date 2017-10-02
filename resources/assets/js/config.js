@@ -1,16 +1,9 @@
+/***********************************************************
+ Vue Forms: Config
+ --------------------------
+ Holds all necessary config variables for the vue forms package.
+ ************************************************************/
 
-import locales from './locales';
-let supportedLocales = ['en', 'de'];
-
-import VueInternationalization from "vue-i18n";
-Vue.use(VueInternationalization);
-
-let locale = window.location.pathname.split('/')[1];
-if (locale == null || supportedLocales.indexOf(locale) < 0) {
-    locale = supportedLocales[0];
-}
-Vue.config.lang = locale;
-
-Object.keys(locales).forEach(function (lang) {
-    Vue.locale(lang, locales[lang])
-});
+// const VUE_FORMS_LOCALES = {"de": {"key": "Schlüssel"}, "en": {"key": "Key"}}; // An json object defining internationalized texts
+// const VUE_FORMS_SUPPORTED_LOCALES = ['en', 'de']; // The supported languages of the application
+// const VUE_FORMS_ALERT_PACKAGE = 'sweetalert'; // The name of the package to include to handle alert packages

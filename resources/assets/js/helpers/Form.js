@@ -1,25 +1,35 @@
-module.exports = class Form {
+/***********************************************************
+ Vue Forms: Form
+ --------------------------
+ Defines the way how server requests by the vue forms are handled.
+ ************************************************************/
+
+class Form {
 
     /**
-     * Create a new Form instance.
+     * Creates a new Form instance.
      *
      * @param {object|null} data
      */
     constructor(data = null) {
         for (let field in data) {
-            this[field] = data[field];
+            if (data.hasOwnProperty(field)) {
+                this[field] = data[field];
+            }
         }
     }
 
     /**
-     * Fetch all relevant data for the form.
+     * Fetches all relevant data for the form.
      */
     data() {
         let data = {};
 
         for (let property in this) {
-            if (!isFunction(this[property])) {
-                data[property] = this[property];
+            if (this.hasOwnProperty(property)) {
+                if (!isFunction(this[property])) {
+                    data[property] = this[property];
+                }
             }
         }
 
@@ -27,8 +37,8 @@ module.exports = class Form {
     }
 
     /**
-     * Send a POST request to the given URL.
-     * .
+     * Sends a POST request to the given URL.
+     *
      * @param {string} url
      */
     post(url) {
@@ -36,8 +46,8 @@ module.exports = class Form {
     }
 
     /**
-     * Send a PUT request to the given URL.
-     * .
+     * Sends a PUT request to the given URL.
+     *
      * @param {string} url
      */
     put(url) {
@@ -45,8 +55,8 @@ module.exports = class Form {
     }
 
     /**
-     * Send a PATCH request to the given URL.
-     * .
+     * Sends a PATCH request to the given URL.
+     *
      * @param {string} url
      */
     patch(url) {
@@ -54,8 +64,8 @@ module.exports = class Form {
     }
 
     /**
-     * Send a DELETE request to the given URL.
-     * .
+     * Sends a DELETE request to the given URL.
+     *
      * @param {string} url
      */
     delete(url) {
@@ -63,7 +73,7 @@ module.exports = class Form {
     }
 
     /**
-     * Submit the form.
+     * Submits the form.
      *
      * @param {string} requestType
      * @param {string} url
@@ -83,7 +93,9 @@ module.exports = class Form {
             });
         });
     }
-};
+}
+
+export default Form;
 
 
 

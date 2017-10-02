@@ -1,9 +1,11 @@
 <template>
-    <i :class="icon"><slot></slot></i>
+    <i :class="icon">
+        <slot></slot>
+    </i>
 </template>
 
 <script>
-    export default{
+    export default {
         props: {
 
             // The icon class.

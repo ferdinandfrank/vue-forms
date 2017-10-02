@@ -2,9 +2,10 @@
  *  Ajax Form Mixin for ajax forms, which have inputs and a submit button as part of their content.
  */
 
-let ajaxFormMixin = require('./ajaxFormMixin');
-let removeElementMixin = require('./RemoveElementMixin');
-module.exports = {
+import ajaxFormMixin from "./AjaxFormMixin";
+import removeElementMixin from "./RemoveElementMixin";
+
+export default {
 
     mixins: [ajaxFormMixin, removeElementMixin],
 
@@ -133,17 +134,15 @@ module.exports = {
          * @returns {*}
          */
         getChildInputComponentByName: function (inputName) {
-            let childInputComponent = null;
-
             let children = getListOfChildren(this);
             for (let index in children) {
                 let child = children[index];
-                if (child.hasOwnProperty("name") && child.name == inputName) {
-                    childInputComponent = child;
+                if (child.name !== undefined && child.name === inputName) {
+                    return child;
                 }
             }
 
-            return childInputComponent;
+            return null;
         },
     }
 };

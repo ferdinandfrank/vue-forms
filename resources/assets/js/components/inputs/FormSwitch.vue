@@ -1,24 +1,21 @@
 <template>
-    <div class="form-group" ref="inputWrapper" :class="{ 'has-error': invalid && !valid, 'has-success': valid && submitValue }">
+    <div class="form-group" ref="inputWrapper"
+         :class="{ 'has-error': invalid && !valid, 'has-success': valid && submitValue }">
         <div class="switch" :class="[color ? 'switch-' + color : '', size ? 'switch-' + size : '' ]"
              @click="toggleValue">
-            <div class="ios-switch" :class="submitValue ? 'on' : 'off'">
+            <div :id="name + '-switch'" class="ios-switch" :class="submitValue ? 'on' : 'off'">
                 <div class="on-background background-fill"></div>
                 <div class="state-background background-fill"></div>
                 <div class="handle"></div>
             </div>
-            <input :id="name + '-input'"
-                   type="checkbox"
-                   :name="name"
-                   ref="input"
-                   style="display: none;"
+            <input :id="name + '-input'" type="checkbox" :name="name" ref="input" style="display: none;"
                    v-model="submitValue"/>
         </div>
         <label :for="name + '-input'" v-if="showLabel" ref="inputLabel" :data-message="labelMessage">
             <span>{{ label }}</span>
             <span v-if="showHelp" class="tooltip">
                 <i @click="openHelp" class="fa fa-fw fa-question help"></i>
-                <span v-if="helpTooltip" class="tooltip-text">{{ helpTooltip }}</span>
+                <span v-if="tooltipText" class="tooltip-text">{{ tooltipText }}</span>
             </span>
         </label>
     </div>
@@ -26,7 +23,8 @@
 
 <script>
     import checkboxInputMixin from '../../mixins/CheckboxInputMixin';
-    export default{
+
+    export default {
         mixins: [checkboxInputMixin],
         props: {
 
