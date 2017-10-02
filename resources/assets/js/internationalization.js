@@ -4,8 +4,8 @@
  Inits the necessary internationalization for the vue forms to show appropriate messages.
  ************************************************************/
 
-import locales from 'locales';
-
+import importedLocales from './locales';
+let locales = importedLocales;
 if (typeof VUE_FORMS_LOCALES !== 'undefined' && VUE_FORMS_LOCALES !== null) {
     locales = VUE_FORMS_LOCALES;
 }

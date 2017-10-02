@@ -34,8 +34,6 @@ window.moment = require('moment');
  --------------------------
  A beautiful replacement for JavaScript's "alert"
  ************************************************************/
-let alertPackage = 'sweetalert';
-if (typeof VUE_FORMS_ALERT_PACKAGE !== 'undefined' && VUE_FORMS_ALERT_PACKAGE !== null) {
-    alertPackage = VUE_FORMS_ALERT_PACKAGE;
+if (typeof VUE_FORMS_USE_SWEETALERT !== 'undefined' && VUE_FORMS_USE_SWEETALERT !== null) {
+    require('sweetalert');
 }
-require(alertPackage);
