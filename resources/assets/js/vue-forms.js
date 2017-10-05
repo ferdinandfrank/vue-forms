@@ -8,7 +8,7 @@ require('./config');
 require('./requirements');
 require('./internationalization');
 require('./helpers/helper');
-
+require('./components');
 require('./datetimepicker');
 
 
