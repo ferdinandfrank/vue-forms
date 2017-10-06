@@ -9,6 +9,7 @@ let locales = importedLocales;
 if (typeof VUE_FORMS_LOCALES !== 'undefined' && VUE_FORMS_LOCALES !== null) {
     locales = VUE_FORMS_LOCALES;
 }
+const messages = locales;
 
 let supportedLocales = ['de'];
 if (typeof VUE_FORMS_SUPPORTED_LOCALES !== 'undefined' && VUE_FORMS_SUPPORTED_LOCALES !== null) {
@@ -25,6 +26,8 @@ if (locale === null || supportedLocales.indexOf(locale) < 0) {
 }
 Vue.config.lang = locale;
 
-Object.keys(locales).forEach(function (lang) {
-    Vue.locale(lang, locales[lang])
+// Create VueI18n instance with options
+window.i18n = new VueInternationalization({
+    locale: locale, // set locale
+    messages // set locale messages
 });

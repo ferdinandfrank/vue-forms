@@ -32,10 +32,26 @@ export default {
             type: String
         },
 
-        // States, if a click on the input's icon shall submit the parents form.
+        // States, if a form submit button shall be appended on the input.
         addonSubmit: {
-            type: Boolean
+            type: Boolean,
+            default: false
         },
+
+        // The text to show in the appended submit button, see 'addonSubmit'
+        addonSubmitContent: {
+            type: String,
+            default: 'Go!'
+        },
+
+        // The color of the appended submit button, see 'addonSubmit'
+        addonSubmitColor: null,
+    },
+
+    data: function () {
+        return {
+            showAddonSubmit: this.addonSubmit || this.addonSubmitContent !== 'Go!'
+        }
     },
 
     computed: {

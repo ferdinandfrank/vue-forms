@@ -48,25 +48,14 @@ export default {
             default: false
         },
 
-        // The path of the page to send the user if he clicks the help icon on the input.
-        // No icon will be shown if this property and the property 'helpTooltip' isn't set.
-        helpPath: {
-            type: String
-        },
-
-        // The tooltip to show if the user hovers over the help icon.
-        // No icon will be shown if this property and the property 'helpPath' isn't set.
-        helpTooltip: {
+        // The help text to show below the input
+        help: {
             type: String
         }
     },
 
     data: function () {
         return {
-
-            // States if a help icon shall be displayed next to the input.
-            showHelp: this.helpPath || this.helpTooltip ? true : false,
-
             submitValue: '',
 
             labelMessage: '',
