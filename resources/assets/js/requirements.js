@@ -51,3 +51,12 @@ window.moment = require('moment');
 if (typeof VUE_FORMS_USE_SWEETALERT !== 'undefined' && VUE_FORMS_USE_SWEETALERT !== null) {
     require('sweetalert');
 }
+
+
+/***********************************************************
+ Load PopperJS
+ --------------------------
+ A kickass library to manage your poppers
+ ************************************************************/
+require('tooltip.js');
+require('popper.js');

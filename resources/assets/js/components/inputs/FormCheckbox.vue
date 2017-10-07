@@ -1,14 +1,21 @@
 <template>
-    <div class="checkbox-wrapper" ref="inputWrapper"
-         :class="{ 'has-error': invalid && !valid, 'has-success': valid && submitValue }">
-        <input :id="name + '-input'" type="checkbox" ref="input" :name="name" v-model="submitValue"/>
-        <label :for="name + '-input'" v-if="showLabel" ref="inputLabel" :data-message="labelMessage">
-            <span>{{ label }}</span>
-            <span v-if="showHelp" class="tooltip">
-                <i @click="openHelp" class="fa fa-fw fa-question help"></i>
-                <span v-if="tooltipText" class="tooltip-text">{{ tooltipText }}</span>
-            </span>
-        </label>
+    <div class="form-group" ref="inputWrapper"
+         :class="{ 'is-invalid': invalid && !valid, 'is-valid': valid && submitValue }">
+
+        <div class="control-group" :class="[ color ? 'control-group-' + color : '', size ? 'control-group-' + size : '']">
+            <label class="control checkbox">
+                <input :id="name + '-input'" :name="name" v-model="submitValue" type="checkbox" class="control-input">
+                <span class="control-indicator"></span>
+                <span class="control-description" v-if="showLabel" ref="inputLabel">{{ label }}</span>
+            </label>
+        </div>
+        <small v-if="help" class="form-text text-muted">
+            {{ help }}
+        </small>
+        <div v-if="invalid && !valid" class="invalid-feedback">
+            {{ labelMessage }}
+        </div>
+
     </div>
 </template>
 

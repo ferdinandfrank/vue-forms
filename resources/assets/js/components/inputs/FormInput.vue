@@ -15,18 +15,15 @@
                    :placeholder="showPlaceholder ? placeholder : ''" :step="step" :aria-label="placeholder"
                    :disabled="disabled" ref="input" @focus="activate" @blur="deactivate">
 
+            <span class="input-group-addon" v-if="help" ref="helpIcon">
+                <icon icon="fa fa-question"></icon>
+            </span>
+
             <span class="input-group-btn" v-if="showAddonSubmit">
                 <button class="btn" :class="addonSubmitColor ? 'btn-' + addonSubmitColor : ''"
                         type="submit">{{ addonSubmitContent }}</button>
             </span>
         </div>
-        <small v-if="help" class="form-text text-muted">
-            {{ help }}
-        </small>
-        <div v-if="invalid && !valid" class="invalid-feedback">
-            {{ labelMessage }}
-        </div>
-
     </div>
 </template>
 
@@ -35,6 +32,7 @@
 
     export default {
         mixins: [formInputMixin],
+
         props: {
 
             // The type of the input field.
@@ -44,13 +42,7 @@
             },
 
             // The step to increase the value if the input's type is set to "number".
-            step: '',
-
-            // The specific color of the input group
-            color: null,
-
-            // The specific size of the input group
-            size: null
+            step: ''
         },
 
         mounted() {

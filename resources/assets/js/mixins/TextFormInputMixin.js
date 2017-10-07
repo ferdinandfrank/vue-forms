@@ -90,6 +90,11 @@ export default {
         // States if the min length counter shall be shown on the input.
         showMinLengthCounter: function () {
             return this.minLength && this.submitValue.length < this.minLength;
+        },
+
+        // The element that activates the help tooltip on hover
+        tooltipActivator: function() {
+            return this.$refs.helpIcon;
         }
     },
 
@@ -158,7 +163,7 @@ export default {
                 let confirmNameLength = this.name.length - '_confirmation'.length;
                 let confirmName = this.name.substring(0, confirmNameLength);
                 let confirmInput = $(this.$refs.input).parents('form').first().find(':input[name=' + confirmName + ']').first();
-                if (confirmInput.val() != this.submitValue) {
+                if (confirmInput.val() !== this.submitValue) {
                     this.addError(this.confirmedMessage);
                     return false;
                 }

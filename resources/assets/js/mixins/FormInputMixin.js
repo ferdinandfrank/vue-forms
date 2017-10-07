@@ -1,3 +1,6 @@
+import Popper from 'popper.js';
+import Tooltip from 'tooltip.js';
+
 export default {
 
     props: {
@@ -48,10 +51,32 @@ export default {
             default: false
         },
 
-        // The help text to show below the input
-        help: {
-            type: String
-        }
+        // States if a popover shall be shown next to the input when an error occurred.
+        popover: {
+            type: Boolean,
+            default: true
+        },
+
+        // The position of the popover when the 'popover' prop is set to 'true'
+        popoverPosition: {
+            type: String,
+            default: 'right'
+        },
+
+        // The help text to show as a tooltip when hovering over the input
+        help: null,
+
+        // The position of the popover when the 'help' prop is set
+        helpPosition: {
+            type: String,
+            default: 'right'
+        },
+
+        // The specific color of the input group
+        color: null,
+
+        // The specific size of the input group
+        size: null
     },
 
     data: function () {
@@ -70,7 +95,10 @@ export default {
             parents: '',
 
             // States if the input is currently focused.
-            active: false
+            active: false,
+
+            // The currently shown popover
+            currentPopover: null,
         }
     },
 
@@ -111,13 +139,14 @@ export default {
             return this.name;
         },
 
-        // The text to show when hovering over the help icon
-        tooltipText: function () {
-            return this.helpTooltip ? this.helpTooltip : this.$t('action.click_to_show_help');
-        },
-
+        // States if the content has changed since the page load
         contentChanged: function () {
             return this.submitValue !== this.value;
+        },
+
+        // The element that activates the help tooltip on hover
+        tooltipActivator: function() {
+            return this.$refs.inputWrapper;
         }
     },
 
@@ -125,6 +154,14 @@ export default {
         this.$nextTick(function () {
             this.submitValue = this.value;
             this.parents = getListOfParents(this);
+
+            if (this.help) {
+                new Tooltip(this.tooltipActivator, {
+                    placement: this.helpPosition,
+                    title: this.help
+                });
+            }
+
         })
     },
 
@@ -156,6 +193,25 @@ export default {
 
         value: function (val) {
             this.submitValue = val;
+        },
+
+        labelMessage: function (message, oldMessage) {
+            if (message !== oldMessage && this.currentPopover) {
+                this.currentPopover.destroy();
+                this.currentPopover = null;
+            }
+
+            if (message && this.popover && this.$refs.inputWrapper) {
+                let popover = $('<div class="popover" role="tooltip"><div class="arrow" x-arrow></div><div class="popover-body">' + message + '</div></div>');
+                $(this.$refs.inputWrapper).append(popover);
+                this.currentPopover = new Popper(this.$refs.inputWrapper, popover[0], {
+                    placement: this.popoverPosition,
+                    removeOnDestroy: true,
+                    modifiers: {
+                        flip: { behavior: ['bottom'] }
+                    }
+                });
+            }
         }
     },
 
