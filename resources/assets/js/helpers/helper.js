@@ -7,9 +7,6 @@
 // Alerts
 import Alert from "./Alert";
 window.Alert = Alert;
-window.showAlert = function (message, title, type = 'success', buttonText = false, timer = 3000) {
-    new Alert(message, title, type).show(buttonText, timer);
-};
 
 /**
  * Appends data to a wrapper.

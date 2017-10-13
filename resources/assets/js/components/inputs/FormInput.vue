@@ -24,6 +24,9 @@
                         type="submit">{{ addonSubmitContent }}</button>
             </span>
         </div>
+
+        <span v-if="showMaxLengthCounter" class="counter">{{ submitValue.length }} / {{ max }}</span>
+        <span v-if="showMinLengthCounter" class="counter">{{ submitValue.length }} / {{ min }}</span>
     </div>
 </template>
 

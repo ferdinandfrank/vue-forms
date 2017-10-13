@@ -54,9 +54,9 @@ export default {
             default: 'default'
         },
 
-        // The name of the object to make this request. Used for delete and update confirms.
-        objectName: {
-            type: String
+        // The parameters to insert into the alert message when shown.
+        alertParams: {
+            type: Object
         },
 
         // The type of the confirm alert to ask the user, if he really wants to submit the form.
@@ -112,25 +112,6 @@ export default {
         // The submit button of the form. Used to show the loader as soon as the submit request is pending.
         button: function () {
             return $(this.$el).find('button[type=submit]');
-        },
-
-        // The title of the alert to show after the request from the server has been received.
-        // Will be determined by the 'alertKey' property and the method of the next submit.
-        // Will only be of use if the 'alert' property is set to true.
-        alertTitle: function () {
-            return this.getLocalizationString('alert', 'title');
-        },
-
-        // The message of the alert to show after the request from the server has been received.
-        // Will be determined by the 'alertKey' property and the method of the next submit.
-        // Will only be of use if the 'alert' property is set to true.
-        alertMessage: function () {
-            if ((this.submitMethod === 'delete' || this.submitMethod === 'put')
-                && this.objectName) {
-                return this.getLocalizationString('alert', 'content', {name: this.objectName});
-            }
-
-            return this.getLocalizationString('alert', 'content');
         },
 
         // The title of the confirm alert to ask the user, if he really wants to submit the form.
@@ -335,9 +316,20 @@ export default {
             } else {
 
                 if (this.showAlert) {
+
+                    // Get all requested params from the server response
+                    let alertMessageParams = {};
+                    _.forEach(this.alertParams, function(value, key) {
+                        if (response.hasOwnProperty(value)) {
+                            alertMessageParams[key] = response[value];
+                        }
+                    });
+
+                    let alertMessage = this.getLocalizationString('alert', 'content', alertMessageParams);
+                    let alertTitle = this.getLocalizationString('alert', 'title');
                     let buttonText = this.confirmSuccess ? this.$t('confirm.default.info.accept') : false;
                     let alertDuration = this.confirmSuccess ? null : this.alertDuration;
-                    new Alert(this.alertMessage, this.alertTitle, 'success').show(buttonText, alertDuration).then(() => {
+                    new Alert(alertMessage, alertTitle, 'success').show(buttonText, alertDuration).then(() => {
                         this.handleSuccess(response);
                     });
                 } else {

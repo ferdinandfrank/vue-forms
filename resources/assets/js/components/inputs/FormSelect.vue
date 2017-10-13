@@ -1,26 +1,33 @@
 <template>
-    <div class="form-group" ref="inputWrapper" :class="{ 'has-error': hasError, 'has-success': hasSuccess }">
-        <select :id="name + '-input'" :name="submitName" @focus="activate" @blur="deactivate" ref="input"
-                :disabled="disabled" :multiple="multiple" class="form-control">
-            <slot></slot>
-        </select>
+    <div class="form-group" ref="inputWrapper"
+         :class="{ 'is-invalid': hasError, 'is-valid': hasSuccess }">
 
-        <button type="submit" v-if="icon && addonSubmit" class="form-group-addon"
-                :style="{cursor: valid ? 'pointer' : 'not-allowed'}">
-            <icon :icon="icon"></icon>
-        </button>
-        <span v-if="icon && !addonSubmit" class="form-group-addon">
-            <icon :icon="icon"></icon>
-        </span>
-
-        <label :for="name + '-input'" v-if="showLabel" ref="inputLabel" :data-message="labelMessage">
+        <label :for="name + '-input'" v-if="showLabel" ref="inputLabel">
             <span>{{ label }}</span>
-            <span v-if="showHelp" class="tooltip">
-                <i @click="openHelp" class="fa fa-fw fa-question help"></i>
-                <span v-if="tooltipText" class="tooltip-text">{{ tooltipText }}</span>
-            </span>
         </label>
+
+        <div class="input-group" :class="[ color ? 'input-group-' + color : '', size ? 'input-group-' + size : '']">
+            <span v-if="icon" class="input-group-addon">
+                <icon :icon="icon"></icon>
+            </span>
+
+            <select :id="name + '-input'" :name="submitName" @focus="activate" @blur="deactivate" ref="input"
+                    :disabled="disabled" :multiple="multiple" class="form-control">
+                <option value v-if="showPlaceholder">{{ placeholder }}</option>
+                <slot></slot>
+            </select>
+
+            <span class="input-group-addon" v-if="help" ref="helpIcon">
+                <icon icon="fa fa-question"></icon>
+            </span>
+
+            <span class="input-group-btn" v-if="showAddonSubmit">
+                <button class="btn" :class="addonSubmitColor ? 'btn-' + addonSubmitColor : ''"
+                        type="submit">{{ addonSubmitContent }}</button>
+            </span>
+        </div>
     </div>
+
 </template>
 
 <script>
@@ -39,7 +46,13 @@
             // See data: 'submitValue'
             value: {
                 type: Array | String | Number
-            }
+            },
+
+            // States if a placeholder shall be shown on the input.
+            showPlaceholder: {
+                type: Boolean,
+                default: true
+            },
         },
 
         computed: {
@@ -72,24 +85,21 @@
                 let input = $(this.$refs.input);
 
                 input.select2({
-                    placeholder: placeholder
+                    placeholder: placeholder,
+                    multiple: this.multiple,
+                    language: 'de'
                 });
 
-                if (this.value != null) {
+                if (this.value !== null) {
                     input.val(this.value);
-                }
-
-                if (!input.val()) {
-                    input.val(input.find('option:first-child').val());
                 }
 
                 this.submitValue = input.val();
 
-                input.trigger('change');
-
                 input.on("change", () => {
                     this.submitValue = input.val();
                 });
+
             });
         },
     }

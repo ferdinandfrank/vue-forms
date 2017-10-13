@@ -6,12 +6,12 @@ export default {
     props: {
 
         // The minimum length of the input value.
-        minLength: {
+        min: {
             type: Number
         },
 
         // The maximum length of the input value.
-        maxLength: {
+        max: {
             type: Number
         },
 
@@ -58,6 +58,10 @@ export default {
 
         // The placeholder text of the input, based upon the property 'name' or the property 'langKey', if it is set.
         placeholder: function () {
+            if (!this.showPlaceholder) {
+                return null;
+            }
+
             let langKey = this.name;
             if (this.langKey) {
                 langKey = this.langKey + '.' + this.name;
@@ -67,12 +71,12 @@ export default {
 
         // The text to show to the user, if the value of the input is to short.
         minLengthMessage: function () {
-            return this.getLocalizationString('min.string', {min: this.minLength, 'attribute': this.name});
+            return this.getLocalizationString('min.string', {min: this.min, 'attribute': this.name});
         },
 
         // The text to show to the user, if the value of the input is to long.
         maxLengthMessage: function () {
-            return this.getLocalizationString('max.string', {max: this.maxLength, 'attribute': this.name});
+            return this.getLocalizationString('max.string', {max: this.max, 'attribute': this.name});
         },
 
         // The text to show to the user, if the confirmation input does not have the same value as this input.
@@ -84,12 +88,12 @@ export default {
 
         // States if the max length counter shall be shown on the input.
         showMaxLengthCounter: function () {
-            return this.maxLength && !this.showMinLengthCounter;
+            return this.max && !this.showMinLengthCounter;
         },
 
         // States if the min length counter shall be shown on the input.
         showMinLengthCounter: function () {
-            return this.minLength && this.submitValue.length < this.minLength;
+            return this.min && this.submitValue.length < this.min;
         },
 
         // The element that activates the help tooltip on hover
@@ -131,7 +135,7 @@ export default {
          * @returns {boolean}
          */
         checkMaxLength: function () {
-            if (this.maxLength && this.submitValue.length > this.maxLength) {
+            if (this.max && this.submitValue.length > this.max) {
                 this.addError(this.maxLengthMessage);
                 return false;
             }
@@ -145,7 +149,7 @@ export default {
          * @returns {boolean}
          */
         checkMinLength: function () {
-            if (this.minLength && this.submitValue.length < this.minLength) {
+            if (this.min && this.submitValue.length < this.min) {
                 this.addError(this.minLengthMessage);
                 return false;
             }
