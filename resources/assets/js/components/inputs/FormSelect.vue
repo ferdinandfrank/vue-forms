@@ -17,7 +17,7 @@
                 <slot></slot>
             </select>
 
-            <span class="input-group-addon" v-if="help" ref="helpIcon">
+            <span class="input-group-addon has-tooltip" v-if="help" ref="helpIcon">
                 <icon icon="fa fa-question"></icon>
             </span>
 

@@ -15,7 +15,7 @@
                    :placeholder="showPlaceholder ? placeholder : ''" :aria-label="placeholder"
                    :disabled="disabled" ref="input" @focus="activate" @blur="deactivate">
 
-            <span class="input-group-addon" v-if="help" ref="helpIcon">
+            <span class="input-group-addon has-tooltip" v-if="help" ref="helpIcon">
                 <icon icon="fa fa-question"></icon>
             </span>
 
