@@ -110,7 +110,7 @@ window.updateHrefParamsWithData = function (data) {
  * @returns {boolean}
  */
 window.isValidEmail = function (email) {
-    return /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(email);
+    return /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i.test(email);
 };
 
 window.titleCase = function (str) {
