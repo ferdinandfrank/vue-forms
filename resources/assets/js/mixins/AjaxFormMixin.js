@@ -394,10 +394,10 @@ export default {
                 }
 
                 if (!msg) {
-                    msg = this.$t('alert.error.' + this.submitMethod + '.content', {name: this.objectName})
+                    msg = this.$t('alert.error.default.' + this.submitMethod + '.content', {name: this.objectName})
                 }
 
-                let title = this.$t('alert.error.' + this.submitMethod + '.title', {name: this.objectName});
+                let title = this.$t('alert.error.default.' + this.submitMethod + '.title', {name: this.objectName});
 
                 new Alert(msg, title, 'error').show(this.$t('confirm.default.error.accept'), this.alertDuration);
             }

@@ -41,7 +41,7 @@ if (token) {
  dates that are returned from our Laravel Eloquent models
  ************************************************************/
 window.moment = require('moment');
-
+moment.locale('de');
 
 /***********************************************************
  Load Select2
@@ -60,12 +60,3 @@ require('../vendor/select2/js/i18n/de');
 if (typeof VUE_FORMS_USE_SWEETALERT !== 'undefined' && VUE_FORMS_USE_SWEETALERT !== null) {
     require('sweetalert');
 }
-
-
-/***********************************************************
- Load PopperJS
- --------------------------
- A kickass library to manage your poppers
- ************************************************************/
-require('tooltip.js');
-require('popper.js');

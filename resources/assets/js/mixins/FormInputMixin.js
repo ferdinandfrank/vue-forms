@@ -76,7 +76,13 @@ export default {
         color: null,
 
         // The specific size of the input group
-        size: null
+        size: null,
+
+        // States if errors on the input shall be ignored
+        ignoreErrors: {
+            type: Boolean,
+            default: false
+        }
     },
 
     data: function () {
@@ -271,7 +277,8 @@ export default {
          */
         checkRequired: function () {
             if (!this.submitValue && this.required) {
-                this.addError(this.requiredMessage);
+                this.addError(this.requiredMessage, true);
+                
                 return false;
             }
             return true;
@@ -290,11 +297,14 @@ export default {
          * Adds the specified error message to the input field.
          *
          * @param errorMessage
+         * @param forceError
          */
-        addError: function (errorMessage = this.errorMessage) {
-            this.labelMessage = errorMessage;
-            this.invalid = true;
-            this.valid = false;
+        addError: function (errorMessage = this.errorMessage, forceError = false) {
+            if (forceError || !this.ignoreErrors) {
+                this.labelMessage = errorMessage;
+                this.invalid = true;
+                this.valid = false;
+            }
         },
 
         /**
