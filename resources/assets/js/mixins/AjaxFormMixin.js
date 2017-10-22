@@ -105,6 +105,12 @@ export default {
         redirect: {
             type: String
         },
+
+        // The predefined data to submit with the form
+        data: {
+            type: Object,
+            default: null
+        }
     },
 
     computed: {
@@ -184,7 +190,7 @@ export default {
             loadingContent: '<i class="fa fa-fw fa-circle-o-notch fa-spin"></i>',
 
             // The form instance containing the data to send.
-            form: new Form()
+            form: new Form(this.data)
         }
     },
 
