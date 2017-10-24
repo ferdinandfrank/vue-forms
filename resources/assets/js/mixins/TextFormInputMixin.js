@@ -153,7 +153,7 @@ export default {
          * @returns {boolean}
          */
         checkMinLength: function () {
-            if (this.min && this.submitValue.length < this.min) {
+            if (this.submitValue.length > 0 && this.min && this.submitValue.length < this.min) {
                 this.addError(this.minLengthMessage);
                 return false;
             }

@@ -107,7 +107,7 @@ export default {
             currentPopover: null,
 
             // States if the parent form shall be submitted when the submit value is synced on all other components.
-            submitFormAfterSubmitValueIsSet: true,
+            submitFormAfterSubmitValueIsSet: false,
         }
     },
 
@@ -154,7 +154,7 @@ export default {
         },
 
         // The element that activates the help tooltip on hover
-        tooltipActivator: function() {
+        tooltipActivator: function () {
             return this.$refs.inputWrapper;
         }
     },
@@ -195,7 +195,12 @@ export default {
             this.$emit('input', val);
 
             if (this.parentForm) {
-                this.parentForm.form[this.submitName] = val;
+                // set to null if empty string
+                if (val === '') {
+                    delete this.parentForm.form[this.submitName];
+                } else {
+                    this.parentForm.form[this.submitName] = val;
+                }
             }
 
             // Only check input if the input wasn't cleared
@@ -226,7 +231,7 @@ export default {
                     placement: this.popoverPosition,
                     removeOnDestroy: true,
                     modifiers: {
-                        flip: { behavior: ['bottom'] }
+                        flip: {behavior: ['bottom']}
                     }
                 });
             }
@@ -287,7 +292,7 @@ export default {
         checkRequired: function () {
             if (!this.submitValue && this.required) {
                 this.addError(this.requiredMessage, true);
-                
+
                 return false;
             }
             return true;

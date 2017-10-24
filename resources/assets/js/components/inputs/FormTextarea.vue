@@ -1,33 +1,37 @@
 <template>
     <div class="form-group" ref="inputWrapper"
-         :class="{ 'has-error': invalid && !valid, 'has-success': valid && submitValue }">
-        <textarea :id="name + '-input'" :name="name" v-model="submitValue" class="form-control"
-                  :class="icon ? 'has-addon' : ''" :disabled="disabled"
-                  :placeholder="showPlaceholder ? placeholder : ''" ref="input" @focus="activate"
-                  @blur="deactivate"></textarea>
+         :class="{ 'is-invalid': invalid && !valid, 'is-valid': valid && submitValue }">
 
-        <button type="submit" v-if="icon && addonSubmit" class="form-group-addon"
-                :style="{cursor: valid ? 'pointer' : 'not-allowed'}">
-            <icon :icon="icon"></icon>
-        </button>
-        <span v-if="icon && !addonSubmit" class="form-group-addon">
-            <icon :icon="icon"></icon>
-        </span>
-
-        <label :for="name + '-input'" v-if="showLabel" ref="inputLabel" :data-message="labelMessage">
+        <label :for="name + '-input'" v-if="showLabel" ref="inputLabel">
             <span>{{ label }}</span>
-            <span v-if="showHelp" class="tooltip">
-                <i @click="openHelp" class="fa fa-fw fa-question help"></i>
-                <span v-if="tooltipText" class="tooltip-text">{{ tooltipText }}</span>
-            </span>
         </label>
-        <span class="counter" :class="submitValue.length > maxLength ? 'error' : 'success'" v-if="showMaxLengthCounter">
-            {{ submitValue.length + '/' + maxLength }}
-        </span>
-        <span class="counter" :class="submitValue.length < minLength ? 'error' : 'success'" v-if="showMinLengthCounter">
-            {{ submitValue.length + '/' + minLength }}
-        </span>
-        <slot></slot>
+
+        <div class="input-group" :class="[ color ? 'input-group-' + color : '', size ? 'input-group-' + size : '']">
+            <span v-if="icon" class="input-group-addon">
+                <icon :icon="icon"></icon>
+            </span>
+
+            <textarea :id="name + '-input'" class="form-control" :name="name" v-model="submitValue" rows="3"
+                      :placeholder="showPlaceholder ? placeholder : ''" :aria-label="placeholder"
+                      :disabled="disabled" ref="input" @focus="activate" @blur="deactivate"></textarea>
+
+            <span class="input-group-addon has-tooltip" v-if="help" ref="helpIcon">
+                <icon icon="fa fa-question"></icon>
+            </span>
+
+            <span class="input-group-btn" v-if="showAddonSubmit && submitValue">
+                <button class="btn" :class="addonResetColor ? 'btn-' + addonResetColor : ''" type="button"
+                        v-on:click="clearSubmit"><icon icon="fa fa-fw fa-times"></icon></button>
+            </span>
+
+            <span class="input-group-btn" v-if="showAddonSubmit">
+                <button class="btn" :class="addonSubmitColor ? 'btn-' + addonSubmitColor : ''"
+                        :id="'btn-submit-' + name + '-input'" type="submit">{{ addonSubmitContent }}</button>
+            </span>
+        </div>
+
+        <span v-if="showMaxLengthCounter" class="counter">{{ submitValue.length }} / {{ max }}</span>
+        <span v-if="showMinLengthCounter" class="counter">{{ submitValue.length }} / {{ min }}</span>
     </div>
 </template>
 

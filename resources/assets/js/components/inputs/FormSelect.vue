@@ -13,7 +13,7 @@
 
             <select :id="name + '-input'" :name="submitName" @focus="activate" @blur="deactivate" ref="input"
                     :disabled="disabled" :multiple="multiple" class="form-control">
-                <option value v-if="showPlaceholder">{{ placeholder }}</option>
+                <option value v-if="showPlaceholder && !submitValue">{{ placeholder }}</option>
                 <slot></slot>
             </select>
 
@@ -35,6 +35,7 @@
 
     export default {
         mixins: [formInputMixin],
+
         props: {
             // True, if multiple values can be selected.
             multiple: {
