@@ -33,6 +33,7 @@ export default {
         },
 
         // States, if a form submit button shall be appended on the input.
+        // Additionally a reset button will be appended if the form was already submitted.
         addonSubmit: {
             type: Boolean,
             default: false
@@ -46,6 +47,9 @@ export default {
 
         // The color of the appended submit button, see 'addonSubmit'
         addonSubmitColor: null,
+
+        // The color of the appended reset button, see 'addonSubmit'
+        addonResetColor: null,
     },
 
     data: function () {

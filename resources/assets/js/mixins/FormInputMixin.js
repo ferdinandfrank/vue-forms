@@ -97,14 +97,17 @@ export default {
             // States if the input's value is invalid.
             invalid: false,
 
-            // The parent components of the component.
-            parents: '',
+            // The parent form components of the component.
+            parentForm: '',
 
             // States if the input is currently focused.
             active: false,
 
             // The currently shown popover
             currentPopover: null,
+
+            // States if the parent form shall be submitted when the submit value is synced on all other components.
+            submitFormAfterSubmitValueIsSet: true,
         }
     },
 
@@ -159,7 +162,15 @@ export default {
     mounted: function () {
         this.$nextTick(function () {
             this.submitValue = this.value;
-            this.parents = getListOfParents(this);
+
+            let parents = getListOfParents(this);
+            for (let index in parents) {
+                let parent = parents[index];
+                if (parent.hasOwnProperty("form")) {
+                    this.parentForm = parent;
+                    break;
+                }
+            }
 
             if (this.help) {
                 new Tooltip(this.tooltipActivator, {
@@ -180,15 +191,12 @@ export default {
                 return;
             }
 
-            for (let index in this.parents) {
-                let parent = this.parents[index];
-                if (parent.hasOwnProperty("form")) {
-                    parent.form[this.submitName] = val;
-                }
-            }
-
             window.eventHub.$emit(this.name + '-input-changed', val);
             this.$emit('input', val);
+
+            if (this.parentForm) {
+                this.parentForm.form[this.submitName] = val;
+            }
 
             // Only check input if the input wasn't cleared
             if (val || this.active) {
@@ -196,6 +204,9 @@ export default {
                 this.validateParentForm();
             }
 
+            if (this.submitFormAfterSubmitValueIsSet) {
+                this.submit();
+            }
         },
 
         value: function (val) {
@@ -262,11 +273,8 @@ export default {
         },
 
         validateParentForm: function () {
-            for (let index in this.parents) {
-                let parent = this.parents[index];
-                if (isFunction(parent.updateFormSubmitPermission)) {
-                    parent.updateFormSubmitPermission();
-                }
+            if (this.parentForm && isFunction(this.parentForm.updateFormSubmitPermission)) {
+                this.parentForm.updateFormSubmitPermission();
             }
         },
 
@@ -344,6 +352,26 @@ export default {
             this.labelMessage = null;
             this.invalid = false;
             this.valid = !this.required;
+        },
+
+        /**
+         * Submits the parent form.
+         */
+        submit: function () {
+            if (this.parentForm) {
+                this.parentForm.submit();
+            } else {
+                $(this.$el).parents('form').eq(0).find('[type="submit"]').click();
+            }
+            this.submitFormAfterSubmitValueIsSet = false;
+        },
+
+        /**
+         * Clears and submits the parent form.
+         */
+        clearSubmit: function () {
+            this.submitFormAfterSubmitValueIsSet = true;
+            this.clear();
         },
 
         /**

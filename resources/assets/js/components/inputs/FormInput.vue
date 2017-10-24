@@ -19,9 +19,14 @@
                 <icon icon="fa fa-question"></icon>
             </span>
 
+            <span class="input-group-btn" v-if="showAddonSubmit && submitValue">
+                <button class="btn" :class="addonResetColor ? 'btn-' + addonResetColor : ''" type="button"
+                        v-on:click="clearSubmit"><icon icon="fa fa-fw fa-times"></icon></button>
+            </span>
+
             <span class="input-group-btn" v-if="showAddonSubmit">
                 <button class="btn" :class="addonSubmitColor ? 'btn-' + addonSubmitColor : ''"
-                        type="submit">{{ addonSubmitContent }}</button>
+                        :id="'btn-submit-' + name + '-input'" type="submit">{{ addonSubmitContent }}</button>
             </span>
         </div>
 
