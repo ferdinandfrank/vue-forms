@@ -188,6 +188,7 @@ export default {
             }
 
             window.eventHub.$emit(this.name + '-input-changed', val);
+            this.$emit('input', val);
 
             // Only check input if the input wasn't cleared
             if (val || this.active) {
