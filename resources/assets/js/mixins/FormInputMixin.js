@@ -108,6 +108,9 @@ export default {
 
             // States if the parent form shall be submitted when the submit value is synced on all other components.
             submitFormAfterSubmitValueIsSet: false,
+
+            // States if the content has changed since the page load
+            contentChanged: false,
         }
     },
 
@@ -148,11 +151,6 @@ export default {
             return this.name;
         },
 
-        // States if the content has changed since the page load
-        contentChanged: function () {
-            return this.submitValue !== this.value;
-        },
-
         // The element that activates the help tooltip on hover
         tooltipActivator: function () {
             return this.$refs.inputWrapper;
@@ -183,7 +181,11 @@ export default {
     },
 
     watch: {
-        submitValue: function (val) {
+        submitValue: function (val, oldValue) {
+
+            if (oldValue) {
+                this.contentChanged = true;
+            }
 
             // Convert booleans to integer
             if (typeof(val) === "boolean") {

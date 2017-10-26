@@ -22,6 +22,8 @@ $bs-datetimepicker-secondary-border-color-rgba: rgba(0, 0, 0, 0.2) !default;
 $bs-datetimepicker-primary-border-color: white !default;
 $bs-datetimepicker-text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25) !default;
 
+$datetimepicker-day-size: 30px !default;
+
 .sr-only {
     position: absolute;
     width: 1px;
@@ -209,9 +211,9 @@ $bs-datetimepicker-text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25) !default;
         }
 
         & th {
-            height: 20px;
-            line-height: 20px;
-            width: 20px;
+            height: $datetimepicker-day-size;
+            line-height: $datetimepicker-day-size;
+            width: $datetimepicker-day-size;
 
             &.picker-switch {
                 width: 145px;
@@ -257,9 +259,9 @@ $bs-datetimepicker-text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25) !default;
             }
 
             &.day {
-                height: 20px;
-                line-height: 20px;
-                width: 20px;
+                height: $datetimepicker-day-size;
+                line-height: $datetimepicker-day-size;
+                width: $datetimepicker-day-size;
             }
 
             &.day:hover,
