@@ -118,6 +118,7 @@ export default {
                     duration: 'duration'
                 },
                 redirect: 'redirect',
+                reload: 'reload',
                 data: 'data',
                 error: 'error'
             }
@@ -346,6 +347,8 @@ export default {
                 if (isSamePage) {
                     window.location.reload(true);
                 }
+            } else if (response && response.hasOwnProperty(this.serverKeys.reload)) {
+                window.location.reload(true);
             }
         },
 
