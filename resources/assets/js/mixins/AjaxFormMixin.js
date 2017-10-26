@@ -4,85 +4,69 @@ import Alert from "../helpers/Alert";
 export default {
 
     props: {
-        // The default submit action of the form.
-        // See computed property: 'submitAction'
+
+        // The url where to submit the form.
         action: {
             type: String,
             required: true
         },
 
         // The method to use for the submit.
-        // See computed property: 'submitMethod'
+        // See computed property: 'method'
         method: {
             type: String,
             required: true
         },
 
+        // The predefined data to submit with the form
+        data: {
+            type: Object,
+            default: null
+        },
+
         // Check if a confirm message shall be shown, before the form is going to be submitted.
-        // Note: There will always be a confirm message, if the method is set to 'delete'.
-        // See computed property: 'showConfirm'
         confirm: {
             type: Boolean,
             default: false
         },
 
-        // States if even a success alert needs to be confirmed before it disappears.
-        confirmSuccess: {
-            type: Boolean,
-            default: false
-        },
-
-        // Check if an alert message shall be shown, after the request from the server has been received.
-        // Note: There will always be an alert if an error occurred, no matter how this property is set.
-        // To prevent an error alert set the 'alertError' property to false.
-        // Note2: There will be no alert on 'get' requests by default. Except the property 'alertKey' is set.
-        // See computed property: 'showAlert'
-        alert: {
-            type: Boolean,
-            default: true
-        },
-
-        // Set to false, to not show an error message, if an error occurred.
-        alertError: {
-            type: Boolean,
-            default: true
-        },
-
-        // The key to use to identify the messages to show to the user on an alert or on a confirm alert.
-        alertKey: {
-            type: String,
-            default: 'default'
-        },
-
-        // The parameters to insert into the alert message when shown.
-        alertParams: {
-            type: Object
-        },
-
         // The type of the confirm alert to ask the user, if he really wants to submit the form.
-        // Will only be of use if the 'confirm' property is set to true.
+        // Will only be used if the 'confirm' property is set to true.
         confirmType: {
             type: String,
             default: 'warning'
         },
 
-        // The duration of the alert, that will be shown after the form has been submitted.
+        // The props to insert into the confirm message, if one shall be shown.
+        // Will only be used if the 'confirm' property is set to true.
+        confirmProps: {
+            type: Object,
+            default: null
+        },
+
+        // States if an error alert message shall be shown, if an error occurred.
+        alertError: {
+            type: Boolean,
+            default: true
+        },
+
+        // The duration of the alert that will be shown after the form has been submitted.
+        // Will only be used if the duration is not defined by the server response
         alertDuration: {
             type: Number,
             default: 3000
         },
 
-        // Set to false, if the loader shall not be reset after a response from the server has been received.
-        // Useful if the user shall be redirected after the submit.
-        stopLoading: {
-            type: Boolean,
-            default: true
+        // The lang key to use to identify the messages to show to the user on a confirm alert.
+        langKey: {
+            type: String,
+            default: 'default'
         },
 
-        // The name of the event to call, after the form has been submitted.
-        callbackName: {
+        // The base name of the events that get triggered during a submit.
+        eventName: {
             type: String,
-            default: 'ajaxFormResponse'
+            default: 'ajaxForm'
         },
 
         // The selector of the wrapper, where to append the response to.
@@ -98,18 +82,6 @@ export default {
         // The selector of the element, to replace with the response.
         replaceResponse: {
             type: String
-        },
-
-        // The link to redirect the user after the form was successfully submitted.
-        // If this property is not set, no redirect will occur.
-        redirect: {
-            type: String
-        },
-
-        // The predefined data to submit with the form
-        data: {
-            type: Object,
-            default: null
         }
     },
 
@@ -118,90 +90,49 @@ export default {
         // The submit button of the form. Used to show the loader as soon as the submit request is pending.
         button: function () {
             return $(this.$el).find('button[type=submit]');
-        },
-
-        // The title of the confirm alert to ask the user, if he really wants to submit the form.
-        // Will be determined by the 'alertKey' property and the method of the next submit.
-        // Will only be of use if the 'confirm' property is set to true.
-        confirmTitle: function () {
-            return this.getLocalizationString('confirm', 'title');
-        },
-
-        // The message of the confirm alert to ask the user, if he really wants to submit the form.
-        // Will be determined by the 'alertKey' property and the method of the next submit.
-        // Will only be of use if the 'confirm' property is set to true.
-        confirmMessage: function () {
-            if ((this.submitMethod === 'delete' || this.submitMethod === 'put')
-                && this.objectName) {
-                return this.getLocalizationString('confirm', 'content', {name: this.objectName});
-            }
-
-            return this.getLocalizationString('confirm', 'content');
-        },
-
-        // The text of the confirm alert's ACCEPT button to ask the user, if he really wants to submit the form.
-        // Will be determined by the 'alertKey' property and the method of the next submit.
-        // Will only be of use if the 'confirm' property is set to true.
-        confirmAccept: function () {
-            return this.getLocalizationString('confirm', 'accept');
-        },
-
-        // The text of the confirm alert's CANCEL button to ask the user, if he really wants to submit the form.
-        // Will be determined by the 'alertKey' property and the method of the next submit.
-        // Will only be of use if the 'confirm' property is set to true.
-        confirmCancel: function () {
-            return this.getLocalizationString('confirm', 'cancel');
-        },
-
-        // Holds the state, if a confirm message shall be shown before the submit.
-        // Note: A confirm message will always be shown, if the method is set to 'delete'.
-        showConfirm: function () {
-            if (!this.confirm && this.submitMethod === 'delete') {
-                return true;
-            }
-            return this.confirm;
-        },
-
-        // Holds the state, if an alert message shall be shown after the submit.
-        // Note: An alert message won't be shown, if the method is set to 'get'.
-        showAlert: function () {
-            if (this.submitMethod === 'get' && this.alertKey === 'default') {
-                return false;
-            }
-            return this.alert;
         }
     },
 
     data() {
         return {
-            // The url, where to send the form request.
-            submitAction: this.action,
 
-            // The method to use for the submit.
-            submitMethod: this.method.toLowerCase(),
+            // The form instance containing the data to send.
+            form: new Form(this.data),
 
             // States, if the form can be submitted.
             valid: true,
 
-            // The html content to put in the loading button, after the form has been submitted and the loader has stopped.
-            originalLoadingContent: '',
-
             // The html content to put in the submit button, while the form is submitting.
             loadingContent: '<i class="fa fa-fw fa-circle-o-notch fa-spin"></i>',
 
-            // The form instance containing the data to send.
-            form: new Form(this.data)
+            // The html content to put in the loading button, after the form has been submitted and the loader has stopped.
+            originalLoadingContent: '',
+
+            // Defines the keys to extract from the server response to define the further handling of the form
+            serverKeys: {
+                showAlert: 'alert',
+                alert: {
+                    title: 'title',
+                    message: 'message',
+                    accept: 'accept',
+                    duration: 'duration'
+                },
+                redirect: 'redirect',
+                data: 'data',
+                error: 'error'
+            }
         }
     },
 
     watch: {
+
         /**
          * Watch the submit permission of the form, to enable or disable the submit button.
          *
          * @param isValid {@code true} if a submit is allowed, {@code false} otherwise.
          */
         valid: function (isValid) {
-            window.eventHub.$emit('validate_' + this.callbackName, isValid);
+            window.eventHub.$emit('validated-' + this.eventName, isValid);
             this.button.prop('disabled', !isValid);
         },
     },
@@ -212,7 +143,7 @@ export default {
                 this.originalLoadingContent = this.button.html();
             }
 
-            // Disable the submit permission, to let the user make at least one input
+            // Disable the submit permission to let the user make at least one change
             this.updateFormSubmitPermission();
         })
     },
@@ -224,13 +155,18 @@ export default {
          */
         submit: function () {
             if (!this.valid) {
-                window.eventHub.$emit('prevented_' + this.callbackName, this);
+                window.eventHub.$emit('prevented_submit-' + this.eventName, this);
                 return;
             }
 
             // Let the user confirm his submit action, if a confirm was defined in the properties.
-            if (this.showConfirm) {
-                new Alert(this.confirmMessage, this.confirmTitle, this.confirmType).confirm(this.confirmAccept, this.confirmCancel).then((confirmed) => {
+            if (this.confirm) {
+                let confirmTitle = this.getLocalizationString('confirm', 'title');
+                let confirmMessage = this.getLocalizationString('confirm', 'message', this.confirmProps);
+                let confirmAccept = this.getLocalizationString('confirm', 'accept');
+                let confirmCancel = this.getLocalizationString('confirm', 'cancel');
+
+                new Alert(confirmMessage, confirmTitle, this.confirmType).confirm(confirmAccept, confirmCancel).then((confirmed) => {
                     if (confirmed) {
                         this.startLoader();
                         this.sendData();
@@ -268,11 +204,11 @@ export default {
          * Sends the data of the form to the server.
          */
         sendData: function () {
-            // Let the parent chain know, that the submit will be processed.
-            window.eventHub.$emit('submitting_' + this.callbackName, this);
-            window.eventHub.$emit('ajaxFormSubmit', this);
 
-            this.form.submit(this.submitMethod, this.submitAction)
+            // Let the parent chain know, that the submit will be processed.
+            window.eventHub.$emit('submitting-' + this.eventName, this);
+
+            this.form.submit(this.method.toLowerCase(), this.action)
                 .then(response => {
                     this.handleResponse(true, response);
                 })
@@ -282,94 +218,131 @@ export default {
         },
 
         /**
-         * Handles the successful response from the server.
-         *
-         * @param response The response from the server.
-         */
-        handleSuccess: function (response) {
-            if (this.submitMethod === 'get') {
-                updateHrefParamsWithData(this.form.data());
-            }
-
-            if (this.appendResponse) {
-                appendData(this.appendResponse, response);
-            }
-
-            if (this.prependResponse) {
-                prependData(this.prependResponse, response);
-            }
-
-            if (this.replaceResponse) {
-                replaceData(this.replaceResponse, response);
-            }
-
-            this.redirectUser();
-            this.onSuccess(response);
-        },
-
-        /**
          * Handles the response from the server, after the form has been submitted.
          *
          * @param success {@code true} if the submit was successful, {@code false} otherwise.
          * @param response The response from the server.
          */
         handleResponse: function (success, response) {
-
-            // Check the success type, show the corresponding alerts and call the corresponding callback methods.
-            if (!success) {
-                this.showErrorMessage(response);
-                this.onError(response);
-            } else {
-
-                if (this.showAlert) {
-
-                    // Get all requested params from the server response
-                    let alertMessageParams = {};
-                    _.forEach(this.alertParams, function(value, key) {
-                        if (response.hasOwnProperty(value)) {
-                            alertMessageParams[key] = response[value];
-                        }
-                    });
-
-                    let alertMessage = this.getLocalizationString('alert', 'content', alertMessageParams);
-                    let alertTitle = this.getLocalizationString('alert', 'title');
-                    let buttonText = this.confirmSuccess ? this.$t('confirm.default.info.accept') : false;
-                    let alertDuration = this.confirmSuccess ? null : this.alertDuration;
-                    new Alert(alertMessage, alertTitle, 'success').show(buttonText, alertDuration).then(() => {
-                        this.handleSuccess(response);
-                    });
-                } else {
-                    this.handleSuccess(response);
-                }
-            }
-
-            // Stop the loader only if an error occurred, or if it's not explicitly forbidden (if an loader was set).
-            if (this.stopLoading || !success) {
-                this.stopLoader();
-            }
+            this.stopLoader();
 
             this.updateFormSubmitPermission();
 
-            // Call the callback to handle the after submit action directly on the page.
-            // The callback has 4 parameters (+ the callback name):
-            // - callbackName: The name of the event to listen to for the callback.
-            // - success: {@code true} if the request was successful handled on the server, {@code false} otherwise.
-            // - response: The response message retrieved from the server.
-            // - method: The method that was used to proceed the request.
-            // - component: The current instance of this component (useful to extract the form with 'component.$el'
-            setTimeout(() => {
-                // noinspection JSUnresolvedFunction
-                window.eventHub.$emit(this.callbackName, success, response, this.submitMethod, this);
-            }, (this.alertError && !success) || this.showAlert ? this.alertDuration : 0);
+            this.showAlert(response, success).then(() => {
+                if (success) {
+                    this.handleSuccess(response);
+                } else {
+                    this.$emit('error');
+                    this.onError(response);
+                }
+
+                // Call the callback to handle the after submit action directly on the page.
+                // The callback has 4 parameters (+ the callback name):
+                // - eventName: The name of the event to listen to for the callback.
+                // - success: {@code true} if the request was successful handled on the server, {@code false} otherwise.
+                // - response: The response message retrieved from the server.
+                // - method: The method that was used to proceed the request.
+                // - component: The current instance of this component (useful to extract the form with 'component.$el'
+                window.eventHub.$emit(this.eventName, success, response, this.method.toLowerCase(), this);
+
+                this.redirectUser(response);
+            });
         },
 
         /**
-         * Redirects the user to the redirect path, if the 'redirect' property is set.
+         * Shows an alert based on the specified response and success field.
+         *
+         * @param response
+         * @param success
+         * @returns {Promise}
          */
-        redirectUser: function () {
-            if (this.redirect) {
-                let isSamePage = this.redirect.startsWith(window.location.href);
-                window.location.href = this.redirect;
+        showAlert: function (response, success = true) {
+            return new Promise((resolve) => {
+
+                let message = null;
+                let title = '';
+                let accept = false;
+                let duration = this.alertDuration;
+
+                if (response && response.hasOwnProperty(this.serverKeys.showAlert) && response[this.serverKeys.showAlert].hasOwnProperty(this.serverKeys.alert.message)) {
+                    let alertInfo = response[this.serverKeys.showAlert];
+
+                    message = alertInfo[this.serverKeys.alert.message];
+                    if (alertInfo.hasOwnProperty(this.serverKeys.alert.title)) {
+                        title = alertInfo[this.serverKeys.alert.title];
+                    }
+                    if (alertInfo.hasOwnProperty(this.serverKeys.alert.accept)) {
+                        accept = alertInfo[this.serverKeys.alert.accept];
+                    }
+                    if (alertInfo.hasOwnProperty(this.serverKeys.alert.duration)) {
+                        duration = alertInfo[this.serverKeys.alert.duration];
+                    }
+                } else if (!success) {
+                    title = this.$t('alert.error.default.' + this.method.toLowerCase() + '.title');
+                    message = this.$t('alert.error.default.' + this.method.toLowerCase() + '.message');
+                    accept = this.$t('confirm.default.error.accept');
+
+                    if (response && response.hasOwnProperty(this.serverKeys.error)) {
+                        message = response[this.serverKeys.error];
+                    } else if (response) {
+                        for (let key in response) {
+                            if (response.hasOwnProperty(key)) {
+                                message = response[key];
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                if (message) {
+                    new Alert(message, title, success ? 'success' : 'error').show(accept, accept ? null : duration).then(() => {
+                        resolve();
+                    });
+                } else {
+                    resolve();
+                }
+            });
+        },
+
+        /**
+         * Handles the successful response from the server.
+         *
+         * @param response The response from the server.
+         */
+        handleSuccess: function (response) {
+            if (this.method.toLowerCase() === 'get') {
+                updateHrefParamsWithData(this.form.data());
+            }
+
+            if (response.hasOwnProperty(this.serverKeys.data)) {
+                let data = response[this.serverKeys.data];
+
+                if (this.appendResponse) {
+                    appendData(this.appendResponse, data);
+                }
+
+                if (this.prependResponse) {
+                    prependData(this.prependResponse, data);
+                }
+
+                if (this.replaceResponse) {
+                    replaceData(this.replaceResponse, data);
+                }
+            }
+
+            this.onSuccess(response);
+            this.$emit('success');
+        },
+
+
+        /**
+         * Redirects the user to the redirect path specified in the response
+         */
+        redirectUser: function (response) {
+            if (response && response.hasOwnProperty(this.serverKeys.redirect)) {
+                let redirect = response[this.serverKeys.redirect];
+                let isSamePage = redirect.startsWith(window.location.href);
+                window.location.href = redirect;
                 if (isSamePage) {
                     window.location.reload(true);
                 }
@@ -377,49 +350,16 @@ export default {
         },
 
         /**
-         * Shows an error message to the user, after the form has been submitted and an error occurred on the server.
-         *
-         * @param response The error response of the server.
-         */
-        showErrorMessage: function (response) {
-
-            // Check if an error message shall be shown to the user.
-            if (this.showAlert || this.alertError) {
-                let msg = null;
-
-                // Extract the error message from the response
-                if (response && response.hasOwnProperty('msg')) {
-                    msg = response['msg'];
-                } else if (response) {
-                    for (let key in response) {
-                        if (response.hasOwnProperty(key)) {
-                            msg = response[key];
-                            break;
-                        }
-                    }
-                }
-
-                if (!msg) {
-                    msg = this.$t('alert.error.default.' + this.submitMethod + '.content', {name: this.objectName})
-                }
-
-                let title = this.$t('alert.error.default.' + this.submitMethod + '.title', {name: this.objectName});
-
-                new Alert(msg, title, 'error').show(this.$t('confirm.default.error.accept'), this.alertDuration);
-            }
-        },
-
-        /**
          * Gets the localization string for an alert type and a type and falls back to the default if necessary.
          *
          * @param alertType 'alert' or 'confirm'
-         * @param type 'title', 'content', 'cancel' or 'accept'
+         * @param type 'title', 'message', 'cancel' or 'accept'
          * @param params localization params
          * @returns {string}
          */
         getLocalizationString: function (alertType, type, params = null) {
-            let key = alertType + '.' + this.alertKey + '.' + this.submitMethod + '.' + type;
-            let defaultKey = alertType + '.default.' + this.submitMethod + '.' + type;
+            let key = alertType + '.' + this.langKey + '.' + this.method.toLowerCase() + '.' + type;
+            let defaultKey = alertType + '.default.' + this.method.toLowerCase() + '.' + type;
             let text = this.$t(key, params);
             if (key === text) {
                 text = this.$t(defaultKey, params);

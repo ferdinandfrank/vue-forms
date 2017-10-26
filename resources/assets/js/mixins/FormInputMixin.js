@@ -60,7 +60,7 @@ export default {
         // The position of the popover when the 'popover' prop is set to 'true'
         popoverPosition: {
             type: String,
-            default: 'right'
+            default: 'bottom'
         },
 
         // The help text to show as a tooltip when hovering over the input
@@ -69,7 +69,7 @@ export default {
         // The position of the popover when the 'help' prop is set
         helpPosition: {
             type: String,
-            default: 'right'
+            default: 'top'
         },
 
         // The specific color of the input group
@@ -197,10 +197,10 @@ export default {
             if (this.parentForm) {
                 // set to null if empty string
                 if (val === '') {
-                    delete this.parentForm.form[this.submitName];
-                } else {
-                    this.parentForm.form[this.submitName] = val;
+                    val = null;
                 }
+
+                this.parentForm.form[this.submitName] = val;
             }
 
             // Only check input if the input wasn't cleared

@@ -21,22 +21,6 @@ export default {
         reset: {
             type: Boolean,
             default: false
-        },
-
-        // If the form is used to create a new entity, this property is used to extract the route key of the created entity
-        // and append it on the updateAction property, so a full update url for the entity will be created and the future
-        // submit can successfully be treated as an update for the entity.
-        objectKey: {
-            type: String,
-            default: 'id'
-        },
-
-        // The link to the details page of the created or edited entity to redirect the user after the form was successfully submitted.
-        // If this property is not set, no redirect will occur.
-        // Important: Because the key of the entity isn't known before its creation, set the objectKey property to the route key
-        // of the entities model, so the key can be extracted from the response and the full update url for the entity can be created.
-        detailRedirect: {
-            type: String
         }
     },
 
@@ -48,22 +32,6 @@ export default {
          * @param response The response from the server.
          */
         onSuccess: function (response) {
-
-            let redirectURL = this.detailRedirect;
-            if (redirectURL) {
-                // Get the created key for the entity
-                if (this.objectKey) {
-                    let objectKey = response[this.objectKey];
-                    if (!redirectURL.endsWith(objectKey)) {
-                        if (!redirectURL.endsWith('/')) {
-                            redirectURL += '/';
-                        }
-                        redirectURL += objectKey;
-                    }
-                }
-
-                window.location.href = redirectURL;
-            }
 
             // Clear the form inputs
             if (this.clear) {
@@ -85,7 +53,9 @@ export default {
          */
         onError: function (errors) {
             for (let errorKey in errors) {
-                this.addErrorToInputComponent(this.getChildInputComponentByName(errorKey), errors[errorKey][0])
+                if (errors.hasOwnProperty(errorKey)) {
+                    this.addErrorToInputComponent(this.getChildInputComponentByName(errorKey), errors[errorKey][0])
+                }
             }
         },
 

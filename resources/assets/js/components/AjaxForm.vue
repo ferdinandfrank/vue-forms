@@ -1,5 +1,5 @@
 <template>
-    <form :action="submitAction" :method="submitMethod" @submit.prevent="submit">
+    <form :action="action" :method="method" @submit.prevent="submit">
         <slot></slot>
     </form>
 </template>

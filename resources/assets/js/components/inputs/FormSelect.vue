@@ -68,7 +68,7 @@
 
             // States if a success layout shall be shown on the input.
             hasSuccess: function () {
-                if (this.valid && this.submitValue) {
+                if (this.valid && this.submitValue != this.value) {
                     return typeof this.submitValue === 'string' || typeof this.submitValue === 'number' || this.submitValue.length > 0
                 }
                 return false;

@@ -1,6 +1,6 @@
 <template>
     <div class="form-group" ref="inputWrapper"
-         :class="{ 'is-invalid': invalid && !valid, 'is-valid': valid && submitValue }">
+         :class="{ 'is-invalid': invalid && !valid, 'is-valid': valid && submitValue != value }">
 
         <label :for="name + '-input'" v-if="showLabel" ref="inputLabel">
             <span>{{ label }}</span>
