@@ -1,23 +1,29 @@
 <template>
     <div class="form-group" ref="inputWrapper"
-         :class="{ 'has-error': invalid && !valid, 'has-success': valid && submitValue }">
-        <div class="switch" :class="[color ? 'switch-' + color : '', size ? 'switch-' + size : '' ]"
+         :class="{ 'is-invalid': invalid && !valid, 'is-valid': valid && submitValue }">
+
+        <div class="control-group"
              @click="toggleValue">
-            <div :id="name + '-switch'" class="ios-switch" :class="submitValue ? 'on' : 'off'">
+            <div :id="'switch-' + name" class="switch"  :class="[color ? 'switch-' + color : '', size ? 'switch-' + size : '' , submitValue ? 'on' : 'off']">
                 <div class="on-background background-fill"></div>
                 <div class="state-background background-fill"></div>
                 <div class="handle"></div>
+                <input :id="name + '-input'" type="checkbox" :name="name" ref="input" style="display: none;"
+                       class="control-input"
+                       v-model="submitValue"/>
             </div>
-            <input :id="name + '-input'" type="checkbox" :name="name" ref="input" style="display: none;"
-                   v-model="submitValue"/>
+            <label>
+                <span class="control-description" v-if="showLabel" ref="inputLabel">{{ label }}</span>
+            </label>
         </div>
-        <label :for="name + '-input'" v-if="showLabel" ref="inputLabel" :data-message="labelMessage">
-            <span>{{ label }}</span>
-            <span v-if="showHelp" class="tooltip">
-                <i @click="openHelp" class="fa fa-fw fa-question help"></i>
-                <span v-if="tooltipText" class="tooltip-text">{{ tooltipText }}</span>
-            </span>
-        </label>
+
+        <small v-if="help" class="form-text text-muted">
+            {{ help }}
+        </small>
+        <div v-if="invalid && !valid" class="invalid-feedback">
+            {{ labelMessage }}
+        </div>
+
     </div>
 </template>
 
@@ -25,21 +31,7 @@
     import checkboxInputMixin from '../../mixins/CheckboxInputMixin';
 
     export default {
-        mixins: [checkboxInputMixin],
-        props: {
-
-            // The size of the switch.
-            size: {
-                type: String,
-                default: 'sm'
-            },
-
-            // The color of the switch.
-            color: {
-                type: String,
-                default: 'primary'
-            },
-        }
+        mixins: [checkboxInputMixin]
     }
 
 </script>

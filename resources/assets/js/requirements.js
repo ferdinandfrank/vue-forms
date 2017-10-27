@@ -43,14 +43,6 @@ if (token) {
 window.moment = require('moment');
 moment.locale('de');
 
-/***********************************************************
- Load Select2
- --------------------------
- Select2 gives you a customizable select box with support for searching,
- tagging, remote data sets, infinite scrolling, and many other highly used options.
- ************************************************************/
-require('../vendor/select2/js/select2');
-require('../vendor/select2/js/i18n/de');
 
 /***********************************************************
  Load Sweet Alert

@@ -1,6 +1,5 @@
 <template>
-    <div class="form-group" ref="inputWrapper"
-         :class="{ 'is-invalid': hasError, 'is-valid': hasSuccess }">
+    <div class="form-group" ref="inputWrapper" :class="{ 'is-invalid': invalid && !valid, 'is-valid': valid && contentChanged }">
 
         <label :for="name + '-input'" v-if="showLabel" ref="inputLabel">
             <span>{{ label }}</span>
@@ -11,10 +10,12 @@
                 <icon :icon="icon"></icon>
             </span>
 
-            <select :id="name + '-input'" :name="submitName" @focus="activate" @blur="deactivate" ref="input"
-                    :disabled="disabled" :multiple="multiple" class="form-control">
-                <option value v-if="showPlaceholder && !submitValue">{{ placeholder }}</option>
+            <select :id="name + '-input'" :name="name" v-model="submitValue" class="form-control"
+                    :aria-label="placeholder"
+                   :disabled="disabled" ref="input" @focus="activate" @blur="deactivate">
+                <option v-if="showPlaceholder" value="" disabled selected>{{ placeholder }}</option>
                 <slot></slot>
+                <option v-for="option in options" :value="option.value">{{ option.label }}</option>
             </select>
 
             <span class="input-group-addon has-tooltip" v-if="help" ref="helpIcon">
@@ -37,71 +38,18 @@
         mixins: [formInputMixin],
 
         props: {
-            // True, if multiple values can be selected.
-            multiple: {
-                type: Boolean,
-                default: false
+
+            /**
+             * An array of strings or objects to be used as dropdown choices.
+             * If you are using an array of objects, vue-select will look for
+             * a `label` key (ex. [{label: 'This is Foo', value: 'foo'}]). A
+             * custom label key can be set with the `label` prop.
+             * @type {Array}
+             */
+            options: {
+                type: Array,
+                default() { return [] },
             },
-
-            // The predefined value of the input.
-            // See data: 'submitValue'
-            value: {
-                type: Array | String | Number
-            },
-
-            // States if a placeholder shall be shown on the input.
-            showPlaceholder: {
-                type: Boolean,
-                default: true
-            },
-        },
-
-        computed: {
-            // The name of the input. Will also be the name of the value, when the form gets submitted.
-            // Info: This value is based upon the 'name' property.
-            submitName: function () {
-                if (this.multiple) {
-                    return this.name + '[]';
-                }
-                return this.name;
-            },
-
-            // States if a success layout shall be shown on the input.
-            hasSuccess: function () {
-                if (this.valid && this.submitValue != this.value) {
-                    return typeof this.submitValue === 'string' || typeof this.submitValue === 'number' || this.submitValue.length > 0
-                }
-                return false;
-            },
-
-            // States if an error layout shall be shown on the input.
-            hasError: function () {
-                return this.invalid && !this.valid;
-            }
-        },
-
-        mounted() {
-            this.$nextTick(function () {
-                let placeholder = this.showPlaceholder ? this.placeholder : null;
-                let input = $(this.$refs.input);
-
-                input.select2({
-                    placeholder: placeholder,
-                    multiple: this.multiple,
-                    language: 'de'
-                });
-
-                if (this.value !== null) {
-                    input.val(this.value);
-                }
-
-                this.submitValue = input.val();
-
-                input.on("change", () => {
-                    this.submitValue = input.val();
-                });
-
-            });
         },
     }
 </script>

@@ -170,7 +170,7 @@ export default {
                 }
             }
 
-            if (this.help) {
+            if (this.help && this.tooltipActivator) {
                 new Tooltip(this.tooltipActivator, {
                     placement: this.helpPosition,
                     title: this.help
