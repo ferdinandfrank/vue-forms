@@ -36,10 +36,12 @@
 
         mounted: function () {
             this.$nextTick(function () {
+                this.submitValue = moment(this.value).format("YYYY-MM-DD");
+
                 $(this.$refs.input).datetimepicker({
-                    locale: 'de',
-                    format: 'YYYY-MM-DD',
-                    defaultDate: this.submitValue
+                    locale: moment.locale(),
+                    format: 'DD.MM.YYYY',
+                    defaultDate: moment(this.value)
                 });
                 $(this.$refs.input).on("dp.change", (moment) => {
                     this.submitValue = moment.date.format("YYYY-MM-DD");

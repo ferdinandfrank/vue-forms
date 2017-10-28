@@ -7,7 +7,7 @@ export default {
     props: {
         // The predefined value of the checkbox.
         value: {
-            type: Boolean,
+            type: Boolean|Number,
             default: false
         }
     },
