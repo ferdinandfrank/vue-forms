@@ -82,6 +82,13 @@ export default {
         // The selector of the element, to replace with the response.
         replaceResponse: {
             type: String
+        },
+
+        // States if the form shall be submitted with ajax. Even though this is the purpose of this package,
+        // it is sometimes useful to use the functionality of this package without submitting the form via ajax.
+        ajax: {
+            type: Boolean,
+            default: true
         }
     },
 
@@ -146,6 +153,16 @@ export default {
 
             // Disable the submit permission to let the user make at least one change
             this.updateFormSubmitPermission();
+
+            // Insert Laravel CSRF token, if normal submit is specified
+            if (!this.ajax) {
+                let token = document.head.querySelector('meta[name="csrf-token"]');
+                if (token) {
+                    $(this.$el).prepend('<input type="hidden" name="_token" value="'+token.content+'">');
+                } else {
+                    console.warn('Vue Forms: No CSRF token specified.');
+                }
+            }
         })
     },
 
@@ -154,7 +171,16 @@ export default {
         /**
          * Starts the form submitting process.
          */
-        submit: function () {
+        submit: function (event) {
+
+            if (this.ajax) {
+                event.preventDefault();
+            } else {
+                this.startLoader();
+
+                return true;
+            }
+
             if (!this.valid) {
                 window.eventHub.$emit('prevented_submit-' + this.eventName, this);
                 return;
