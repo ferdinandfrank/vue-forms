@@ -487,7 +487,7 @@ Represents a select input field in the style of [Bootstrap](https://getbootstrap
 ##### Minimal Usage
 ```html
 <form-select name="[NAME]">
-    // options (can also be set as options prop to have dynamic options
+    // options (can also be set as options prop to have dynamic options)
 </form-select>
 ```
 
@@ -508,9 +508,9 @@ This component will render to the following HTML:
 ##### Properties:
 This component inherits all of the shared properties listed above.  
 
-- **options**: An object with keys as the value and values as the labels to be used as dropdown choices.
-    - type: Object
-    - default: {}
+- **options**: An array with objects containing a key 'value' with the option value and a key 'text' with the option text to show. These will be used as dropdown choices.
+    - type: Array
+    - default: []
     
 - **min**: The minimum length of the input value.
     - type: Number

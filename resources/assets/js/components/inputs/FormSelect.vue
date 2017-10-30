@@ -15,7 +15,7 @@
                    :disabled="disabled" ref="input" @focus="activate" @blur="deactivate">
                 <option v-if="placeholder" value="" disabled selected>{{ placeholder }}</option>
                 <slot></slot>
-                <option v-for="(label, value) in options" :value="value">{{ label }}</option>
+                <option v-for="option in options" :value="option.value">{{ option.text }}</option>
             </select>
 
             <span class="input-group-addon has-tooltip" v-if="help" ref="helpIcon">
@@ -43,11 +43,11 @@
         props: {
 
             /**
-             * An object with keys as the value and values as the labels to be used as dropdown choices.
+             * An array with objects containing a key 'value' with the option value and a key 'text' with the option text to show. These will be used as dropdown choices.
              */
             options: {
-                type: Object,
-                default() { return {} },
+                type: Array,
+                default: [],
             },
         },
     }
