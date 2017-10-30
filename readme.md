@@ -1,17 +1,50 @@
-# Vue Forms
+<h1 style="text-align:center;">Vue Forms</h1>
 
-[![Packagist Version](https://img.shields.io/packagist/v/ferdinandfrank/vue-forms.svg)](https://packagist.org/packages/ferdinandfrank/vue-forms)
-[![Packagist](https://img.shields.io/packagist/dt/ferdinandfrank/vue-forms.svg)](https://github.com/ferdinandfrank/vue-forms)
+[![Packagist Version](https://img.shields.io/packagist/v/epicarrow/vue-forms.svg)](https://packagist.org/packages/epicarrow/vue-forms)
+[![Packagist](https://img.shields.io/packagist/dt/epicarrow/vue-forms.svg)](https://packagist.org/packages/epicarrow/vue-forms)
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 This package provides a collection of [Vue.js](https://vuejs.org/) form and input components to create pretty and easy ajax requests on a Laravel application.
+
+## Contents
+- [Requirements](#requirements)
+  - [Server Requirements](#server-requirements)
+  - [JS Requirements](#js-requirements)
+    - [Mandatory](#mandatory)
+    - [Optional](#optional)
+  - [Optional Requirements](#optional-requirements)
+- [Installation](#installation)  
+- [Things to make sure before using this package](#things-to-make-sure-before-using-this-package)
+- [Usage](#usage)
+  - [Form Components](#form-components)
+    - [AjaxForm](#ajaxform)
+    - [FormButton](#formbutton)
+    - [FormLink](#formlink)
+  - [Input Components](#input-components)
+    - [FormInput](#forminput)
+    - [FormTextarea](#formtextarea)
+    - [FormSelect](#formselect)
+    - [FormDateInput](#formdateinput)
+    - [FormCheckbox](#formcheckbox)
+    - [FormSwitch](#formswitch)
+    - [FormRadio](#formradio)
+    - [HiddenInput](#hiddeninput)
+  - [Additional Components](#additional-components)
+    - [RemoveButton](#removebutton)
+  - [Emitted Events](#emitted-events)
+  - [Parsing responses from the server](#parsing-responses-from-the-server)
+- [Customizing](#customizing)
+  - [Server Response Parsing](#server-response-parsing)
+  - [Loading Button](#loading-button)
+- [License](#license)
+
   
 ## Requirements
 ### Server Requirements
 - [PHP](https://php.net) >= 7.0
 - An existing >= [Laravel 5.4](https://laravel.com/docs/master/installation) project
 
-### JS Requirements (see Installation #4)
+### JS Requirements (see [Installation](#installation))
 These are requirements of your Laravel application for the package to work properly on the client side. 
 You can install them by just including the according entries in your `package.json` file (see Installation #4).
 
@@ -26,7 +59,7 @@ You can install them by just including the according entries in your `package.js
 - [Sweetalert](https://sweetalert.js.org/) >= 2.0.4: _To show pretty alert messages on server responses_
 - [Tooltip.js](https://popper.js.org/tooltip-examples.html) >= 1.1.5: _To show help texts on the inputs as a pretty tooltip_
 
-### Further Optional Requirements
+### Optional Requirements
 To show a loading icon when a form get submitted a [Font Awesome](http://fontawesome.io/icons/) will be shown. This icon can be configured (see Customizing).
 If not configured, [Font Awesome](http://fontawesome.io/icons/) need to be installed properly on the application to show the loading icon.
 
@@ -62,7 +95,6 @@ To have a nice design of the inputs out of the box, Bootstrap is required.
 
     ```json
     "dependencies": {
-        ...
         "lodash": "^4.17.4",
         "jquery": "^3.1.1",
         "moment": "^2.18.1",
@@ -723,25 +755,6 @@ This component will render to the following HTML:
 - **size**: The size class of the button.
     - type: String 
     
-#### Icon
-Represents an icon element.
-
-##### Minimal Usage
-```html
-<icon icon="[ICON]"></icon>
-```
-
-This component will render to the following HTML:
-```html
-<i class="[ICON]"></i>
-```
-
-##### Properties: 
-
-- **icon**: The icon class.
-    - type: String
-    - required: true
-
 ### Emitted Events
 Each form component will emit specific events during the submit process. To be able to listen to those events from non parent components these events will be emitted on a predefined Vue component called `window.eventHub`.
 Each event name will end with a dynamic name. This name can be configured by setting the `eventName` prop on form components.
