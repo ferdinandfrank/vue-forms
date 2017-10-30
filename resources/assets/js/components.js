@@ -16,6 +16,7 @@ import formLink from "./components/buttons/FormLink.vue";
 import formSelect from "./components/inputs/FormSelect.vue";
 import formDateInput from "./components/inputs/FormDateInput.vue";
 import removeButton from "./components/buttons/RemoveButton.vue";
+import icon from "./components/Icon.vue";
 
 Vue.component('ajax-form', ajaxForm);
 Vue.component('form-button', formButton);
@@ -29,3 +30,4 @@ Vue.component('form-link', formLink);
 Vue.component('form-select', formSelect);
 Vue.component('form-date-input', formDateInput);
 Vue.component('remove-button', removeButton);
+Vue.component('icon', icon);

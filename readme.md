@@ -31,6 +31,7 @@ This package provides a collection of [Vue.js](https://vuejs.org/) form and inpu
     - [HiddenInput](#hiddeninput)
   - [Additional Components](#additional-components)
     - [RemoveButton](#removebutton)
+    - [Icon](#icon)
   - [Emitted Events](#emitted-events)
   - [Parsing responses from the server](#parsing-responses-from-the-server)
 - [Customizing](#customizing)
@@ -754,6 +755,26 @@ This component will render to the following HTML:
 
 - **size**: The size class of the button.
     - type: String 
+
+#### Icon
+Represents an icon element.
+
+##### Minimal Usage
+```html
+<icon icon="[ICON]"></icon>
+```
+
+This component will render to the following HTML:
+```html
+<i class="[ICON]"></i>
+```
+
+##### Properties: 
+
+- **icon**: The icon class.
+    - type: String
+    - required: true
+
     
 ### Emitted Events
 Each form component will emit specific events during the submit process. To be able to listen to those events from non parent components these events will be emitted on a predefined Vue component called `window.eventHub`.
