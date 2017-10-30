@@ -1,0 +1,23 @@
+@mixin transform($transform) {
+    -o-transform: $transform;
+    -ms-transform: $transform;
+    -moz-transform: $transform;
+    -webkit-transform: $transform;
+    transform: $transform;
+}
+
+@mixin box-sizing($box-sizing) {
+    -o-box-sizing: $box-sizing;
+    -ms-box-sizing: $box-sizing;
+    -moz-box-sizing: $box-sizing;
+    -webkit-box-sizing: $box-sizing;
+    box-sizing: $box-sizing;
+}
+
+@mixin animation($animation) {
+    -o-animation: $animation;
+    -ms-animation: $animation;
+    -moz-animation: $animation;
+    -webkit-animation: $animation;
+    animation: $animation;
+}

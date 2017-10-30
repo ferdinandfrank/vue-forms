@@ -48,28 +48,6 @@ window.replaceData = function (element, data) {
 };
 
 /**
- * Checks if the specified param is a callable js function.
- *
- * @param functionToCheck
- * @returns {boolean}
- */
-window.isFunction = function (functionToCheck) {
-    return typeof functionToCheck === 'function';
-};
-
-/**
- * Replaces a char of a string with a substring.
- *
- * @param {string} s The string where to replace a char.
- * @param {int} n The char index that shall be replaced.
- * @param {string} t The substring that shall be inserted.
- * @returns {string}
- */
-window.replaceChar = function (s, n, t) {
-    return s.substring(0, n) + t + s.substring(n + 1);
-};
-
-/**
  * Serializes a data object to a query string.
  *
  * @param data
@@ -111,17 +89,6 @@ window.updateHrefParamsWithData = function (data) {
  */
 window.isValidEmail = function (email) {
     return /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i.test(email);
-};
-
-window.titleCase = function (str) {
-    let splitStr = str.toLowerCase().split(' ');
-    for (let i = 0; i < splitStr.length; i++) {
-        // You do not need to check if i is larger than splitStr length, as your for does that for you
-        // Assign it back to the array
-        splitStr[i] = splitStr[i].charAt(0).toUpperCase() + splitStr[i].substring(1);
-    }
-    // Directly return the joined string
-    return splitStr.join(' ');
 };
 
 /**

@@ -12,7 +12,7 @@
             </span>
 
             <input :id="name + '-input'" type="text" :name="name" v-model="submitValue" class="form-control datetimepicker"
-                   :placeholder="showPlaceholder ? placeholder : ''" :aria-label="placeholder"
+                   :placeholder="placeholder ? placeholder : ''" :aria-label="placeholder ? placeholder : ''"
                    :disabled="disabled" ref="input" @focus="activate" @blur="deactivate">
 
             <span class="input-group-addon has-tooltip" v-if="help" ref="helpIcon">
@@ -24,27 +24,43 @@
                         type="submit">{{ addonSubmitContent }}</button>
             </span>
         </div>
+
+        <div class="invalid-feedback" v-if="errorMessage">{{ errorMessage }}</div>
+
     </div>
 </template>
 
 <script>
     import formInputMixin from '../../mixins/TextFormInputMixin';
-    import datePickerMixin from '../../mixins/DatePickerMixin';
 
     export default {
-        mixins: [formInputMixin, datePickerMixin],
+        mixins: [formInputMixin],
+
+        props: {
+
+            // The format to use on the date picker. If a time is specified, the picker will automatically show
+            // a time picker as well, e.g., for the format 'YYYY-MM-DD HH:mm:ss'
+            format: {
+                type: String,
+                default: "YYYY-MM-DD"
+            }
+        },
 
         mounted: function () {
             this.$nextTick(function () {
-                this.submitValue = moment(this.value).format("YYYY-MM-DD");
+                let momentValue = moment();
+                if (this.value) {
+                    momentValue = moment(this.value);
+                }
+                this.submitValue = momentValue.format(this.format);
 
                 $(this.$refs.input).datetimepicker({
                     locale: moment.locale(),
-                    format: 'DD.MM.YYYY',
-                    defaultDate: moment(this.value)
+                    format: this.format,
+                    defaultDate: momentValue
                 });
                 $(this.$refs.input).on("dp.change", (moment) => {
-                    this.submitValue = moment.date.format("YYYY-MM-DD");
+                    this.submitValue = moment.date.format(this.format);
                 });
             })
         },

@@ -1,11 +1,13 @@
-import Popper from 'popper.js';
 import Tooltip from 'tooltip.js';
 
 export default {
 
+    // Internationalization module
+    i18n,
+
     props: {
 
-        // The name of the input. Will also be the name of the value, when the form gets submitted.
+        // The name of the input. Will also be the key of the value when the form gets submitted.
         name: {
             type: String,
             required: true
@@ -19,18 +21,20 @@ export default {
         },
 
         // The language key of the label.
-        // See computed data: 'label'.
+        // Will be inserted in a full key.
+        // For the label to show on an input with the name 'email' the following key will be used:
+        // 'input[.langKey].email'
         langKey: {
             type: String
         },
 
-        // True, if the input shall be disabled.
+        // States if the input shall be disabled.
         disabled: {
             type: Boolean,
             default: false
         },
 
-        // True, if a label shall be displayed above the input.
+        // States if a label shall be displayed above the input.
         showLabel: {
             type: Boolean,
             default: true
@@ -45,28 +49,16 @@ export default {
             type: Function
         },
 
-        // States if a value on the input is required.
+        // States if a value on the input is required
         required: {
             type: Boolean,
             default: false
         },
 
-        // States if a popover shall be shown next to the input when an error occurred.
-        popover: {
-            type: Boolean,
-            default: true
-        },
-
-        // The position of the popover when the 'popover' prop is set to 'true'
-        popoverPosition: {
-            type: String,
-            default: 'bottom'
-        },
-
-        // The help text to show as a tooltip when hovering over the input
+        // The help text to show as a tooltip when hovering over the input's help icon
         help: null,
 
-        // The position of the popover when the 'help' prop is set
+        // The position of the tooltip when the 'help' prop is set
         helpPosition: {
             type: String,
             default: 'top'
@@ -78,7 +70,7 @@ export default {
         // The specific size of the input group
         size: null,
 
-        // States if errors on the input shall be ignored
+        // States if errors on the input shall be ignored, i.e., shall not be displayed
         ignoreErrors: {
             type: Boolean,
             default: false
@@ -87,9 +79,12 @@ export default {
 
     data: function () {
         return {
+
+            // The real value that gets submitted.
             submitValue: '',
 
-            labelMessage: '',
+            // The error message of the input to show.
+            errorMessage: null,
 
             // States if the input's value is valid.
             valid: !this.required || this.value,
@@ -102,9 +97,6 @@ export default {
 
             // States if the input is currently focused.
             active: false,
-
-            // The currently shown popover
-            currentPopover: null,
 
             // States if the parent form shall be submitted when the submit value is synced on all other components.
             submitFormAfterSubmitValueIsSet: false,
@@ -125,24 +117,15 @@ export default {
             langKey = 'input.' + langKey;
             let label = this.$t(langKey);
 
+            // If no predefined label is set for the specified 'langKey', use the name of the input
             if (label === langKey) {
-                label = titleCase(this.name);
+                label = _.startCase(this.name);
             }
 
             if (this.required) {
                 label += ' *';
             }
             return label;
-        },
-
-        // The text to show to the user, if the check function exists and returns false.
-        errorMessage: function () {
-            return this.getLocalizationString(this.name);
-        },
-
-        // The text to show to the user, if the input is required and the user did not enter a value.
-        requiredMessage: function () {
-            return this.getLocalizationString('required', {'attribute': this.name});
         },
 
         // The name of the input. Will also be the name of the value, when the form gets submitted.
@@ -164,7 +147,7 @@ export default {
             let parents = getListOfParents(this);
             for (let index in parents) {
                 let parent = parents[index];
-                if (parent.hasOwnProperty("form")) {
+                if (_.isFunction(parent.validate)) {
                     this.parentForm = parent;
                     break;
                 }
@@ -187,23 +170,19 @@ export default {
                 this.contentChanged = true;
             }
 
-            // Convert booleans to integer
+            // Convert booleans to integer for better Laravel validation
             if (typeof(val) === "boolean") {
                 this.submitValue = val ? 1 : 0;
                 return;
             }
 
-            window.eventHub.$emit(this.name + '-input-changed', val);
-            this.$emit('input', val);
-
-            if (this.parentForm) {
-                // set to null if empty string
-                if (val === '') {
-                    val = null;
-                }
-
-                this.parentForm.form[this.submitName] = val;
+            // Set to null if empty string
+            if (val === '') {
+                val = null;
             }
+
+            window.eventHub.$emit(this.name + '-input-changed', val, oldValue);
+            this.$emit('input', val);
 
             // Only check input if the input wasn't cleared
             if (val || this.active) {
@@ -219,25 +198,6 @@ export default {
         value: function (val) {
             this.submitValue = val;
         },
-
-        labelMessage: function (message, oldMessage) {
-            if (message !== oldMessage && this.currentPopover) {
-                this.currentPopover.destroy();
-                this.currentPopover = null;
-            }
-
-            if (message && this.popover && this.$refs.inputWrapper) {
-                let popover = $('<div class="popover" role="tooltip"><div class="arrow" x-arrow></div><div class="popover-body">' + message + '</div></div>');
-                $(this.$refs.inputWrapper).append(popover);
-                this.currentPopover = new Popper(this.$refs.inputWrapper, popover[0], {
-                    placement: this.popoverPosition,
-                    removeOnDestroy: true,
-                    modifiers: {
-                        flip: {behavior: ['bottom']}
-                    }
-                });
-            }
-        }
     },
 
     methods: {
@@ -265,7 +225,7 @@ export default {
         checkInput: function () {
             if (this.checkRequired()
                 && this.checkComponentSpecific()) {
-                if (isFunction(this.check)) {
+                if (_.isFunction(this.check)) {
                     this.check(this.submitValue, (valid, errorMessage) => {
                         if (valid) {
                             this.addSuccess();
@@ -280,8 +240,8 @@ export default {
         },
 
         validateParentForm: function () {
-            if (this.parentForm && isFunction(this.parentForm.updateFormSubmitPermission)) {
-                this.parentForm.updateFormSubmitPermission();
+            if (this.parentForm && _.isFunction(this.parentForm.validate)) {
+                this.parentForm.validate();
             }
         },
 
@@ -293,7 +253,7 @@ export default {
          */
         checkRequired: function () {
             if (!this.submitValue && this.required) {
-                this.addError(this.requiredMessage, true);
+                this.addError(this.getLocalizationString('required', {'attribute': this.name}), true);
 
                 return false;
             }
@@ -317,7 +277,7 @@ export default {
          */
         addError: function (errorMessage = this.errorMessage, forceError = false) {
             if (forceError || !this.ignoreErrors) {
-                this.labelMessage = errorMessage;
+                this.errorMessage = errorMessage;
                 this.invalid = true;
                 this.valid = false;
             }
@@ -327,18 +287,9 @@ export default {
          * Shows a success sign on the input field.
          */
         addSuccess: function () {
-            this.labelMessage = null;
+            this.errorMessage = null;
             this.invalid = false;
             this.valid = true;
-        },
-
-        /**
-         * Opens the help page for the input.
-         */
-        openHelp: function () {
-            if (this.helpPath) {
-                window.open(this.helpPath, '_blank');
-            }
         },
 
         /**
@@ -346,7 +297,7 @@ export default {
          */
         reset: function () {
             this.submitValue = this.value;
-            this.labelMessage = null;
+            this.errorMessage = null;
             this.invalid = false;
             this.valid = !this.required || this.value;
         },
@@ -356,7 +307,7 @@ export default {
          */
         clear: function () {
             this.submitValue = '';
-            this.labelMessage = null;
+            this.errorMessage = null;
             this.invalid = false;
             this.valid = !this.required;
         },

@@ -10,6 +10,8 @@
                 <div class="handle"></div>
                 <input :id="name + '-input'" type="checkbox" :name="name" ref="input" style="display: none;"
                        class="control-input"
+                       v-bind:true-value="true"
+                       v-bind:false-value="false"
                        v-model="submitValue"/>
             </div>
             <label>
@@ -20,9 +22,7 @@
         <small v-if="help" class="form-text text-muted">
             {{ help }}
         </small>
-        <div v-if="invalid && !valid" class="invalid-feedback">
-            {{ labelMessage }}
-        </div>
+        <div class="invalid-feedback" v-if="errorMessage">{{ errorMessage }}</div>
 
     </div>
 </template>

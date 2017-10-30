@@ -41,7 +41,7 @@ if (token) {
  dates that are returned from our Laravel Eloquent models
  ************************************************************/
 window.moment = require('moment');
-moment.locale('de');
+moment.locale(window.VUE_FORMS_SUPPORTED_LOCALES[0]);
 
 
 /***********************************************************

@@ -4,6 +4,11 @@
  Inits the necessary internationalization for the vue forms to show appropriate messages.
  ************************************************************/
 
+// Load the Vue internationalization package
+import VueInternationalization from "vue-i18n";
+Vue.use(VueInternationalization);
+
+// Load internationalized messages
 import importedLocales from './locales';
 let locales = importedLocales;
 if (typeof VUE_FORMS_LOCALES !== 'undefined' && VUE_FORMS_LOCALES !== null) {
@@ -11,15 +16,12 @@ if (typeof VUE_FORMS_LOCALES !== 'undefined' && VUE_FORMS_LOCALES !== null) {
 }
 const messages = locales;
 
-let supportedLocales = ['de'];
+let supportedLocales = ['en'];
 if (typeof VUE_FORMS_SUPPORTED_LOCALES !== 'undefined' && VUE_FORMS_SUPPORTED_LOCALES !== null) {
     supportedLocales = VUE_FORMS_SUPPORTED_LOCALES;
 }
 
-import VueInternationalization from "vue-i18n";
-
-Vue.use(VueInternationalization);
-
+// Read and set the current locale from the url or set default one (if none is specified in the url)
 let locale = window.location.pathname.split('/')[1];
 if (locale === null || supportedLocales.indexOf(locale) < 0) {
     locale = supportedLocales[0];

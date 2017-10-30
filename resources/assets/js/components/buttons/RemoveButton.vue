@@ -1,5 +1,5 @@
 <template>
-    <button type="button" :class="'btn-' + size + ' btn-' + color" @click="removeElement">
+    <button type="button" class="btn" :class="'btn-' + size + ' btn-' + color" @click="removeElement">
         <slot></slot>
     </button>
 </template>
@@ -17,13 +17,12 @@
             // The color class of the button.
             color: {
                 type: String,
-                default: 'error'
+                default: 'danger'
             },
 
             // The size class of the button.
             size: {
-                type: String,
-                default: 'small'
+                type: String
             }
         }
     }

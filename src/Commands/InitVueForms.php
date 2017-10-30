@@ -4,6 +4,13 @@ namespace FerdinandFrank\VueForms\Commands;
 
 use Illuminate\Console\Command;
 
+/**
+ * InitVueForms
+ * -----------------------
+ * Helper command for the 'vendor:publish' command of this package.
+ * -----------------------
+ * @author Ferdinand Frank
+ */
 class InitVueForms extends Command {
 
     /**
@@ -18,10 +25,10 @@ class InitVueForms extends Command {
      *
      * @var string
      */
-    protected $description = 'Initializes the vue-forms plugin.';
+    protected $description = 'Initializes the vue-forms plugin by publishing the necessary files.';
 
     /**
-     * Execute the console command.
+     * Executes the console command.
      */
     public function handle() {
         \Artisan::call('vendor:publish', ['--tag' => 'vue-forms', '--force' => true]);

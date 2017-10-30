@@ -4,19 +4,14 @@
  * https://github.com/Eonasdan/bootstrap-datetimepicker/
  */
 
-$datetimepicker-active-background-color: #008200 !default;
-$datetimepicker-active-text-color: $gray-300 !default;
-$datetimepicker-btn-hover-background-color: #008200 !default;
-$datetimepicker-btn-disabled-color: $gray-600 !default;
-
 $bs-datetimepicker-timepicker-font-size: 1.2em !default;
-$bs-datetimepicker-active-bg: $datetimepicker-active-background-color !default;
-$bs-datetimepicker-active-color: $datetimepicker-active-text-color !default;
+$bs-datetimepicker-active-bg: $primary-color !default;
+$bs-datetimepicker-active-color: $gray-300 !default;
 $bs-datetimepicker-border-radius: 5px !default;
-$bs-datetimepicker-btn-hover-bg: $datetimepicker-btn-hover-background-color !default;
-$bs-datetimepicker-btn-hover-color: $datetimepicker-active-text-color !default;
-$bs-datetimepicker-disabled-color: $datetimepicker-btn-disabled-color !default;
-$bs-datetimepicker-alternate-color: $datetimepicker-btn-disabled-color !default;
+$bs-datetimepicker-btn-hover-bg: $primary-color !default;
+$bs-datetimepicker-btn-hover-color: $gray-300 !default;
+$bs-datetimepicker-disabled-color: $gray-600 !default;
+$bs-datetimepicker-alternate-color: $gray-600 !default;
 $bs-datetimepicker-secondary-border-color: #ccc !default;
 $bs-datetimepicker-secondary-border-color-rgba: rgba(0, 0, 0, 0.2) !default;
 $bs-datetimepicker-primary-border-color: white !default;

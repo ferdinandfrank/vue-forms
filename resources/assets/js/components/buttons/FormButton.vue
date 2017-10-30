@@ -7,18 +7,17 @@
 <script>
 
     import ajaxFormMixin from '../../mixins/AjaxFormMixin';
-    import removeElementMixin from '../../mixins/RemoveElementMixin';
 
     export default {
 
-        mixins: [ajaxFormMixin, removeElementMixin],
+        mixins: [ajaxFormMixin],
 
         props: {
 
             // The color class of the button.
             color: {
                 type: String,
-                default: 'error'
+                default: 'danger'
             },
 
             // The size class of the button.
@@ -26,8 +25,7 @@
                 type: String
             },
 
-            // The method to use for the submit.
-            // See computed property: 'submitMethod'
+            // The method to use for the submit. Overrides the mixin's prop.
             method: {
                 type: String,
                 default: 'delete'

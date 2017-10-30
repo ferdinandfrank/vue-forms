@@ -12,7 +12,7 @@
             </span>
 
             <input :id="name + '-input'" type="text" :name="name" v-model="submitValue" class="form-control"
-                   :placeholder="showPlaceholder ? placeholder : ''" :step="step" :aria-label="placeholder"
+                   :placeholder="placeholder ? placeholder : ''" :step="step" :aria-label="placeholder ? placeholder : ''"
                    :disabled="disabled" ref="input" @focus="activate" @blur="deactivate">
 
             <span class="input-group-addon has-tooltip" v-if="help" ref="helpIcon">
@@ -29,6 +29,8 @@
                         :id="'btn-submit-' + name + '-input'" type="submit">{{ addonSubmitContent }}</button>
             </span>
         </div>
+
+        <div class="invalid-feedback" v-if="errorMessage">{{ errorMessage }}</div>
 
         <span v-if="showMaxLengthCounter" class="counter">{{ submitValue.length }} / {{ max }}</span>
         <span v-if="showMinLengthCounter" class="counter">{{ submitValue.length }} / {{ min }}</span>
@@ -50,7 +52,10 @@
             },
 
             // The step to increase the value if the input's type is set to "number".
-            step: ''
+            step: {
+                type: String,
+                default: ''
+            }
         },
 
         mounted() {

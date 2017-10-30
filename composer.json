@@ -6,6 +6,7 @@
         "vue",
         "forms",
         "inputs",
+        "bootstrap",
         "localization",
         "laravel",
         "requests",

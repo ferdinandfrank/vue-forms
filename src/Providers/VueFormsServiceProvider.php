@@ -11,17 +11,14 @@ use Illuminate\Support\ServiceProvider;
  * Provides the necessary files to use the vue form components in the application.
  *
  * @author  Ferdinand Frank
- * @version 1.0
- * @package App\Providers
  */
 class VueFormsServiceProvider extends ServiceProvider {
 
     /**
-     * Bootstrap the application services.
-     *
-     * @return void
+     * Bootstraps the application services.
      */
     public function boot() {
+
         // Load language files
         $this->loadTranslationsFrom(VUE_FORMS_BASE_PATH . '/resources/lang', 'vue-forms');
 
@@ -37,11 +34,10 @@ class VueFormsServiceProvider extends ServiceProvider {
     }
 
     /**
-     * Register the application services.
-     *
-     * @return void
+     * Registers the application services.
      */
     public function register() {
+
         // Define package base path
         if (!defined('VUE_FORMS_BASE_PATH')) {
             define('VUE_FORMS_BASE_PATH', realpath(__DIR__ . '/../../'));

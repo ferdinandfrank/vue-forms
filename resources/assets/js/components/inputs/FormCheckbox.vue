@@ -4,7 +4,8 @@
 
         <div class="control-group" :class="[ color ? 'control-group-' + color : '', size ? 'control-group-' + size : '']">
             <label class="control checkbox">
-                <input :id="name + '-input'" :name="name" v-model="submitValue" type="checkbox" class="control-input">
+                <input :id="name + '-input'" :name="name" v-model="submitValue" v-bind:true-value="true"
+                       v-bind:false-value="false" type="checkbox" class="control-input">
                 <span :id="name + '-checkbox-indicator'" class="control-indicator"></span>
                 <span class="control-description" v-if="showLabel" ref="inputLabel">{{ label }}</span>
             </label>
@@ -12,9 +13,7 @@
         <small v-if="help" class="form-text text-muted">
             {{ help }}
         </small>
-        <div v-if="invalid && !valid" class="invalid-feedback">
-            {{ labelMessage }}
-        </div>
+        <div class="invalid-feedback" v-if="errorMessage">{{ errorMessage }}</div>
 
     </div>
 </template>

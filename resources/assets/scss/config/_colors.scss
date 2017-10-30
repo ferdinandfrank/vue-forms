@@ -1,0 +1,35 @@
+/* ==========================================================================
+   Colors Config
+   ========================================================================== */
+/**
+ * Table of Contents:
+ *
+ *  1. Standard Colors
+ *  2. App Colors
+ */
+
+/*********************
+  1. Standard Colors
+**********************/
+$white: #fff !default;
+$gray-100: #f8f9fa !default;
+$gray-150: #f2f2f2 !default;
+$gray-200: #e9ecef !default;
+$gray-300: #dee2e6 !default;
+$gray-400: #ced4da !default;
+$gray-500: #adb5bd !default;
+$gray-600: #868e96 !default;
+$gray-700: #495057 !default;
+$gray-800: #343a40 !default;
+$gray-900: #262626 !default;
+$black: #000 !default;
+
+/*********************
+  2. App Colors
+**********************/
+$primary-color: #008200 !default;
+$secondary-color: #f0820a !default;
+$info-color: #20c997 !default;
+$danger-color: #dc3545 !default;
+$success-color: #47a447 !default;
+$warning-color: #ffc107 !default;

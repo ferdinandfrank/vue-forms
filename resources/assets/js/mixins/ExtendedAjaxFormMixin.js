@@ -3,21 +3,20 @@
  */
 
 import ajaxFormMixin from "./AjaxFormMixin";
-import removeElementMixin from "./RemoveElementMixin";
 
 export default {
 
-    mixins: [ajaxFormMixin, removeElementMixin],
+    mixins: [ajaxFormMixin],
 
     props: {
 
-        // Set to true, if the form's inputs shall be cleared after the submit.
+        // States if the form's inputs shall be cleared after the submit.
         clear: {
             type: Boolean,
             default: false
         },
 
-        // Set to true, if the form's inputs shall be reset after the submit.
+        // States if the form's inputs shall be reset after the submit.
         reset: {
             type: Boolean,
             default: false
@@ -66,7 +65,7 @@ export default {
          * @param errorMsg
          */
         addErrorToInputComponent: function (inputComponent, errorMsg) {
-            if (inputComponent && isFunction(inputComponent.addError)) {
+            if (inputComponent && _.isFunction(inputComponent.addError)) {
                 inputComponent.addError(errorMsg);
             }
         },
@@ -78,7 +77,7 @@ export default {
             let children = getListOfChildren(this);
             for (let index in children) {
                 let child = children[index];
-                if (isFunction(child.clear)) {
+                if (_.isFunction(child.clear)) {
                     child.clear();
                 }
             }
@@ -91,7 +90,7 @@ export default {
             let children = getListOfChildren(this);
             for (let index in children) {
                 let child = children[index];
-                if (isFunction(child.reset)) {
+                if (_.isFunction(child.reset)) {
                     child.reset();
                 }
             }

@@ -1,1 +1,15 @@
-@import '../vendor/datetimepicker/scss/datetimepicker';
+@import 'config/colors';
+@import 'config/mixins';
+
+@import "~bootstrap-sass/assets/stylesheets/bootstrap";
+
+@import 'components/switches';
+@import 'vendor/datetimepicker';
+
+.input-group {
+    width: 100%;
+}
+
+.invalid-feedback {
+    color: $danger-color;
+}

@@ -9,7 +9,7 @@ require('./requirements');
 require('./internationalization');
 require('./helpers/helper');
 require('./components');
-require('../vendor/datetimepicker/js/datetimepicker');
+require('./vendor/datetimepicker');
 
 
 /**

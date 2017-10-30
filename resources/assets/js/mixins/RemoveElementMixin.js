@@ -1,6 +1,7 @@
 export default {
 
     props: {
+
         // The selector of the element to remove.
         remove: {
             type: String

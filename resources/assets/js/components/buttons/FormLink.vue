@@ -1,16 +1,15 @@
 <template>
-    <a :href="action" @click.prevent="submit">
+    <a :href="action" @click="submit">
         <slot></slot>
     </a>
 </template>
 
 <script>
     import ajaxFormMixin from '../../mixins/AjaxFormMixin';
-    import removeElementMixin from '../../mixins/RemoveElementMixin';
 
     export default {
 
-        mixins: [ajaxFormMixin, removeElementMixin],
+        mixins: [ajaxFormMixin],
 
         methods: {
 

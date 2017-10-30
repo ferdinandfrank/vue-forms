@@ -1,7 +1,11 @@
-import Form from "./../helpers/Form";
+
 import Alert from "../helpers/Alert";
 
+import removeElementMixin from "./RemoveElementMixin";
+
 export default {
+
+    mixins: [removeElementMixin],
 
     props: {
 
@@ -12,19 +16,18 @@ export default {
         },
 
         // The method to use for the submit.
-        // See computed property: 'method'
         method: {
             type: String,
             required: true
         },
 
-        // The predefined data to submit with the form
+        // The predefined data to submit with the form.
         data: {
             type: Object,
             default: null
         },
 
-        // Check if a confirm message shall be shown, before the form is going to be submitted.
+        // States if a confirm message shall be shown, before the form will be submitted.
         confirm: {
             type: Boolean,
             default: false
@@ -51,37 +54,43 @@ export default {
         },
 
         // The duration of the alert that will be shown after the form has been submitted.
-        // Will only be used if the duration is not defined by the server response
+        // Will only be used if the duration is not defined by the server response.
         alertDuration: {
             type: Number,
             default: 3000
         },
 
         // The lang key to use to identify the messages to show to the user on a confirm alert.
+        // Will be inserted in a full key existing of the method and further props to retrieve the i18n messages.
+        // For the message to show on a confirm alert before a 'POST' request the following key will be used:
+        // 'confirm.[langKey].post.message'
         langKey: {
             type: String,
             default: 'default'
         },
 
-        // The base name of the events that get triggered during a submit.
+        // The base name of the events that get triggered by the form during a submit.
         eventName: {
             type: String,
             default: 'ajaxForm'
         },
 
-        // The selector of the wrapper, where to append the response to.
+        // The selector of the wrapper, where to append the response's data to.
         appendResponse: {
-            type: String
+            type: String,
+            default: null
         },
 
-        // The selector of the wrapper, where to prepend the response to.
+        // The selector of the wrapper, where to prepend the response's data to.
         prependResponse: {
-            type: String
+            type: String,
+            default: null
         },
 
-        // The selector of the element, to replace with the response.
+        // The selector of the element, to replace with the response's data.
         replaceResponse: {
-            type: String
+            type: String,
+            default: null
         },
 
         // States if the form shall be submitted with ajax. Even though this is the purpose of this package,
@@ -102,9 +111,6 @@ export default {
 
     data() {
         return {
-
-            // The form instance containing the data to send.
-            form: new Form(this.data),
 
             // States, if the form can be submitted.
             valid: true,
@@ -147,12 +153,15 @@ export default {
 
     mounted: function () {
         this.$nextTick(function () {
+
+            // Get the original content from the submit button to replace the loader with the original content
+            // after the serve response was received
             if (this.button) {
                 this.originalLoadingContent = this.button.html();
             }
 
             // Disable the submit permission to let the user make at least one change
-            this.updateFormSubmitPermission();
+            this.validate();
 
             // Insert Laravel CSRF token, if normal submit is specified
             if (!this.ajax) {
@@ -173,6 +182,7 @@ export default {
          */
         submit: function (event) {
 
+            // Check if the ajax submit of the form is disabled or enabled
             if (this.ajax) {
                 event.preventDefault();
             } else {
@@ -181,12 +191,13 @@ export default {
                 return true;
             }
 
+            // Don't let the user submit the form, if some inputs are not valid
             if (!this.valid) {
                 window.eventHub.$emit('prevented_submit-' + this.eventName, this);
                 return;
             }
 
-            // Let the user confirm his submit action, if a confirm was defined in the properties.
+            // Let the user confirm his submit action, if a confirm is specified in the properties.
             if (this.confirm) {
                 let confirmTitle = this.getLocalizationString('confirm', 'title');
                 let confirmMessage = this.getLocalizationString('confirm', 'message', this.confirmProps);
@@ -235,13 +246,24 @@ export default {
             // Let the parent chain know, that the submit will be processed.
             window.eventHub.$emit('submitting-' + this.eventName, this);
 
-            this.form.submit(this.method.toLowerCase(), this.action)
-                .then(response => {
+            let formData = new FormData(this.$el);
+            _.each(this.data, function (value, key) {
+                formData.append(key, value);
+            });
+
+            $.ajax({
+                type: this.method.toLowerCase(),
+                url: this.action,
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: response => {
                     this.handleResponse(true, response);
-                })
-                .catch(error => {
-                    this.handleResponse(false, error);
-                });
+                },
+                error: error => {
+                    this.handleResponse(false, error.responseJSON);
+                }
+            });
         },
 
         /**
@@ -253,7 +275,7 @@ export default {
         handleResponse: function (success, response) {
             this.stopLoader();
 
-            this.updateFormSubmitPermission();
+            this.validate();
 
             this.showAlert(response, success).then(() => {
                 if (success) {
@@ -270,7 +292,7 @@ export default {
                 // - response: The response message retrieved from the server.
                 // - method: The method that was used to proceed the request.
                 // - component: The current instance of this component (useful to extract the form with 'component.$el'
-                window.eventHub.$emit(this.eventName, success, response, this.method.toLowerCase(), this);
+                window.eventHub.$emit('response-' + this.eventName, success, response, this.method.toLowerCase(), this);
 
                 this.redirectUser(response);
             });
@@ -361,7 +383,6 @@ export default {
             this.$emit('success');
         },
 
-
         /**
          * Redirects the user to the redirect path specified in the response
          */
@@ -388,20 +409,15 @@ export default {
          */
         getLocalizationString: function (alertType, type, params = null) {
             let key = alertType + '.' + this.langKey + '.' + this.method.toLowerCase() + '.' + type;
-            let defaultKey = alertType + '.default.' + this.method.toLowerCase() + '.' + type;
-            let text = this.$t(key, params);
-            if (key === text) {
-                text = this.$t(defaultKey, params);
-            }
 
-            return text;
+            return this.$t(key, params);
         },
 
         /**
          * Updates the state of the submit button and checks if the form can be submitted,
          * depending if the child inputs allow a submit.
          */
-        updateFormSubmitPermission: function () {
+        validate: function () {
             let allInputsValid = true;
             let children = getListOfChildren(this);
             for (let index in children) {

@@ -13,9 +13,9 @@
             <select :id="name + '-input'" :name="name" v-model="submitValue" class="form-control"
                     :aria-label="placeholder"
                    :disabled="disabled" ref="input" @focus="activate" @blur="deactivate">
-                <option v-if="showPlaceholder" value="" disabled selected>{{ placeholder }}</option>
+                <option v-if="placeholder" value="" disabled selected>{{ placeholder }}</option>
                 <slot></slot>
-                <option v-for="option in options" :value="option.value">{{ option.label }}</option>
+                <option v-for="(label, value) in options" :value="value">{{ label }}</option>
             </select>
 
             <span class="input-group-addon has-tooltip" v-if="help" ref="helpIcon">
@@ -27,6 +27,9 @@
                         type="submit">{{ addonSubmitContent }}</button>
             </span>
         </div>
+
+        <div class="invalid-feedback" v-if="errorMessage">{{ errorMessage }}</div>
+
     </div>
 
 </template>
@@ -40,15 +43,11 @@
         props: {
 
             /**
-             * An array of strings or objects to be used as dropdown choices.
-             * If you are using an array of objects, vue-select will look for
-             * a `label` key (ex. [{label: 'This is Foo', value: 'foo'}]). A
-             * custom label key can be set with the `label` prop.
-             * @type {Array}
+             * An object with keys as the value and values as the labels to be used as dropdown choices.
              */
             options: {
-                type: Array,
-                default() { return [] },
+                type: Object,
+                default() { return {} },
             },
         },
     }

@@ -7,29 +7,33 @@ export default {
 
         // The minimum length of the input value.
         min: {
-            type: Number
+            type: Number,
+            default: null
         },
 
         // The maximum length of the input value.
         max: {
-            type: Number
+            type: Number,
+            default: null
         },
 
         // If true, the input is treated as a confirmation input and needs to have a corresponding input with the same value.
         // Ex.: If the name of this input is 'foo_confirmation', the input with the name 'foo' must have the same value.
         confirmed: {
-            type: Boolean
-        },
-
-        // States if a placeholder shall be shown on the input.
-        showPlaceholder: {
             type: Boolean,
             default: false
         },
 
+        // The placeholder to shown on the input.
+        placeholder: {
+            type: String,
+            default: null
+        },
+
         // The icon to show next to the input field.
         icon: {
-            type: String
+            type: String,
+            default: null
         },
 
         // States, if a form submit button shall be appended on the input.
@@ -46,10 +50,16 @@ export default {
         },
 
         // The color of the appended submit button, see 'addonSubmit'
-        addonSubmitColor: null,
+        addonSubmitColor: {
+            type: String,
+            default: null
+        },
 
         // The color of the appended reset button, see 'addonSubmit'
-        addonResetColor: null,
+        addonResetColor: {
+            type: String,
+            default: null
+        },
     },
 
     data: function () {
@@ -59,36 +69,6 @@ export default {
     },
 
     computed: {
-
-        // The placeholder text of the input, based upon the property 'name' or the property 'langKey', if it is set.
-        placeholder: function () {
-            if (!this.showPlaceholder) {
-                return null;
-            }
-
-            let langKey = this.name;
-            if (this.langKey) {
-                langKey = this.langKey + '.' + this.name;
-            }
-            return this.$t('placeholder.' + langKey);
-        },
-
-        // The text to show to the user, if the value of the input is to short.
-        minLengthMessage: function () {
-            return this.getLocalizationString('min.string', {min: this.min, 'attribute': this.name});
-        },
-
-        // The text to show to the user, if the value of the input is to long.
-        maxLengthMessage: function () {
-            return this.getLocalizationString('max.string', {max: this.max, 'attribute': this.name});
-        },
-
-        // The text to show to the user, if the confirmation input does not have the same value as this input.
-        confirmedMessage: function () {
-            let confirmNameLength = this.name.length - '_confirmation'.length;
-            let confirmName = this.name.substring(0, confirmNameLength);
-            return this.getLocalizationString('confirmed', {'attribute': confirmName});
-        },
 
         // States if the max length counter shall be shown on the input.
         showMaxLengthCounter: function () {
@@ -118,7 +98,7 @@ export default {
                 && this.checkMinLength()
                 && this.checkMaxLength()
                 && this.checkConfirmed()) {
-                if (isFunction(this.check)) {
+                if (_.isFunction(this.check)) {
                     this.check(this.submitValue, (valid, errorMessage) => {
                         if (valid) {
                             this.addSuccess();
@@ -140,7 +120,7 @@ export default {
          */
         checkMaxLength: function () {
             if (this.max && this.submitValue.length > this.max) {
-                this.addError(this.maxLengthMessage);
+                this.addError(this.getLocalizationString('max.string', {max: this.max, 'attribute': this.name}));
                 return false;
             }
             return true;
@@ -154,7 +134,7 @@ export default {
          */
         checkMinLength: function () {
             if (this.submitValue.length > 0 && this.min && this.submitValue.length < this.min) {
-                this.addError(this.minLengthMessage);
+                this.addError(this.getLocalizationString('min.string', {min: this.min, 'attribute': this.name}));
                 return false;
             }
             return true;
@@ -172,7 +152,7 @@ export default {
                 let confirmName = this.name.substring(0, confirmNameLength);
                 let confirmInput = $(this.$refs.input).parents('form').first().find(':input[name=' + confirmName + ']').first();
                 if (confirmInput.val() !== this.submitValue) {
-                    this.addError(this.confirmedMessage);
+                    this.addError(this.getLocalizationString('confirmed', {'attribute': confirmName}));
                     return false;
                 }
             }
