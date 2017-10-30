@@ -56,6 +56,7 @@ You can install them by just including the according entries in your `package.js
 - [JQuery](https://jquery.com/) >= 3.1.1: _For element selection and ajax requests_
 
 #### Optional
+- [Bootstrap](https://getbootstrap.com/) >= 3.3.7: _For the design of the input components_
 - [Sweetalert](https://sweetalert.js.org/) >= 2.0.4: _To show pretty alert messages on server responses_
 - [Tooltip.js](https://popper.js.org/tooltip-examples.html) >= 1.1.5: _To show help texts on the inputs as a pretty tooltip_
 
@@ -95,6 +96,7 @@ To have a nice design of the inputs out of the box, Bootstrap is required.
 
     ```json
     "dependencies": {
+        "bootstrap-sass": "^3.3.7",
         "lodash": "^4.17.4",
         "jquery": "^3.1.1",
         "moment": "^2.18.1",
