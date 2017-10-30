@@ -209,7 +209,7 @@ Represents a basic form element that gets submitted via ajax if a submit is trig
 
 ##### Minimal Usage
 ```html
-<ajax-form method="XXX" action="XXX">
+<ajax-form method="[METHOD]" action="[ACTION]">
     // Include input components
     
     <button type="submit">Submit</button>
@@ -218,7 +218,7 @@ Represents a basic form element that gets submitted via ajax if a submit is trig
 
 This component will render to the following HTML:
 ```html
-<form action="XXX" method="XXX">
+<form action="[ACTION]" method="[METHOD]">
     // ...
     
     <button type="submit">Submit</button>
@@ -242,7 +242,7 @@ As this component is often used as a 'delete button' the props default to this f
 
 ##### Minimal Usage
 ```html
-<form-button action="XXX">
+<form-button action="[ACTION]">
     // Include button content here
 </form-button>
 ```
@@ -273,14 +273,14 @@ Represents a link that submits an ajax request as soon as the link gets clicked.
 
 ##### Minimal Usage
 ```html
-<form-link action="XXX" method="XXX">
+<form-link action="[ACTION]" method="[METHOD]">
     // Include link content here
 </form-link>
 ```
 
 This component will render to the following HTML:
 ```html
-<a href="XXX">
+<a href="[ACTION]">
     // ...
 </a>
 ```
@@ -731,7 +731,7 @@ Represents a button in the style of [Bootstrap](https://getbootstrap.com/) that 
 
 ##### Minimal Usage
 ```html
-<remove-button remove="XXX">
+<remove-button remove="[SELECTOR]">
     // Include button content here
 </remove-button>
 ```
