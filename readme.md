@@ -152,7 +152,7 @@ These components are used to submit data to the server via an ajax request.
  
 - **data**: The predefined data to submit with the form.
     - type: Object
-    - default: null
+    - default: {}
  
 - **confirm**: States if a confirm message shall be shown, before the form will be submitted.
     - type: Boolean

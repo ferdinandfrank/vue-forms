@@ -23,7 +23,7 @@ export default {
         // The predefined data to submit with the form.
         data: {
             type: Object,
-            default: null
+            default: () => {return {}}
         },
 
         // States if a confirm message shall be shown, before the form will be submitted.
@@ -246,10 +246,12 @@ export default {
             window.eventHub.$emit('submitting-' + this.eventName, this);
 
             let data = this.data;
-            let formData = new FormData(this.$el);
-            for (let pair of formData.entries()) {
-                data[pair[0]] = pair[1];
-            }
+            let inputs = $(this.$el).serializeArray();
+            _.each(inputs, function (input) {
+                if (input.hasOwnProperty('name')) {
+                    data[input.name] = input.value;
+                }
+            });
 
             $.ajax({
                 type: this.method.toLowerCase(),
