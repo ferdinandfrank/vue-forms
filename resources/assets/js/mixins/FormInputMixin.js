@@ -16,7 +16,7 @@ export default {
         // The predefined value of the input.
         // See data: 'submitValue'
         value: {
-            type: String,
+            type: String|Number,
             default: ''
         },
 

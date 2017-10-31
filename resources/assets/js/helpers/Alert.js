@@ -155,6 +155,124 @@ class Alert {
         });
     }
 
+    /**
+     * Shows a confirm alert with the specified confirm and cancel button texts.
+     * If the confirm button is clicked, an ajax request to the specified url with the specified method and data will be sent.
+     *
+     * @param url
+     * @param method
+     * @param data
+     * @param buttonText
+     * @param cancelButtonText
+     */
+    send(url, method, data, buttonText = 'Ok', cancelButtonText = true) {
+        return new Promise((resolve, reject) => {
+            swal({
+                title: this.title,
+                text: this.message,
+                icon: this.type,
+                dangerMode: this.dangerMode,
+                buttons: {
+                    cancel: cancelButtonText,
+                    confirm: {
+                        text: buttonText,
+                        closeModal: false
+                    }
+                },
+            }).then((value) => {
+                if (value) {
+                    $.ajax({
+                        type: method.toLowerCase(),
+                        url: url,
+                        data: data,
+                        success: response => {
+                            this.showAlert(response, true).then(() => {
+                                resolve(response);
+                            });
+                        },
+                        error: error => {
+                            this.showAlert(error.responseJSON, false).then(() => {
+                                reject(error.responseJSON);
+                            });
+                        }
+                    }).always(() => {
+                        swal.stopLoading();
+                    });
+                } else {
+                    swal.close();
+                    reject(value);
+                }
+            });
+        });
+    }
+
+    /**
+     * Shows an alert based on the specified server response and success field.
+     *
+     * @param response
+     * @param success
+     * @returns {Promise}
+     */
+    showAlert(response, success = true) {
+        return new Promise((resolve) => {
+            let serverKeys = {
+                showAlert: 'alert',
+                alert: {
+                    title: 'title',
+                    message: 'message',
+                    accept: 'accept',
+                    duration: 'duration'
+                },
+                redirect: 'redirect',
+                reload: 'reload',
+                data: 'data',
+                error: 'error'
+            };
+
+            let message = null;
+            let title = '';
+            let accept = false;
+            let duration = 3000;
+
+            if (response && response.hasOwnProperty(serverKeys.showAlert) && response[serverKeys.showAlert].hasOwnProperty(serverKeys.alert.message)) {
+                let alertInfo = response[serverKeys.showAlert];
+
+                message = alertInfo[serverKeys.alert.message];
+                if (alertInfo.hasOwnProperty(serverKeys.alert.title)) {
+                    title = alertInfo[serverKeys.alert.title];
+                }
+                if (alertInfo.hasOwnProperty(serverKeys.alert.accept)) {
+                    accept = alertInfo[serverKeys.alert.accept];
+                }
+                if (alertInfo.hasOwnProperty(serverKeys.alert.duration)) {
+                    duration = alertInfo[serverKeys.alert.duration];
+                }
+            } else if (!success) {
+                message = response;
+                accept = 'Ok';
+
+                if (response && response.hasOwnProperty(serverKeys.error)) {
+                    message = response[serverKeys.error];
+                } else if (response) {
+                    for (let key in response) {
+                        if (response.hasOwnProperty(key)) {
+                            message = response[key];
+                            break;
+                        }
+                    }
+                }
+            }
+
+            if (message) {
+                new Alert(message, title, success ? 'success' : 'error').show(accept, accept ? null : duration).then(() => {
+                    resolve();
+                });
+            } else {
+                resolve();
+            }
+        });
+    }
+
 }
 
 export default Alert;

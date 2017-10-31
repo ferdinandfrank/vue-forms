@@ -302,7 +302,7 @@ These components are used to represent inputs.
     - required: true
 
 - **value**: The predefined value of the input.
-    - type: String
+    - type: String|Number
     - default: ''
 
 - **langKey**: The language key of the label.

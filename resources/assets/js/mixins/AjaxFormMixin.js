@@ -1,4 +1,3 @@
-
 import Alert from "../helpers/Alert";
 
 import removeElementMixin from "./RemoveElementMixin";
@@ -167,7 +166,7 @@ export default {
             if (!this.ajax) {
                 let token = document.head.querySelector('meta[name="csrf-token"]');
                 if (token) {
-                    $(this.$el).prepend('<input type="hidden" name="_token" value="'+token.content+'">');
+                    $(this.$el).prepend('<input type="hidden" name="_token" value="' + token.content + '">');
                 } else {
                     console.warn('Vue Forms: No CSRF token specified.');
                 }
@@ -246,17 +245,16 @@ export default {
             // Let the parent chain know, that the submit will be processed.
             window.eventHub.$emit('submitting-' + this.eventName, this);
 
+            let data = this.data;
             let formData = new FormData(this.$el);
-            _.each(this.data, function (value, key) {
-                formData.append(key, value);
-            });
+            for (let pair of formData.entries()) {
+                data[pair[0]] = pair[1];
+            }
 
             $.ajax({
                 type: this.method.toLowerCase(),
                 url: this.action,
-                data: formData,
-                contentType: false,
-                processData: false,
+                data: data,
                 success: response => {
                     this.handleResponse(true, response);
                 },
