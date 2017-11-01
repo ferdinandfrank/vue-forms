@@ -181,12 +181,6 @@ export default {
                 this.contentChanged = true;
             }
 
-            // Convert booleans to integer for better Laravel validation
-            if (typeof(val) === "boolean") {
-                this.submitValue = val ? 1 : 0;
-                return;
-            }
-
             // Set to null if empty string
             if (val === '') {
                 val = null;

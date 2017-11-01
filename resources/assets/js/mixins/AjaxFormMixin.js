@@ -249,6 +249,14 @@ export default {
             let inputs = $(this.$el).serializeArray();
             _.each(inputs, function (input) {
                 if (input.hasOwnProperty('name')) {
+
+                    // Transform checkbox 'on'/'off' values to 'real' booleans
+                    if (input.value === 'on') {
+                        input.value = 1;
+                    } else if (input.value === 'off') {
+                        input.value = 0;
+                    }
+
                     data[input.name] = input.value;
                 }
             });
