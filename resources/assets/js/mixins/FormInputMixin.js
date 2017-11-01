@@ -16,8 +16,15 @@ export default {
         // The predefined value of the input.
         // See data: 'submitValue'
         value: {
-            type: String|Number,
+            type: String | Number,
             default: ''
+        },
+
+        // The text to show above the input as a label. If not specified, the component will try to find a label
+        // based on the input's name and specified 'langKey' prop.
+        labelText: {
+            type: String,
+            default: null
         },
 
         // The language key of the label.
@@ -110,6 +117,10 @@ export default {
 
         // The label text of the input, based upon the property 'name' or the property 'langKey', if it is set.
         label: function () {
+            if (this.labelText) {
+                return this.labelText;
+            }
+
             let langKey = this.name;
             if (this.langKey) {
                 langKey = this.langKey + '.' + this.name;

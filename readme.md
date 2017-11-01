@@ -304,6 +304,10 @@ These components are used to represent inputs.
 - **value**: The predefined value of the input.
     - type: String|Number
     - default: ''
+    
+- **labelText**: The text to show above the input as a label. If not specified, the component will try to find a label based on the input's name and specified 'langKey' prop.
+    - type: String
+    - default: null
 
 - **langKey**: The language key of the label.
                Will be inserted in a full key.
