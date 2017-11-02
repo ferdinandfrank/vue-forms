@@ -21,3 +21,13 @@
     -webkit-animation: $animation;
     animation: $animation;
 }
+
+@mixin transition($transition...) {
+    @if length($transition) == 0 {
+        $transition: $transition-base;
+    }
+    -webkit-transition : $transition;
+    -moz-transition : $transition;
+    -o-transition : $transition;
+    transition : $transition;
+}
