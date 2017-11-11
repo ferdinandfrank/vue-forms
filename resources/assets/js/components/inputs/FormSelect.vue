@@ -1,7 +1,7 @@
 <template>
-    <div class="form-group" ref="inputWrapper" :class="{ 'is-invalid': invalid && !valid, 'is-valid': valid && contentChanged }">
+    <div class="form-group" ref="inputWrapper" :class="{ 'is-invalid': !valid, 'is-valid': valid && contentChanged, 'active': active }">
 
-        <label :for="name + '-input'" v-if="showLabel" ref="inputLabel">
+        <label :for="name + '-input'" v-if="label" ref="inputLabel">
             <span>{{ label }}</span>
         </label>
 
@@ -19,7 +19,7 @@
             </select>
 
             <span class="input-group-addon has-tooltip" v-if="help" ref="helpIcon">
-                <icon icon="fa fa-question"></icon>
+                <icon icon="fa fa-question" :title="help" v-tooltip:left></icon>
             </span>
 
             <span class="input-group-btn" v-if="showAddonSubmit">
@@ -47,7 +47,7 @@
              */
             options: {
                 type: Array,
-                default: [],
+                default: () => {return []},
             },
         },
     }

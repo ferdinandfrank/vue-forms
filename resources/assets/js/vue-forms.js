@@ -6,11 +6,26 @@
 
 require('./config');
 require('./requirements');
-require('./internationalization');
 require('./helpers/helper');
 require('./components');
 require('./vendor/datetimepicker');
 
+// Directive to show a tooltip next to the element
+Vue.directive('tooltip', {
+    bind: function (el, binding) {
+        $(document).ready(() => {
+            let placement = binding.arg;
+            $(el).tooltip({
+                placement: placement
+            });
+        });
+    },
+    unbind: function (el) {
+        $(document).ready(() => {
+            $(el).tooltip('dispose')
+        });
+    }
+});
 
 /**
  * If it doesn't already exist, register a separate empty vue instance that

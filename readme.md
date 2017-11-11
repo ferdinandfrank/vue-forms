@@ -34,6 +34,7 @@ This package provides a collection of [Vue.js](https://vuejs.org/) form and inpu
     - [Icon](#icon)
   - [Emitted Events](#emitted-events)
   - [Parsing responses from the server](#parsing-responses-from-the-server)
+  - [Validation](#validation)
 - [Customizing](#customizing)
   - [Server Response Parsing](#server-response-parsing)
   - [Loading Button](#loading-button)
@@ -51,7 +52,6 @@ You can install them by just including the according entries in your `package.js
 
 #### Mandatory
 - [Vue](https://vuejs.org/) >= 2.1.10: _To render the Vue components._
-- [Vue-I18n](https://github.com/kazupon/vue-i18n) >= 7.3.0: _For internationalization on Vue instances_
 - [Lodash](https://lodash.com/) >= 4.17.4: _For using JS helper functions in the scripts which makes the code cleaner_
 - [MomentJS](https://momentjs.com/) >= 2.18.1: _For date formatting on JS_
 - [JQuery](https://jquery.com/) >= 3.1.1: _For element selection and ajax requests_
@@ -104,8 +104,7 @@ To have a nice design of the inputs out of the box, Bootstrap is required.
         "popper.js": "^1.12.5",
         "sweetalert": "^2.0.4",
         "tooltip.js": "^1.1.5",
-        "vue": "^2.1.10",
-        "vue-i18n": "^7.3.0"
+        "vue": "^2.1.10"
       }
     
      ```    
@@ -154,19 +153,17 @@ These components are used to submit data to the server via an ajax request.
     - type: Object
     - default: {}
  
-- **confirm**: States if a confirm message shall be shown, before the form will be submitted.
-    - type: Boolean
-    - default: false
- 
-- **confirmType**: The type of the confirm alert to ask the user, if he really wants to submit the form.
-Will only be used if the 'confirm' property is set to true.
-    - type: String
-    - default: 'warning'
- 
-- **confirmProps**: The props to insert into the confirm message, if one shall be shown.
-Will only be used if the 'confirm' property is set to true.
+- **confirm**: An object to define the messages to show to the user within a confirm alert, before the form will be submitted.
+                If not defined, no confirm message will be shown.
     - type: Object
     - default: null
+    
+    The object can contain the following key-value-pairs to modify the confirm alert:
+    - **title**: [The title of the confirm message]
+    - **message**: [The body message of the confirm message]
+    - **type**: [The alert type of the confirm dialog (info, success, error, warning [DEFAULT]]
+    - **accept**: [The button text to show on the 'accept' button]
+    - **cancel**: [The button text to show on the 'cancel' button]
  
 - **alertError**: States if an error alert message shall be shown, if an error occurred.
     - type: Boolean
@@ -176,13 +173,6 @@ Will only be used if the 'confirm' property is set to true.
 Will only be used if the duration is not defined by the server response.
     - type: Number
     - default: 3000
- 
-- **langKey**: The lang key to use to identify the messages to show to the user on a confirm alert.
-              Will be inserted in a full key existing of the method and further props to retrieve the i18n messages.
-              For the message to show on a confirm alert before a 'POST' request the following key will be used:
-              'confirm.[langKey].post.message'
-    - type: String
-    - default: 'default'
  
 - **eventName**: The base name of the events that get triggered by the form during a submit.
     - type: String
@@ -305,43 +295,21 @@ These components are used to represent inputs.
     - type: String|Number
     - default: ''
     
-- **labelText**: The text to show above the input as a label. If not specified, the component will try to find a label based on the input's name and specified 'langKey' prop.
+- **rules**: Array of rule objects to validate the input's value. See section [Validation](#validation) for further docs.
+    - type: Array
+    - default: []   
+    
+- **label**: The text to show above the input as a label. If not specified, no label will be shown.
     - type: String
     - default: null
-
-- **langKey**: The language key of the label.
-               Will be inserted in a full key.
-               For the label to show on an input with the name 'email' the following key will be used:
-               'input[.langKey].email'
-    - type: String
-    - default: ''
 
 - **disabled**: States if the input shall be disabled.
     - type: Boolean
     - default: false
 
-- **showLabel**: States if a label shall be displayed above the input.
-    - type: Boolean,
-    - default: true
-
-- **check**: Function to check if the input is valid. If it is invalid an error message,
-             based upon the property 'name' and 'langKey' will be shown to the user.
-             The function receives the current value of the input as first parameter
-             and a callback function as the second. This callback must return true,
-             if the input is valid and false otherwise.
-    - type: Function
-
-- **required**: States if a value on the input is required
-    - type: Boolean,
-    - default: false
-
 - **help**: The help text to show as a tooltip when hovering over the input's help icon.
     - type: String
     - default: null
-
-- **helpPosition**:  The position of the tooltip when the 'help' prop is set.
-    - type: String
-    - default: 'top'
 
 - **color**: The specific color of the input group.
     - type: String
@@ -350,10 +318,6 @@ These components are used to represent inputs.
 - **size**: The specific size of the input group.
     - type: String
     - default: null
-
-- **ignoreErrors**: States if errors on the input shall be ignored, i.e., shall not be displayed
-    - type: Boolean
-    - default: false
     
 #### FormInput
 Represents an input field in the style of [Bootstrap](https://getbootstrap.com/).
@@ -386,18 +350,6 @@ This component inherits all of the shared properties listed above.
     - type: String
     - default: ''  
     
-- **min**: The minimum length of the input value.
-    - type: Number
-    - default: null
-
-- **max**: The maximum length of the input value.
-    - type: Number
-    - default: null
-
-- **confirmed**: If true, the input is treated as a confirmation input and needs to have a corresponding input with the same value.
-                 Ex.: If the name of this input is 'foo_confirmation', the input with the name 'foo' must have the same value.
-    - type: Boolean
-    - default: false
 
 - **placeholder**: The placeholder to show on the input.
     - type: String
@@ -446,6 +398,10 @@ This component will render to the following HTML:
 
 ##### Properties:
 This component inherits all of the shared properties listed above.  
+
+- **rows**: The textarea's native 'rows' attribute to define the height of the textarea.
+    - type: Number
+    - default: 3
 
 - **min**: The minimum length of the input value.
     - type: Number
@@ -515,19 +471,6 @@ This component inherits all of the shared properties listed above.
 - **options**: An array with objects containing a key 'value' with the option value and a key 'text' with the option text to show. These will be used as dropdown choices.
     - type: Array
     - default: []
-    
-- **min**: The minimum length of the input value.
-    - type: Number
-    - default: null
-
-- **max**: The maximum length of the input value.
-    - type: Number
-    - default: null
-
-- **confirmed**: If true, the input is treated as a confirmation input and needs to have a corresponding input with the same value.
-                 Ex.: If the name of this input is 'foo_confirmation', the input with the name 'foo' must have the same value.
-    - type: Boolean
-    - default: false
 
 - **placeholder**: The placeholder to show on the input.
     - type: String
@@ -844,6 +787,38 @@ Each response from the server based on an ajax request from the form components 
 - error: _The error message to show if an error occurred during the request._
 
 _Note: The name of the keys can be customized by editing the `serverKeys` data on the file `resources/assets/js/mixins/AjaxFormMixin.js`._
+
+
+### Validation
+Each input component accepts a prop named `rules`. By defining this prop on your Vue instances you can validate the input's value.
+Therefore, the prop accepts an array of rule object which should have one of the following value-key-pairs to define a validation rule:
+- **min**: [Number: min length of input's value] (_The value must be at least X characters._)
+- **max**: [Number: max length of inputs value] (_The value may not be greater than X characters._)
+- **required**: true (_A value is required._)
+- **confirmed**: [String: name of the input field that should contain the same value as this input field] (_The input's value must be the same as the value on an other input field._)
+- **email**: true (_The input must be a valid email address._)
+- **custom**: [Function: Custom validation function which accepts the params _name, value, callback_. The callback should return an object of the structure 
+    _{valid: [VALID], message: [DEFAULT_ERROR]}_] (_The input must be a valid against this validation function._)
+
+Additionally a rule object can have a 'message' key with a corresponding error message as the value,
+which will be shown when the given rule check fails.
+
+By default, every time the value of the input component changes, the value will be validated against the defined rules. 
+To change this behavior, you can specify a value for the key 'trigger' to define the activation of the validation check.
+The following values for 'trigger' are valid:
+- **input**: Triggered whenever the input's value is changed. [DEFAULT]
+- **blur**: Triggered whenever an input field looses its 'focus' state.
+- **focus**: Triggered whenever an input gets focused.
+- **change**: Triggered whenever the user is done editing an input's value.
+
+**Note**: If any of a form component's child input components is invalid due to the defined validation rules, the parent form can not be submitted.
+
+#### Example
+We want to define that a value on the input is required and should contain at least 5 characters:
+
+```js
+[{required: true, message: 'Please enter a value.'}, {min: 5, message: 'Please enter at least 5 characters.'}]
+```
 
 ### Customizing
 

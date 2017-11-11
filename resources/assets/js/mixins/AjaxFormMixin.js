@@ -23,25 +23,20 @@ export default {
         // The predefined data to submit with the form.
         data: {
             type: Object,
-            default: () => {return {}}
+            default: () => {
+                return {}
+            }
         },
 
-        // States if a confirm message shall be shown, before the form will be submitted.
+        // An object to define the messages to show to the user within a confirm alert, before the form will be submitted.
+        // If not defined, no confirm message will be shown.
+        // This object can contain the following key-value-pairs to modify the confirm alert:
+        // - 'title': [The title of the confirm message]
+        // - 'message': [The body message of the confirm message]
+        // - 'type': [The alert type of the confirm dialog (info, success, warning [DEFAULT], error]
+        // - 'accept': [The button text to show on the 'accept' button]
+        // - 'cancel': [The button text to show on the 'cancel' button]
         confirm: {
-            type: Boolean,
-            default: false
-        },
-
-        // The type of the confirm alert to ask the user, if he really wants to submit the form.
-        // Will only be used if the 'confirm' property is set to true.
-        confirmType: {
-            type: String,
-            default: 'warning'
-        },
-
-        // The props to insert into the confirm message, if one shall be shown.
-        // Will only be used if the 'confirm' property is set to true.
-        confirmProps: {
             type: Object,
             default: null
         },
@@ -57,15 +52,6 @@ export default {
         alertDuration: {
             type: Number,
             default: 3000
-        },
-
-        // The lang key to use to identify the messages to show to the user on a confirm alert.
-        // Will be inserted in a full key existing of the method and further props to retrieve the i18n messages.
-        // For the message to show on a confirm alert before a 'POST' request the following key will be used:
-        // 'confirm.[langKey].post.message'
-        langKey: {
-            type: String,
-            default: 'default'
         },
 
         // The base name of the events that get triggered by the form during a submit.
@@ -133,7 +119,10 @@ export default {
                 reload: 'reload',
                 data: 'data',
                 error: 'error'
-            }
+            },
+
+            // The editable data to submit with the form.
+            submitData: {},
         }
     },
 
@@ -183,7 +172,9 @@ export default {
 
             // Check if the ajax submit of the form is disabled or enabled
             if (this.ajax) {
-                event.preventDefault();
+                if (event) {
+                    event.preventDefault();
+                }
             } else {
                 this.startLoader();
 
@@ -197,13 +188,14 @@ export default {
             }
 
             // Let the user confirm his submit action, if a confirm is specified in the properties.
-            if (this.confirm) {
-                let confirmTitle = this.getLocalizationString('confirm', 'title');
-                let confirmMessage = this.getLocalizationString('confirm', 'message', this.confirmProps);
-                let confirmAccept = this.getLocalizationString('confirm', 'accept');
-                let confirmCancel = this.getLocalizationString('confirm', 'cancel');
+            if (this.confirm && _.isObject(this.confirm)) {
+                let confirmTitle = this.confirm.hasOwnProperty('title') ? this.confirm.title : null;
+                let confirmMessage = this.confirm.hasOwnProperty('message') ? this.confirm.message : null;
+                let confirmAccept = this.confirm.hasOwnProperty('accept') ? this.confirm.accept : null;
+                let confirmCancel = this.confirm.hasOwnProperty('cancel') ? this.confirm.cancel : null;
+                let confirmType = this.confirm.hasOwnProperty('type') ? this.confirm.type : 'warning';
 
-                new Alert(confirmMessage, confirmTitle, this.confirmType).confirm(confirmAccept, confirmCancel).then((confirmed) => {
+                new Alert(confirmMessage, confirmTitle, confirmType).confirm(confirmAccept, confirmCancel).then((confirmed) => {
                     if (confirmed) {
                         this.startLoader();
                         this.sendData();
@@ -245,7 +237,7 @@ export default {
             // Let the parent chain know, that the submit will be processed.
             window.eventHub.$emit('submitting-' + this.eventName, this);
 
-            let data = this.data;
+            let data = Object.assign(this.data, this.submitData);
             let inputs = $(this.$el).serializeArray();
             _.each(inputs, function (input) {
                 if (input.hasOwnProperty('name')) {
@@ -335,9 +327,9 @@ export default {
                         duration = alertInfo[this.serverKeys.alert.duration];
                     }
                 } else if (!success) {
-                    title = this.$t('alert.error.default.' + this.method.toLowerCase() + '.title');
-                    message = this.$t('alert.error.default.' + this.method.toLowerCase() + '.message');
-                    accept = this.$t('confirm.default.error.accept');
+                    title = 'Sorry!';
+                    message = 'An unknown error occurred! Please try again later.';
+                    accept = 'Ok!';
 
                     if (response && response.hasOwnProperty(this.serverKeys.error)) {
                         message = response[this.serverKeys.error];
@@ -386,6 +378,7 @@ export default {
                     replaceData(this.replaceResponse, data);
                 }
             }
+            this.removeElement();
 
             this.onSuccess(response);
             this.$emit('success');
@@ -405,20 +398,6 @@ export default {
             } else if (response && response.hasOwnProperty(this.serverKeys.reload)) {
                 window.location.reload(true);
             }
-        },
-
-        /**
-         * Gets the localization string for an alert type and a type and falls back to the default if necessary.
-         *
-         * @param alertType 'alert' or 'confirm'
-         * @param type 'title', 'message', 'cancel' or 'accept'
-         * @param params localization params
-         * @returns {string}
-         */
-        getLocalizationString: function (alertType, type, params = null) {
-            let key = alertType + '.' + this.langKey + '.' + this.method.toLowerCase() + '.' + type;
-
-            return this.$t(key, params);
         },
 
         /**
@@ -455,4 +434,3 @@ export default {
         },
     }
 };
-

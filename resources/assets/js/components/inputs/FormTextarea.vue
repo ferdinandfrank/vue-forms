@@ -1,8 +1,8 @@
 <template>
     <div class="form-group" ref="inputWrapper"
-         :class="{ 'is-invalid': invalid && !valid, 'is-valid': valid && contentChanged }">
+         :class="{ 'is-invalid': !valid, 'is-valid': valid && contentChanged, 'active': active }">
 
-        <label :for="name + '-input'" v-if="showLabel" ref="inputLabel">
+        <label :for="name + '-input'" v-if="label" ref="inputLabel">
             <span>{{ label }}</span>
         </label>
 
@@ -11,12 +11,12 @@
                 <icon :icon="icon"></icon>
             </span>
 
-            <textarea :id="name + '-input'" class="form-control" :name="name" v-model="submitValue" rows="3"
+            <textarea :id="name + '-input'" class="form-control" :name="name" v-model="submitValue" :rows="rows"
                       :placeholder="placeholder ? placeholder : ''" :aria-label="placeholder ? placeholder : ''"
                       :disabled="disabled" ref="input" @focus="activate" @blur="deactivate"></textarea>
 
             <span class="input-group-addon has-tooltip" v-if="help" ref="helpIcon">
-                <icon icon="fa fa-question"></icon>
+                <icon icon="fa fa-question" :title="help" v-tooltip:left></icon>
             </span>
 
             <span class="input-group-btn" v-if="showAddonSubmit && submitValue">
@@ -42,6 +42,15 @@
 
     export default {
         mixins: [formInputMixin],
+
+        props: {
+
+            // The textarea's native 'rows' attribute to define the height of the textarea.
+            rows: {
+                type: Number,
+                default: 3
+            }
+        }
     }
 
 </script>

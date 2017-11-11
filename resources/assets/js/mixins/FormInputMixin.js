@@ -1,9 +1,7 @@
 import Tooltip from 'tooltip.js';
+import Validation from '../helpers/Validation';
 
 export default {
-
-    // Internationalization module
-    i18n,
 
     props: {
 
@@ -20,19 +18,27 @@ export default {
             default: ''
         },
 
-        // The text to show above the input as a label. If not specified, the component will try to find a label
-        // based on the input's name and specified 'langKey' prop.
-        labelText: {
-            type: String,
-            default: null
+        // Array of rule objects to validate the input's value.
+        // Each rule object must have one of the following value-key-pairs which define a rule:
+        // - 'min': [Number: min length of input's value]
+        // - 'max': [Number: max length of input's value]
+        // - 'required': true
+        // - 'confirmed': [String: name of the input field that should contain the same value as this input field]
+        // - 'email': true
+        //
+        // Additionally a rule object can have a 'message' key with a corresponding error message as the value,
+        // which will be shown when the given rule check fails.
+        rules: {
+            type: Array,
+            default: () => {
+                return []
+            }
         },
 
-        // The language key of the label.
-        // Will be inserted in a full key.
-        // For the label to show on an input with the name 'email' the following key will be used:
-        // 'input[.langKey].email'
-        langKey: {
-            type: String
+        // The text to show above the input as a label. If not specified, no label will be shown.
+        label: {
+            type: String,
+            default: null
         },
 
         // States if the input shall be disabled.
@@ -41,35 +47,8 @@ export default {
             default: false
         },
 
-        // States if a label shall be displayed above the input.
-        showLabel: {
-            type: Boolean,
-            default: true
-        },
-
-        // Function to check if the input is valid. If it is invalid an error message,
-        // based upon the property 'name' and 'langKey' will be shown to the user.
-        // The function receives the current value of the input as first parameter
-        // and a callback function as the second. This callback must return true,
-        // if the input is valid and false otherwise.
-        check: {
-            type: Function
-        },
-
-        // States if a value on the input is required
-        required: {
-            type: Boolean,
-            default: false
-        },
-
         // The help text to show as a tooltip when hovering over the input's help icon
         help: null,
-
-        // The position of the tooltip when the 'help' prop is set
-        helpPosition: {
-            type: String,
-            default: 'top'
-        },
 
         // The specific color of the input group
         color: null,
@@ -77,11 +56,6 @@ export default {
         // The specific size of the input group
         size: null,
 
-        // States if errors on the input shall be ignored, i.e., shall not be displayed
-        ignoreErrors: {
-            type: Boolean,
-            default: false
-        }
     },
 
     data: function () {
@@ -90,16 +64,10 @@ export default {
             // The real value that gets submitted.
             submitValue: '',
 
-            // The error message of the input to show.
-            errorMessage: null,
-
             // States if the input's value is valid.
-            valid: !this.required || this.value,
+            valid: true,
 
-            // States if the input's value is invalid.
-            invalid: false,
-
-            // The parent form components of the component.
+            // The parent form component of the component.
             parentForm: '',
 
             // States if the input is currently focused.
@@ -110,44 +78,12 @@ export default {
 
             // States if the content has changed since the page load
             contentChanged: false,
-        }
-    },
 
-    computed: {
+            // The current error message to show.
+            errorMessage: null,
 
-        // The label text of the input, based upon the property 'name' or the property 'langKey', if it is set.
-        label: function () {
-            if (this.labelText) {
-                return this.labelText;
-            }
-
-            let langKey = this.name;
-            if (this.langKey) {
-                langKey = this.langKey + '.' + this.name;
-            }
-            langKey = 'input.' + langKey;
-            let label = this.$t(langKey);
-
-            // If no predefined label is set for the specified 'langKey', use the name of the input
-            if (label === langKey) {
-                label = _.startCase(this.name);
-            }
-
-            if (this.required) {
-                label += ' *';
-            }
-            return label;
-        },
-
-        // The name of the input. Will also be the name of the value, when the form gets submitted.
-        // Info: This value is based upon the 'name' property.
-        submitName: function () {
-            return this.name;
-        },
-
-        // The element that activates the help tooltip on hover
-        tooltipActivator: function () {
-            return this.$refs.inputWrapper;
+            // The validation instance
+            validation: null
         }
     },
 
@@ -164,13 +100,21 @@ export default {
                 }
             }
 
-            if (this.help && this.tooltipActivator) {
-                new Tooltip(this.tooltipActivator, {
-                    placement: this.helpPosition,
-                    title: this.help
+            this.validation = new Validation(this.parentForm);
+
+            // Init validation
+            for (let i = 0; i < this.rules.length; i++) {
+                let rule = this.rules[i];
+                let ruleKey = Object.keys(rule)[0];
+                let value = rule[ruleKey];
+                let message = rule.hasOwnProperty('message') ? rule.message : null;
+                let trigger = rule.hasOwnProperty('trigger') ? rule.trigger : 'input';
+
+                $(this.$refs.input).on(trigger, () => {
+                    this.validate(ruleKey, value, message);
+                    this.validateParentForm();
                 });
             }
-
         })
     },
 
@@ -181,19 +125,8 @@ export default {
                 this.contentChanged = true;
             }
 
-            // Set to null if empty string
-            if (val === '') {
-                val = null;
-            }
-
             window.eventHub.$emit(this.name + '-input-changed', val, oldValue);
             this.$emit('input', val);
-
-            // Only check input if the input wasn't cleared
-            if (val || this.active) {
-                this.checkInput();
-                this.validateParentForm();
-            }
 
             if (this.submitFormAfterSubmitValueIsSet) {
                 this.submit();
@@ -211,7 +144,6 @@ export default {
          * Activates the inputs editing style.
          */
         activate: function () {
-            $(this.$refs.inputWrapper).addClass('active');
             this.active = true;
         },
 
@@ -219,29 +151,30 @@ export default {
          * Deactivates the inputs editing style.
          */
         deactivate: function () {
-            $(this.$refs.inputWrapper).removeClass('active');
             this.active = false;
         },
 
         /**
-         * Checks if the current value of the input is valid and
-         * updates the input's label, based on the input's value.
+         * Validates the current value against the input rules or only against the specified rule.
          */
-        checkInput: function () {
-            if (this.checkRequired()
-                && this.checkComponentSpecific()) {
-                if (_.isFunction(this.check)) {
-                    this.check(this.submitValue, (valid, errorMessage) => {
-                        if (valid) {
-                            this.addSuccess();
+        validate: function (rule, value = null, message = null) {
+            return new Promise((resolve, reject) => {
+                if (rule) {
+                    this.validation.check(this.name, rule, this.submitValue, value).then((result) => {
+                        let error = null;
+                        if (!result.valid) {
+                            error = message ? message : result.message;
+                            this.addError(error);
                         } else {
-                            this.addError(errorMessage);
+                            this.addSuccess();
                         }
+
+                        resolve({valid: !!error, message: error});
                     });
                 } else {
-                    this.addSuccess();
+                    reject('No rule specified.');
                 }
-            }
+            });
         },
 
         validateParentForm: function () {
@@ -251,41 +184,13 @@ export default {
         },
 
         /**
-         * Checks if the input's value is valid regarding the property 'required'.
-         * If not an error message will be shown on the input.
-         *
-         * @returns {boolean}
-         */
-        checkRequired: function () {
-            if (!this.submitValue && this.required) {
-                this.addError(this.getLocalizationString('required', {'attribute': this.name}), true);
-
-                return false;
-            }
-            return true;
-        },
-
-        /**
-         * Checks if the input's value is valid regarding the specific needs in an input component.
-         *
-         * @returns {boolean}
-         */
-        checkComponentSpecific: function () {
-            return true;
-        },
-
-        /**
          * Adds the specified error message to the input field.
          *
          * @param errorMessage
-         * @param forceError
          */
-        addError: function (errorMessage = this.errorMessage, forceError = false) {
-            if (forceError || !this.ignoreErrors) {
-                this.errorMessage = errorMessage;
-                this.invalid = true;
-                this.valid = false;
-            }
+        addError: function (errorMessage) {
+            this.errorMessage = errorMessage;
+            this.valid = false;
         },
 
         /**
@@ -293,7 +198,6 @@ export default {
          */
         addSuccess: function () {
             this.errorMessage = null;
-            this.invalid = false;
             this.valid = true;
         },
 
@@ -335,44 +239,7 @@ export default {
         clearSubmit: function () {
             this.submitFormAfterSubmitValueIsSet = true;
             this.clear();
-        },
-
-        /**
-         * Gets the localization string for the error messages.
-         *
-         * @param type
-         * @param props
-         * @param plain
-         * @returns {string}
-         */
-        getLocalizationString: function (type = null, props = null, plain = false) {
-            let langKey = '';
-            if (this.langKey && !plain) {
-                langKey = this.langKey + '.';
-            }
-
-            let key = 'validation.' + langKey;
-            let defaultKey = key;
-            if (type) {
-                key = 'validation.' + langKey + type;
-                defaultKey = 'validation.' + type;
-            }
-
-            // Validate props
-            if (props !== null && props.hasOwnProperty('attribute')) {
-                let attribute = props.attribute;
-                let attributeLangKey = 'validation.attributes.' + attribute;
-                let attributeReplacement = this.$t(attributeLangKey);
-                props.attribute = attributeReplacement === attributeLangKey ? attribute : attributeReplacement;
-            }
-
-            let text = this.$t(key, props);
-            if (text === key) {
-                text = this.$t(defaultKey, props);
-            }
-
-            return text;
-        },
+        }
     }
 };
 

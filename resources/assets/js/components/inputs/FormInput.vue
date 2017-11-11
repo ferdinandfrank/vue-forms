@@ -1,8 +1,8 @@
 <template>
     <div class="form-group" ref="inputWrapper"
-         :class="{ 'is-invalid': invalid && !valid, 'is-valid': valid && contentChanged }">
+         :class="{ 'is-invalid': !valid, 'is-valid': valid && contentChanged, 'active': active }">
 
-        <label :for="name + '-input'" v-if="showLabel" ref="inputLabel">
+        <label :for="name + '-input'" v-if="label" ref="inputLabel">
             <span>{{ label }}</span>
         </label>
 
@@ -16,7 +16,7 @@
                    :disabled="disabled" ref="input" @focus="activate" @blur="deactivate">
 
             <span class="input-group-addon has-tooltip" v-if="help" ref="helpIcon">
-                <icon icon="fa fa-question"></icon>
+                <icon icon="fa fa-question" :title="help" v-tooltip:left></icon>
             </span>
 
             <span class="input-group-btn" v-if="showAddonSubmit && submitValue">
@@ -64,22 +64,6 @@
                 // Necessary, because of setting the type directly is not possible with vue.
                 $(this.$refs.input).attr('type', this.type);
             })
-        },
-
-        methods: {
-
-            /**
-             * Checks if the input's value is valid regarding the property 'type'.
-             *
-             * @returns {boolean}
-             */
-            checkComponentSpecific: function () {
-                if (this.type === 'email' && !isValidEmail(this.submitValue)) {
-                    this.addError(this.getLocalizationString('email', {'attribute': this.name}, true));
-                    return false;
-                }
-                return true;
-            }
         }
     }
 </script>

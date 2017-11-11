@@ -1,6 +1,6 @@
 <template>
     <div class="form-group" ref="inputWrapper"
-         :class="{ 'is-invalid': invalid && !valid, 'is-valid': valid && submitValue }">
+         :class="{ 'is-invalid': !valid, 'is-valid': valid && submitValue, 'active': active }">
 
         <div class="control-group"
              @click="toggleValue">
@@ -13,7 +13,7 @@
                        v-model="submitValue"/>
             </div>
             <label>
-                <span class="control-description" v-if="showLabel" ref="inputLabel">{{ label }}</span>
+                <span class="control-description" v-if="label" ref="inputLabel">{{ label }}</span>
             </label>
         </div>
 
