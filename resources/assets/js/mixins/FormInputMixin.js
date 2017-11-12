@@ -117,6 +117,12 @@ export default {
                     this.validate(ruleKey, value, message);
                 });
             }
+
+            // Validate against all rules once to disable the parent's form submit, but do not show the error to the user
+            this.validate().then((result) => {
+                this.errorMessage = null;
+                this.valid = true;
+            });
         })
     },
 
@@ -171,23 +177,27 @@ export default {
         validate: function (rule = null, value = null, message = null) {
             if (!rule) {
                 return new Promise((resolve) => {
-                    let valid = true;
-                    let messages = [];
+                    let validations = [];
                     for (let i = 0; i < this.rules.length; i++) {
                         let rule = this.rules[i];
                         let ruleKey = Object.keys(rule)[0];
                         let value = rule[ruleKey];
                         let message = rule.hasOwnProperty('message') ? rule.message : null;
 
-                        this.validate(ruleKey, value, message).then((result) => {
-                            if (!result.valid) {
-                                valid = false;
-                                messages.push(result.message);
-                            }
-                        });
+                        validations.push(this.validate(ruleKey, value, message));
                     }
 
-                    resolve({valid: !!error, message: error});
+                    Promise.all(validations).then(results => {
+                        let valid = true;
+                        let errors = [];
+                        _.each(results, result => {
+                            if (!result.valid) {
+                                valid = false;
+                                errors.push(result.message);
+                            }
+                        });
+                        resolve({valid: valid, message: errors});
+                    });
                 });
             }
 
