@@ -66,7 +66,7 @@ export default {
          */
         addErrorToInputComponent: function (inputComponent, errorMsg) {
             if (inputComponent && _.isFunction(inputComponent.addError)) {
-                inputComponent.addError(errorMsg);
+                inputComponent.addError('server', errorMsg);
             }
         },
 

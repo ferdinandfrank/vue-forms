@@ -79,6 +79,9 @@ export default {
             // States if the content has changed since the page load
             contentChanged: false,
 
+            // The current errors due to the validation.
+            errors: {},
+
             // The current error message to show.
             errorMessage: null,
 
@@ -100,7 +103,7 @@ export default {
                 }
             }
 
-            this.validation = new Validation(this.parentForm);
+            this.validation = new Validation(this.parentForm.$el);
 
             // Init validation
             for (let i = 0; i < this.rules.length; i++) {
@@ -112,7 +115,6 @@ export default {
 
                 $(this.$refs.input).on(trigger, () => {
                     this.validate(ruleKey, value, message);
-                    this.validateParentForm();
                 });
             }
         })
@@ -120,10 +122,12 @@ export default {
 
     watch: {
         submitValue: function (val, oldValue) {
-
             if (oldValue) {
                 this.contentChanged = true;
             }
+
+            // Set server errors to true, because we can not validate if the server errors are gone
+            this.addSuccess('server');
 
             window.eventHub.$emit(this.name + '-input-changed', val, oldValue);
             this.$emit('input', val);
@@ -136,6 +140,13 @@ export default {
         value: function (val) {
             this.submitValue = val;
         },
+
+        errors: {
+            handler: function (errors) {
+                this.valid = !errors.length;
+            },
+            deep: true
+        }
     },
 
     methods: {
@@ -157,23 +168,42 @@ export default {
         /**
          * Validates the current value against the input rules or only against the specified rule.
          */
-        validate: function (rule, value = null, message = null) {
-            return new Promise((resolve, reject) => {
-                if (rule) {
-                    this.validation.check(this.name, rule, this.submitValue, value).then((result) => {
-                        let error = null;
-                        if (!result.valid) {
-                            error = message ? message : result.message;
-                            this.addError(error);
-                        } else {
-                            this.addSuccess();
-                        }
+        validate: function (rule = null, value = null, message = null) {
+            if (!rule) {
+                return new Promise((resolve) => {
+                    let valid = true;
+                    let messages = [];
+                    for (let i = 0; i < this.rules.length; i++) {
+                        let rule = this.rules[i];
+                        let ruleKey = Object.keys(rule)[0];
+                        let value = rule[ruleKey];
+                        let message = rule.hasOwnProperty('message') ? rule.message : null;
 
-                        resolve({valid: !!error, message: error});
-                    });
-                } else {
-                    reject('No rule specified.');
-                }
+                        this.validate(ruleKey, value, message).then((result) => {
+                            if (!result.valid) {
+                                valid = false;
+                                messages.push(result.message);
+                            }
+                        });
+                    }
+
+                    resolve({valid: !!error, message: error});
+                });
+            }
+
+            return new Promise((resolve) => {
+                this.validation.check(this.name, rule, this.submitValue, value).then((result) => {
+                    let error = null;
+                    if (!result.valid) {
+                        error = message ? message : result.message;
+                        this.addError(rule, error);
+                    } else {
+                        this.addSuccess(rule);
+                    }
+
+                    this.validateParentForm();
+                    resolve({valid: !!error, message: error});
+                });
             });
         },
 
@@ -184,21 +214,29 @@ export default {
         },
 
         /**
-         * Adds the specified error message to the input field.
+         * Adds an error for the specified rule to the input.
          *
+         * @param rule
          * @param errorMessage
          */
-        addError: function (errorMessage) {
-            this.errorMessage = errorMessage;
+        addError: function (rule, errorMessage) {
+            this.errors[rule] = errorMessage;
             this.valid = false;
+            this.errorMessage = errorMessage;
         },
 
         /**
-         * Shows a success sign on the input field.
+         * Removes the error of the specified rule or adds a complete success state if no rule is specified.
          */
-        addSuccess: function () {
-            this.errorMessage = null;
-            this.valid = true;
+        addSuccess: function (rule = null) {
+            if (rule) {
+                delete this.errors[rule];
+            } else {
+                this.errors = {};
+            }
+
+            this.valid = !Object.keys(this.errors).length;
+            this.errorMessage = Object.keys(this.errors).length ? this.errors[Object.keys(this.errors)[0]] : null;
         },
 
         /**
@@ -206,9 +244,7 @@ export default {
          */
         reset: function () {
             this.submitValue = this.value;
-            this.errorMessage = null;
-            this.invalid = false;
-            this.valid = !this.required || this.value;
+            this.validate();
         },
 
         /**
@@ -216,9 +252,7 @@ export default {
          */
         clear: function () {
             this.submitValue = '';
-            this.errorMessage = null;
-            this.invalid = false;
-            this.valid = !this.required;
+            this.validate();
         },
 
         /**
