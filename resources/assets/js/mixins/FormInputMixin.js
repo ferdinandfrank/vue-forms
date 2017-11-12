@@ -121,7 +121,6 @@ export default {
             // Validate against all rules once to disable the parent's form submit, but do not show the error to the user
             this.validate().then((result) => {
                 this.errorMessage = null;
-                this.valid = true;
             });
         })
     },

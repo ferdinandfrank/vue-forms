@@ -1,6 +1,6 @@
 <template>
     <div class="form-group" ref="inputWrapper"
-         :class="{ 'is-invalid': !valid, 'is-valid': valid && submitValue, 'active': active }">
+         :class="{ 'is-invalid': !valid && contentChanged, 'is-valid': valid && contentChanged, 'active': active }">
 
         <div class="control-group"
              @click="toggleValue">
@@ -10,7 +10,7 @@
                 <div class="handle"></div>
                 <input :id="name + '-input'" type="checkbox" :name="name" ref="input" style="display: none;"
                        class="control-input"
-                       v-model="submitValue"/>
+                       :value="submitValue"/>
             </div>
             <label>
                 <span class="control-description" v-if="label" ref="inputLabel">{{ label }}</span>

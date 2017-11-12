@@ -1,6 +1,6 @@
 <template>
     <div class="form-group" ref="inputWrapper"
-         :class="{ 'is-invalid': !valid, 'is-valid': valid && submitValue, 'active': active }">
+         :class="{ 'is-invalid': !valid && contentChanged, 'is-valid': valid && contentChanged, 'active': active }">
 
         <div class="form-check" v-for="(label, key) in options">
             <label class="form-check-label">
