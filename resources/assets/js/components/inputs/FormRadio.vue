@@ -4,7 +4,7 @@
 
         <div class="form-check" v-for="(label, key) in options">
             <label class="form-check-label">
-                <input class="form-check-input" type="radio" v-model="submitValue" v-bind:value="key">
+                <input class="form-check-input" type="radio" :name="name" v-model="submitValue" v-bind:value="key">
                 {{ label }}
             </label>
         </div>
