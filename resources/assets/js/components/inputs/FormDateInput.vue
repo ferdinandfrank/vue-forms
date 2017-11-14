@@ -3,7 +3,7 @@
          :class="{ 'is-invalid': !valid && contentChanged, 'is-valid': valid && contentChanged, 'active': active }">
 
         <label :for="name + '-input'" v-if="label" ref="inputLabel">
-            <span>{{ label }}</span>
+            <span>{{ label }}{{ required ? '*' : '' }}</span>
         </label>
 
         <div class="input-group" :class="[ color ? 'input-group-' + color : '', size ? 'input-group-' + size : '']">

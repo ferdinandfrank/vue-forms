@@ -773,6 +773,16 @@ How to listen to this event from other Vue instances:
       // handle the event
     });
     ```    
+    
+- **[inputName]-input-validated**: Will be emitted as soon as the input's validation status changes.
+How to listen to this event from other Vue instances:
+ 
+    ```js
+    // - isValid: States if the value of the input is valid against the specified input rules
+    window.eventHub.$on('[inputName]-input-validated', function(isValid) {
+      // handle the event
+    });
+    ```  
 
 ### Parsing responses from the server
 Each response from the server based on an ajax request from the form components should provide the following data:
@@ -797,6 +807,7 @@ Therefore, the prop accepts an array of rule object which should have one of the
 - **required**: true (_A value is required._)
 - **confirmed**: [String: name of the input field that should contain the same value as this input field] (_The input's value must be the same as the value on an other input field._)
 - **email**: true (_The input must be a valid email address._)
+- **url**: true (_The input must be a valid url._)
 - **custom**: [Function: Custom validation function which accepts the params _name, value, callback_. The callback should return an object of the structure 
     _{valid: [VALID], message: [DEFAULT_ERROR]}_] (_The input must be a valid against this validation function._)
 

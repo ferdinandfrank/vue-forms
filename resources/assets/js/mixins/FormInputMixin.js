@@ -76,7 +76,7 @@ export default {
             // States if the parent form shall be submitted when the submit value is synced on all other components.
             submitFormAfterSubmitValueIsSet: false,
 
-            // States if the content has changed since the page load
+            // States if the content has changed since the page load.
             contentChanged: false,
 
             // The current errors due to the validation.
@@ -85,8 +85,11 @@ export default {
             // The current error message to show.
             errorMessage: null,
 
-            // The validation instance
-            validation: null
+            // The validation instance for the input.
+            validation: null,
+
+            // States if a value is required. Will be fetched from the defined validation rules.
+            required: false
         }
     },
 
@@ -112,6 +115,10 @@ export default {
                 let value = rule[ruleKey];
                 let message = rule.hasOwnProperty('message') ? rule.message : null;
                 let trigger = rule.hasOwnProperty('trigger') ? rule.trigger : 'input';
+
+                if (ruleKey === 'required') {
+                    this.required = true;
+                }
 
                 $(this.$refs.input).on(trigger, () => {
                     this.validate(ruleKey, value, message);
@@ -146,12 +153,11 @@ export default {
             this.submitValue = val;
         },
 
-        errors: {
-            handler: function (errors) {
-                this.valid = !errors.length;
-            },
-            deep: true
-        }
+        valid: function (valid, oldValid) {
+            if (valid !== oldValid) {
+                window.eventHub.$emit(this.name + '-input-validated', valid);
+            }
+        },
     },
 
     methods: {

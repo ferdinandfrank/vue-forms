@@ -3,7 +3,7 @@
          :class="{ 'is-invalid': !valid && contentChanged, 'is-valid': valid && contentChanged, 'active': active }">
 
         <label :for="name + '-input'" v-if="label" ref="inputLabel">
-            <span>{{ label }}</span>
+            <span>{{ label }}{{ required ? '*' : '' }}</span>
         </label>
 
         <div class="input-group" :class="[ color ? 'input-group-' + color : '', size ? 'input-group-' + size : '']">
@@ -32,8 +32,8 @@
 
         <div class="invalid-feedback" v-if="errorMessage">{{ errorMessage }}</div>
 
-        <span v-if="showMaxLengthCounter" class="counter">{{ submitValue.length }} / {{ max }}</span>
-        <span v-if="showMinLengthCounter" class="counter">{{ submitValue.length }} / {{ min }}</span>
+        <span v-if="showMaxLengthCounter" class="counter">{{ submitValue ? submitValue.length : 0 }} / {{ max }}</span>
+        <span v-if="showMinLengthCounter" class="counter">{{ submitValue ? submitValue.length : 0 }} / {{ min }}</span>
     </div>
 </template>
 
