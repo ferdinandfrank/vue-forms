@@ -363,8 +363,9 @@ export default {
                 updateHrefParamsWithData(this.form.data());
             }
 
+            let data = null;
             if (response.hasOwnProperty(this.serverKeys.data)) {
-                let data = response[this.serverKeys.data];
+                data = response[this.serverKeys.data];
 
                 if (this.appendResponse) {
                     appendData(this.appendResponse, data);
@@ -381,7 +382,7 @@ export default {
             this.removeElement();
 
             this.onSuccess(response);
-            this.$emit('success');
+            this.$emit('success', data);
         },
 
         /**
