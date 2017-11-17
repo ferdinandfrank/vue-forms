@@ -242,10 +242,10 @@ export default {
             _.each(inputs, function (input) {
                 if (input.hasOwnProperty('name')) {
 
-                    // Transform checkbox 'on'/'off' values to 'real' booleans
-                    if (input.value === 'on') {
+                    // Transform checkbox 'on'/'off', 'true'/'false' values to 'real' booleans
+                    if (input.value === 'on' || input.value === 'true') {
                         input.value = 1;
-                    } else if (input.value === 'off') {
+                    } else if (input.value === 'off' || input.value === 'false') {
                         input.value = 0;
                     }
 

@@ -19,9 +19,6 @@ class VueFormsServiceProvider extends ServiceProvider {
      */
     public function boot() {
 
-        // Load language files
-        $this->loadTranslationsFrom(VUE_FORMS_BASE_PATH . '/resources/lang', 'vue-forms');
-
         if ($this->app->runningInConsole()) {
             $this->commands([
                 InitVueForms::class

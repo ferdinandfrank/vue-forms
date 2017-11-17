@@ -145,7 +145,9 @@ export default {
             this.$emit('input', val);
 
             if (this.submitFormAfterSubmitValueIsSet) {
-                this.submit();
+                setTimeout(() => {
+                    this.submit();
+                 }, 1000);
             }
         },
 
