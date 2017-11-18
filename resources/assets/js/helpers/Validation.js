@@ -48,6 +48,11 @@ class Validation {
                         resolve(result);
                     });
                     break;
+                case 'accepted':
+                    this.accepted(inputValue).then((result) => {
+                        resolve(result);
+                    });
+                    break;
                 case 'custom':
                     if (_.isFunction(ruleValue)) {
                         ruleValue(name, inputValue, (valid, message = null) => {
@@ -73,7 +78,7 @@ class Validation {
         return new Promise((resolve) => {
             let valid = true;
             if (value) {
-                valid = value.length  >= min;
+                valid = value.length >= min;
             }
             resolve({valid: valid, message: valid ? null : `Please enter at least ${min} characters.`})
         });
@@ -83,7 +88,7 @@ class Validation {
         return new Promise((resolve) => {
             let valid = true;
             if (value) {
-                valid = value.length  <= max;
+                valid = value.length <= max;
             }
             resolve({valid: valid, message: valid ? null : `The input may not be greater than ${max} characters.`})
         });
@@ -106,6 +111,14 @@ class Validation {
                 valid = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i.test(value);
             }
             resolve({valid: valid, message: valid ? null : `Please enter a valid email address.`})
+        });
+    }
+
+    accepted(value) {
+        return new Promise((resolve) => {
+            console.log(value);
+            let valid = value === 'on' || value === 'true' || value === 1 || value === true;
+            resolve({valid: valid, message: valid ? null : `This must be accepted.`})
         });
     }
 

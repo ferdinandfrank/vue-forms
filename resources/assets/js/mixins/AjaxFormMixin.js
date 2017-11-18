@@ -106,6 +106,9 @@ export default {
             // The html content to put in the loading button, after the form has been submitted and the loader has stopped.
             originalLoadingContent: '',
 
+            // States if the form is currently beeing submitted
+            loading: false,
+
             // Defines the keys to extract from the server response to define the further handling of the form
             serverKeys: {
                 showAlert: 'alert',
@@ -212,6 +215,7 @@ export default {
          * Shows the loader, if a loader shall be shown.
          */
         startLoader: function () {
+            this.loading = true;
             if (this.button) {
                 this.originalLoadingContent = this.button.html();
                 this.button.html(this.loadingContent);
@@ -223,6 +227,7 @@ export default {
          * Stops the loader, if a loader is shown.
          */
         stopLoader: function () {
+            this.loading = false;
             if (this.button) {
                 this.button.html(this.originalLoadingContent);
                 this.button.prop('disabled', false);

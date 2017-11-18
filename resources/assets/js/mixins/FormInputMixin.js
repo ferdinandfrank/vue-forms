@@ -261,7 +261,12 @@ export default {
          */
         reset: function () {
             this.submitValue = this.value;
-            this.validate();
+
+            // Validate against all rules once to disable the parent's form submit, but do not show the error to the user
+            this.validate().then((result) => {
+                this.errorMessage = null;
+                this.contentChanged = false;
+            });
         },
 
         /**
@@ -269,7 +274,12 @@ export default {
          */
         clear: function () {
             this.submitValue = '';
-            this.validate();
+
+            // Validate against all rules once to disable the parent's form submit, but do not show the error to the user
+            this.validate().then((result) => {
+                this.errorMessage = null;
+                this.contentChanged = false;
+            });
         },
 
         /**

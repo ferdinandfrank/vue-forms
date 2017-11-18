@@ -808,6 +808,7 @@ Therefore, the prop accepts an array of rule object which should have one of the
 - **confirmed**: [String: name of the input field that should contain the same value as this input field] (_The input's value must be the same as the value on an other input field._)
 - **email**: true (_The input must be a valid email address._)
 - **url**: true (_The input must be a valid url._)
+- **accepted**: true (_The input must have one of the following values: 'on', 'true', 1, true_)
 - **custom**: [Function: Custom validation function which accepts the params _name, value, callback_. The callback should return an object of the structure 
     _{valid: [VALID], message: [DEFAULT_ERROR]}_] (_The input must be a valid against this validation function._)
 
