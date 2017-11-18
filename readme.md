@@ -1,7 +1,7 @@
 <h1 style="text-align:center;">Vue Forms</h1>
 
-[![Packagist Version](https://img.shields.io/packagist/v/epicarrow/vue-forms.svg)](https://packagist.org/packages/epicarrow/vue-forms)
-[![Packagist](https://img.shields.io/packagist/dt/epicarrow/vue-forms.svg)](https://packagist.org/packages/epicarrow/vue-forms)
+[![Packagist Version](https://img.shields.io/packagist/v/ferdinandfrank/vue-forms.svg)](https://packagist.org/packages/ferdinandfrank/vue-forms)
+[![Packagist](https://img.shields.io/packagist/dt/ferdinandfrank/vue-forms.svg)](https://packagist.org/packages/ferdinandfrank/vue-forms)
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 This package provides a collection of [Vue.js](https://vuejs.org/) form and input components to create pretty and easy ajax requests on a Laravel application.
@@ -51,7 +51,7 @@ These are requirements of your Laravel application for the package to work prope
 You can install them by just including the according entries in your `package.json` file (see Installation #4).
 
 #### Mandatory
-- [Vue](https://vuejs.org/) >= 2.1.10: _To render the Vue components._
+- [Vue.js](https://vuejs.org/) >= 2.1.10: _To render the Vue components._
 - [Lodash](https://lodash.com/) >= 4.17.4: _For using JS helper functions in the scripts which makes the code cleaner_
 - [MomentJS](https://momentjs.com/) >= 2.18.1: _For date formatting on JS_
 - [JQuery](https://jquery.com/) >= 3.1.1: _For element selection and ajax requests_
@@ -62,8 +62,8 @@ You can install them by just including the according entries in your `package.js
 - [Tooltip.js](https://popper.js.org/tooltip-examples.html) >= 1.1.5: _To show help texts on the inputs as a pretty tooltip_
 
 ### Optional Requirements
-To show a loading icon when a form get submitted a [Font Awesome](http://fontawesome.io/icons/) will be shown. This icon can be configured (see Customizing).
-If not configured, [Font Awesome](http://fontawesome.io/icons/) need to be installed properly on the application to show the loading icon.
+To show a loading icon when a form gets submitted as well as to show a help icon next to the inputs, [Font Awesome](http://fontawesome.io/icons/) will be used.
+[Font Awesome](http://fontawesome.io/icons/) need to be installed properly on the application to show these icons. Otherwise the components need to be configured.
 
 The HTML content of the components is designed for the usage with (Bootstrap 4)(https://getbootstrap.com/). 
 To have a nice design of the inputs out of the box, Bootstrap is required.
@@ -93,18 +93,18 @@ To have a nice design of the inputs out of the box, Bootstrap is required.
     php artisan vue-forms:init
     ```
     
-4. Add the following entries to the `dependencies` array in your `package.json` file. These are required.
+4. Add the following entries to the `dependencies` array in your `package.json` file, if these do not yet exist. These are required.
 
     ```json
     "dependencies": {
-        "bootstrap-sass": "^3.3.7",
+        "vue": "^2.1.10"
         "lodash": "^4.17.4",
         "jquery": "^3.1.1",
         "moment": "^2.18.1",
-        "popper.js": "^1.12.5",
-        "sweetalert": "^2.0.4",
-        "tooltip.js": "^1.1.5",
-        "vue": "^2.1.10"
+        "sweetalert": "^2.0.4", // Optional
+        "bootstrap-sass": "^3.3.7", // Optional
+        "popper.js": "^1.12.5", // Optional
+        "tooltip.js": "^1.1.5", // Optional
       }
     
      ```    

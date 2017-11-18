@@ -9,6 +9,14 @@ window.Vue = require('vue');
 
 
 /***********************************************************
+ Load Lodash
+ --------------------------
+ A modern JavaScript utility library delivering modularity, performance & extras.
+ ************************************************************/
+window._ = require('lodash');
+
+
+/***********************************************************
  Load jQuery
  --------------------------
  jQuery is a fast, small, and feature-rich JavaScript library.

@@ -2,9 +2,9 @@
     <div class="form-group" ref="inputWrapper"
          :class="{ 'is-invalid': !valid && contentChanged, 'is-valid': valid && contentChanged, 'active': active }">
 
-        <div class="control-group" :class="[ color ? 'control-group-' + color : '', size ? 'control-group-' + size : '']" @click="submitValue = !submitValue">
+        <div class="control-group" :class="[ color ? 'control-group-' + color : '', size ? 'control-group-' + size : '']" @click="toggleValue">
             <label class="control checkbox">
-                <input :id="name + '-input'" :name="name" ref="input" :value="submitValue" @click="submitValue = !submitValue" type="checkbox" class="control-input">
+                <input :id="name + '-input'" :name="name" ref="input" :value="submitValue" type="checkbox" class="control-input">
                 <span :id="name + '-checkbox-indicator'" class="control-indicator"></span>
                 <span class="control-description" v-if="label" ref="inputLabel">{{ label }}</span>
             </label>
