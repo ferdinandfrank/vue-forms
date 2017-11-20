@@ -1,6 +1,6 @@
 <h1 style="text-align:center;">Vue Forms</h1>
 
-[![Packagist Version](https://img.shields.io/packagist/v/ferdinandfrank/vue-forms.svg)](https://packagist.org/packages/ferdinandfrank/vue-forms)
+[![GitHub package version](https://img.shields.io/github/package-json/v/badges/shields.svg)](https://github.com/ferdinandfrank/vue-forms)
 [![Packagist](https://img.shields.io/packagist/dt/ferdinandfrank/vue-forms.svg)](https://packagist.org/packages/ferdinandfrank/vue-forms)
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
@@ -46,7 +46,7 @@ This package provides a collection of [Vue.js](https://vuejs.org/) form and inpu
 - [PHP](https://php.net) >= 7.0
 - An existing >= [Laravel 5.4](https://laravel.com/docs/master/installation) project
 
-### JS Requirements (see [Installation](#installation))
+### JS Requirements
 These are requirements of your Laravel application for the package to work properly on the client side. 
 You can install them by just including the according entries in your `package.json` file (see Installation #4).
 
@@ -93,18 +93,18 @@ To have a nice design of the inputs out of the box, Bootstrap is required.
     php artisan vue-forms:init
     ```
     
-4. Add the following entries to the `dependencies` array in your `package.json` file, if these do not yet exist. These are required.
+4. Add the following entries to the `dependencies` array in your `package.json` file, if these do not yet exist. The first four are required, the last four (sweetalert, bootstrap-sass, popper.js, tooltip.js) optional (see [Optional Requirements](#optional)).
 
     ```json
     "dependencies": {
-        "vue": "^2.1.10"
+        "vue": "^2.1.10",
         "lodash": "^4.17.4",
         "jquery": "^3.1.1",
         "moment": "^2.18.1",
-        "sweetalert": "^2.0.4", // Optional
-        "bootstrap-sass": "^3.3.7", // Optional
-        "popper.js": "^1.12.5", // Optional
-        "tooltip.js": "^1.1.5", // Optional
+        "sweetalert": "^2.0.4",
+        "bootstrap-sass": "^3.3.7",
+        "popper.js": "^1.12.5",
+        "tooltip.js": "^1.1.5"
       }
     
      ```    
