@@ -5,7 +5,7 @@ export default {
     mixins: [formInputMixin],
 
     props: {
-        // The predefined value of the checkbox.  Overrides the mixin's prop.
+        // The predefined value of the checkbox. Overrides the mixin's prop.
         value: {
             type: Boolean|Number,
             default: false

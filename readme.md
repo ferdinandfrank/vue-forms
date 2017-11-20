@@ -468,6 +468,14 @@ This component will render to the following HTML:
 ##### Properties:
 This component inherits all of the shared properties listed above.  
 
+- **value**: The predefined value of the input.
+    - type: String|Number|Array
+    - default: ''
+
+- **multiple**: States if multiple values can be selected on the input.
+    - type: Boolean
+    - default: false
+
 - **options**: An array with objects containing a key 'value' with the option value and a key 'text' with the option text to show. These will be used as dropdown choices.
     - type: Array
     - default: []
@@ -819,9 +827,9 @@ By default, every time the value of the input component changes, the value will 
 To change this behavior, you can specify a value for the key 'trigger' to define the activation of the validation check.
 The following values for 'trigger' are valid:
 - **input**: Triggered whenever the input's value is changed. [DEFAULT]
+- **change**: Triggered whenever the user is done editing an input's value. [DEFAULT for `FormSelect` component]
 - **blur**: Triggered whenever an input field looses its 'focus' state.
 - **focus**: Triggered whenever an input gets focused.
-- **change**: Triggered whenever the user is done editing an input's value.
 
 **Note**: If any of a form component's child input components is invalid due to the defined validation rules, the parent form can not be submitted.
 

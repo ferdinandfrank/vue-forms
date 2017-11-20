@@ -62,7 +62,7 @@ export default {
         return {
 
             // The real value that gets submitted.
-            submitValue: '',
+            submitValue: this.value,
 
             // States if the input's value is valid.
             valid: true,
@@ -95,8 +95,6 @@ export default {
 
     mounted: function () {
         this.$nextTick(function () {
-            this.submitValue = this.value;
-
             let parents = getListOfParents(this);
             for (let index in parents) {
                 let parent = parents[index];
@@ -114,7 +112,7 @@ export default {
                 let ruleKey = Object.keys(rule)[0];
                 let value = rule[ruleKey];
                 let message = rule.hasOwnProperty('message') ? rule.message : null;
-                let trigger = rule.hasOwnProperty('trigger') ? rule.trigger : 'input';
+                let trigger = rule.hasOwnProperty('trigger') ? rule.trigger : (this.$options._componentTag === 'form-select' ? 'change' : 'input');
 
                 if (ruleKey === 'required') {
                     this.required = true;
@@ -134,9 +132,7 @@ export default {
 
     watch: {
         submitValue: function (val, oldValue) {
-            if (oldValue) {
-                this.contentChanged = true;
-            }
+            this.contentChanged = true;
 
             // Set server errors to true, because we can not validate if the server errors are gone
             this.addSuccess('server');

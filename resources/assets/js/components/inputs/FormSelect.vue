@@ -10,8 +10,8 @@
                 <icon :icon="icon"></icon>
             </span>
 
-            <select :id="name + '-input'" :name="name" v-model="submitValue" class="form-control"
-                    :aria-label="placeholder"
+            <select :id="name + '-input'" :name="multiple ? (name + '[]') : name" v-model="submitValue" class="form-control"
+                    :aria-label="placeholder" :multiple="multiple"
                    :disabled="disabled" ref="input" @focus="activate" @blur="deactivate">
                 <option v-if="placeholder" value="" disabled selected>{{ placeholder }}</option>
                 <slot></slot>
@@ -42,6 +42,13 @@
 
         props: {
 
+            // The predefined value of the input.
+            // See data: 'submitValue'
+            value: {
+                type: String | Number | Array,
+                default: ''
+            },
+
             /**
              * An array with objects containing a key 'value' with the option value and a key 'text' with the option text to show. These will be used as dropdown choices.
              */
@@ -49,6 +56,12 @@
                 type: Array,
                 default: () => {return []},
             },
+
+            // States if multiple values can be selected on the input
+            multiple: {
+                type: Boolean,
+                default: false
+            }
         },
     }
 </script>

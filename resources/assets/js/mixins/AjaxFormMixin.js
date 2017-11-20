@@ -243,18 +243,10 @@ export default {
             window.eventHub.$emit('submitting-' + this.eventName, this);
 
             let data = Object.assign(this.data, this.submitData);
-            let inputs = $(this.$el).serializeArray();
-            _.each(inputs, function (input) {
-                if (input.hasOwnProperty('name')) {
-
-                    // Transform checkbox 'on'/'off', 'true'/'false' values to 'real' booleans
-                    if (input.value === 'on' || input.value === 'true') {
-                        input.value = 1;
-                    } else if (input.value === 'off' || input.value === 'false') {
-                        input.value = 0;
-                    }
-
-                    data[input.name] = input.value;
+            let children = getListOfChildren(this);
+            _.each(children, function (input) {
+                if (input.name && input.submitValue) {
+                    data[input.name] = input.submitValue;
                 }
             });
 
