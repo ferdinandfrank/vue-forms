@@ -328,15 +328,15 @@ export default {
                     message = 'An unknown error occurred! Please try again later.';
                     accept = 'Ok!';
 
-                    if (response && response.hasOwnProperty(this.serverKeys.error)) {
+                    // Check for Laravel >= 5.5 validation errors
+                    if (response && response.hasOwnProperty('errors')) {
+
+                        // Get the first validation error to show on the alert
+                        message = response.errors[Object.keys(response.errors)[0]];
+
+                    // Check for custom error message from server
+                    } else if (response && response.hasOwnProperty(this.serverKeys.error)) {
                         message = response[this.serverKeys.error];
-                    } else if (response) {
-                        for (let key in response) {
-                            if (response.hasOwnProperty(key)) {
-                                message = response[key];
-                                break;
-                            }
-                        }
                     }
                 }
 
