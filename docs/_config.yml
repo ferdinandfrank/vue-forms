@@ -1,3 +1,4 @@
 theme: jekyll-theme-architect
 title: Vue.js Forms
-description: Set of Vue.js form an input components to submit HTML forms with AJAX.
+description: Set of Vue.js form and input components to submit HTML forms with AJAX.
+show_downloads: true

@@ -1,75 +1,42 @@
 <h1 style="text-align:center;">Vue Forms</h1>
 
+<div style="text-align:center;">
 [![GitHub package version](https://img.shields.io/github/package-json/v/badges/shields.svg)](https://github.com/ferdinandfrank/vue-forms)
 [![Packagist](https://img.shields.io/packagist/dt/ferdinandfrank/vue-forms.svg)](https://packagist.org/packages/ferdinandfrank/vue-forms)
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+</div>
 
 This package provides a collection of [Vue.js](https://vuejs.org/) form and input components to create pretty and easy ajax requests on a Laravel application.
 
-## Contents
-- [Requirements](#requirements)
-  - [Server Requirements](#server-requirements)
-  - [JS Requirements](#js-requirements)
-    - [Mandatory](#mandatory)
-    - [Optional](#optional)
-  - [Optional Requirements](#optional-requirements)
-- [Installation](#installation)  
-- [Things to make sure before using this package](#things-to-make-sure-before-using-this-package)
-- [Usage](#usage)
-  - [Form Components](#form-components)
-    - [AjaxForm](#ajaxform)
-    - [FormButton](#formbutton)
-    - [FormLink](#formlink)
-  - [Input Components](#input-components)
-    - [FormInput](#forminput)
-    - [FormTextarea](#formtextarea)
-    - [FormSelect](#formselect)
-    - [FormDateInput](#formdateinput)
-    - [FormCheckbox](#formcheckbox)
-    - [FormSwitch](#formswitch)
-    - [FormRadio](#formradio)
-    - [HiddenInput](#hiddeninput)
-  - [Additional Components](#additional-components)
-    - [RemoveButton](#removebutton)
-    - [Icon](#icon)
-  - [Emitted Events](#emitted-events)
-  - [Parsing responses from the server](#parsing-responses-from-the-server)
-  - [Validation](#validation)
-- [Customizing](#customizing)
-  - [Server Response Parsing](#server-response-parsing)
-  - [Loading Button](#loading-button)
-- [License](#license)
-
-  
-## Requirements
-### Server Requirements
+# 1. Requirements
+## Server Requirements
 - [PHP](https://php.net) >= 7.0
 - An existing >= [Laravel 5.4](https://laravel.com/docs/master/installation) project
 
-### JS Requirements
-These are requirements of your Laravel application for the package to work properly on the client side. 
-You can install them by just including the according entries in your `package.json` file (see Installation #4).
+## JS Requirements
+There are a few requirements of your Laravel application for the package to work properly on the client side. 
+You can install them by just including the according entries in your `package.json` file (see [Installation](#installation) #4).
 
-#### Mandatory
-- [Vue.js](https://vuejs.org/) >= 2.1.10: _To render the Vue components._
+### Mandatory
+- [Vue.js](https://vuejs.org/) >= 2.1.10: _To render the Vue.js components._
 - [Lodash](https://lodash.com/) >= 4.17.4: _For using JS helper functions in the scripts which makes the code cleaner_
 - [MomentJS](https://momentjs.com/) >= 2.18.1: _For date formatting on JS_
 - [JQuery](https://jquery.com/) >= 3.1.1: _For element selection and ajax requests_
 
-#### Optional
+### Optional
 - [Bootstrap](https://getbootstrap.com/) >= 3.3.7: _For the design of the input components_
-- [Sweetalert](https://sweetalert.js.org/) >= 2.0.4: _To show pretty alert messages on server responses_
+- [Sweetalert](https://sweetalert.js.org/) >= 2.0.4: _To show pretty alert / confirm messages_
 - [Tooltip.js](https://popper.js.org/tooltip-examples.html) >= 1.1.5: _To show help texts on the inputs as a pretty tooltip_
 
-### Optional Requirements
+## Optional Requirements
 To show a loading icon when a form gets submitted as well as to show a help icon next to the inputs, [Font Awesome](http://fontawesome.io/icons/) will be used.
 [Font Awesome](http://fontawesome.io/icons/) need to be installed properly on the application to show these icons. Otherwise the components need to be configured.
 
-The HTML content of the components is designed for the usage with (Bootstrap 4)(https://getbootstrap.com/). 
+The HTML content of the components is designed for the usage with [Bootstrap 4](https://getbootstrap.com/). 
 To have a nice design of the inputs out of the box, Bootstrap is required.
 
 
-## Installation
+# 2. Installation
 
 1. To get started, install the package via the Composer package manager: 
 
@@ -124,17 +91,20 @@ To have a nice design of the inputs out of the box, Bootstrap is required.
 7. Compile your scripts via webpack or any other compiler.    
     
 That's it! You can now use the Vue.js components of this package.
+    
+# 3. Documentation
 
-
-## Things to make sure before using this package:
-- Include a Laravel CSRF token in a meta tag on every view where you want to use the form components.
+## Things to make sure before using this package
+Include a Laravel CSRF token in a meta tag on every view where you want to use the form components.
 This package tries to find the token within the meta tag and includes it in every request to the server.
+By doing this, you don't need to add a CSRF input field to your forms.
 
     ```php
     <meta name="csrf-token" content="{{ csrf_token() }}">
     ```
-    
-## Usage
+
+## Components
+The following form and input components can be used to make ajax requests to the server.
 
 ### Form Components
 These components are used to submit data to the server via an ajax request.
@@ -159,11 +129,15 @@ These components are used to submit data to the server via an ajax request.
     - default: null
     
     The object can contain the following key-value-pairs to modify the confirm alert:
-    - **title**: [The title of the confirm message]
-    - **message**: [The body message of the confirm message]
-    - **type**: [The alert type of the confirm dialog (info, success, error, warning [DEFAULT]]
-    - **accept**: [The button text to show on the 'accept' button]
-    - **cancel**: [The button text to show on the 'cancel' button]
+    - **title**: _[The title of the confirm message]_
+    - **message**: _[The body message of the confirm message]_
+    - **accept**: _[The button text to show on the 'accept' button]_
+    - **cancel**: _[The button text to show on the 'cancel' button]_
+    - **type**: _[The alert type of the confirm dialog]_
+        -  'info'
+        - 'success'
+        - 'error'
+        - 'warning' [DEFAULT]
  
 - **alertError**: States if an error alert message shall be shown, if an error occurred.
     - type: Boolean
@@ -197,10 +171,10 @@ Will only be used if the duration is not defined by the server response.
     - type: Boolean
     - default: true
 
-#### AjaxForm
+### AjaxForm
 Represents a basic form element that gets submitted via ajax if a submit is triggered.
 
-##### Minimal Usage
+#### Minimal Usage
 ```html
 <ajax-form method="[METHOD]" action="[ACTION]">
     // Include input components
@@ -218,8 +192,8 @@ This component will render to the following HTML:
 </form>
 ```
 
-##### Properties:
-This component inherits all of the shared properties listed above.
+#### Properties:
+This component inherits all of the shared properties listed above as well as the following:
 
 - **clear**: States if the form's inputs shall be cleared after the submit.
     - type: Boolean
@@ -229,11 +203,11 @@ This component inherits all of the shared properties listed above.
     - type: Boolean
     - default: false
     
-#### FormButton
+### FormButton
 Represents a button in the style of [Bootstrap](https://getbootstrap.com/) that submits an ajax request as soon as the button gets clicked.
 As this component is often used as a 'delete button' the props default to this functionality.
 
-##### Minimal Usage
+#### Minimal Usage
 ```html
 <form-button action="[ACTION]">
     // Include button content here
@@ -247,8 +221,8 @@ This component will render to the following HTML:
 </button>
 ```
 
-##### Properties:
-This component inherits all of the shared properties listed above.  
+#### Properties:
+This component inherits all of the shared properties listed above as well as the following:  
 
 - **color**: The color class of the button.
     - type: String
@@ -261,10 +235,10 @@ This component inherits all of the shared properties listed above.
     - type: String
     - default: 'delete'
     
-#### FormLink
+### FormLink
 Represents a link that submits an ajax request as soon as the link gets clicked.
 
-##### Minimal Usage
+#### Minimal Usage
 ```html
 <form-link action="[ACTION]" method="[METHOD]">
     // Include link content here
@@ -278,11 +252,11 @@ This component will render to the following HTML:
 </a>
 ```
 
-##### Properties:
-This component inherits all of the shared properties listed above.   
+#### Properties:
+This component inherits all of the shared properties listed above as well as the following:   
 
 
-### Input Components
+## Input Components
 These components are used to represent inputs.
 
 **Shared Properties that all of these components inherit:**
@@ -292,7 +266,7 @@ These components are used to represent inputs.
     - required: true
 
 - **value**: The predefined value of the input.
-    - type: String|Number
+    - type: String,Number
     - default: ''
     
 - **rules**: Array of rule objects to validate the input's value. See section [Validation](#validation) for further docs.
@@ -319,10 +293,10 @@ These components are used to represent inputs.
     - type: String
     - default: null
     
-#### FormInput
+### FormInput
 Represents an input field in the style of [Bootstrap](https://getbootstrap.com/).
 
-##### Minimal Usage
+#### Minimal Usage
 ```html
 <form-input name="[NAME]"></form-input>
 ```
@@ -339,8 +313,8 @@ This component will render to the following HTML:
 </div>
 ```
 
-##### Properties:
-This component inherits all of the shared properties listed above.  
+#### Properties:
+This component inherits all of the shared properties listed above as well as the following:  
 
 - **type**: The type of the input field.
     - type: String
@@ -376,10 +350,10 @@ This component inherits all of the shared properties listed above.
     - type: String
     - default: null    
 
-#### FormTextarea
+### FormTextarea
 Represents a textarea field in the style of [Bootstrap](https://getbootstrap.com/).
 
-##### Minimal Usage
+#### Minimal Usage
 ```html
 <form-textarea name="[NAME]"></form-textarea>
 ```
@@ -396,8 +370,8 @@ This component will render to the following HTML:
 </div>
 ```
 
-##### Properties:
-This component inherits all of the shared properties listed above.  
+#### Properties:
+This component inherits all of the shared properties listed above as well as the following:  
 
 - **rows**: The textarea's native 'rows' attribute to define the height of the textarea.
     - type: Number
@@ -441,10 +415,10 @@ This component inherits all of the shared properties listed above.
     - type: String
     - default: null    
     
-#### FormSelect
+### FormSelect
 Represents a select input field in the style of [Bootstrap](https://getbootstrap.com/).
 
-##### Minimal Usage
+#### Minimal Usage
 ```html
 <form-select name="[NAME]">
     // options (can also be set as options prop to have dynamic options)
@@ -465,11 +439,11 @@ This component will render to the following HTML:
 </div>
 ```
 
-##### Properties:
-This component inherits all of the shared properties listed above.  
+#### Properties:
+This component inherits all of the shared properties listed above as well as the following:  
 
 - **value**: The predefined value of the input.
-    - type: String|Number|Array
+    - type: String,Number,Array
     - default: ''
 
 - **multiple**: States if multiple values can be selected on the input.
@@ -505,10 +479,10 @@ This component inherits all of the shared properties listed above.
     - type: String
     - default: null        
     
-#### FormDateInput
+### FormDateInput
 Represents a date input field in the style of [Bootstrap](https://getbootstrap.com/) and [Eonasdan's Datepicker](https://eonasdan.github.io/bootstrap-datetimepicker/).
 
-##### Minimal Usage
+#### Minimal Usage
 ```html
 <form-date-input name="[NAME]"></form-date-input>
 ```
@@ -525,8 +499,8 @@ This component will render to the following HTML:
 </div>
 ```
 
-##### Properties:
-This component inherits all of the shared properties listed above.  
+#### Properties:
+This component inherits all of the shared properties listed above as well as the following:  
 
 - **format**: The format to use on the date picker. If a time is specified, the picker will automatically show a time picker as well, e.g., for the format 'YYYY-MM-DD HH:mm:ss'
     - type: String
@@ -570,10 +544,10 @@ This component inherits all of the shared properties listed above.
     - type: String
     - default: null       
 
-#### FormCheckbox
+### FormCheckbox
 Represents a checkbox in the style of [Bootstrap](https://getbootstrap.com/).
 
-##### Minimal Usage
+#### Minimal Usage
 ```html
 <form-checkbox name="[NAME]"></form-checkbox>
 ```
@@ -591,17 +565,17 @@ This component will render to the following HTML:
 </div>
 ```
 
-##### Properties:
-This component inherits all of the shared properties listed above.  
+#### Properties:
+This component inherits all of the shared properties listed above as well as the following:  
 
 - **value**: The predefined value of the checkbox.  Overrides the mixin's prop.
-    - type: Boolean|Number
+    - type: Boolean,Number
     - default: false
  
-#### FormSwitch
+### FormSwitch
 Represents a checkbox in the style of an iOS switch.
 
-##### Minimal Usage
+#### Minimal Usage
 ```html
 <form-switch name="[NAME]"></form-switch>
 ```
@@ -623,17 +597,17 @@ This component will render to the following HTML:
 </div>
 ```
 
-##### Properties:
-This component inherits all of the shared properties listed above.  
+#### Properties:
+This component inherits all of the shared properties listed above as well as the following:  
 
 - **value**: The predefined value of the checkbox.  Overrides the mixin's prop.
-    - type: Boolean|Number
+    - type: Boolean,Number
     - default: false
 
-#### FormRadio
+### FormRadio
 Represents a radio input field in the style of [Bootstrap](https://getbootstrap.com/).
 
-##### Minimal Usage
+#### Minimal Usage
 ```html
 <form-radio name="[NAME]" :options="{[VALUE1]: '[LABEL1]', [VALUE2]: '[LABEL2]'}">
     // further radio option (can also be set as options prop to have dynamic radio options
@@ -658,18 +632,18 @@ This component will render to the following HTML:
 </div>
 ```
 
-##### Properties:
-This component inherits all of the shared properties listed above.  
+#### Properties:
+This component inherits all of the shared properties listed above as well as the following:  
 
 - **options**: An object with keys as the value and values as the labels to be used as radio choices.
     - type: Object
     - default: {}
     
 
-#### HiddenInput
+### HiddenInput
 Represents a hidden input field.
 
-##### Minimal Usage
+#### Minimal Usage
 ```html
 <hidden-input name="[NAME]"></hidden-input>
 ```
@@ -679,15 +653,15 @@ This component will render to the following HTML:
 <input id="[NAME]-input" type="hidden" name="[NAME]">
 ```
 
-##### Properties:
-This component inherits all of the shared properties listed above.  
+#### Properties:
+This component inherits all of the shared properties listed above as well as the following:  
     
-### Additional Components    
+## Additional Components    
 
-#### RemoveButton
+### RemoveButton
 Represents a button in the style of [Bootstrap](https://getbootstrap.com/) that removes a specified element after it was clicked without submitting a form..
 
-##### Minimal Usage
+#### Minimal Usage
 ```html
 <remove-button remove="[SELECTOR]">
     // Include button content here
@@ -701,7 +675,7 @@ This component will render to the following HTML:
 </button>
 ```
 
-##### Properties: 
+#### Properties: 
 
 - **remove**: The selector of the element to remove after the form was submitted and a successful response from the server was received.
     - type: String
@@ -713,10 +687,10 @@ This component will render to the following HTML:
 - **size**: The size class of the button.
     - type: String 
 
-#### Icon
+### Icon
 Represents an icon element.
 
-##### Minimal Usage
+#### Minimal Usage
 ```html
 <icon icon="[ICON]"></icon>
 ```
@@ -726,14 +700,14 @@ This component will render to the following HTML:
 <i class="[ICON]"></i>
 ```
 
-##### Properties: 
+#### Properties: 
 
 - **icon**: The icon class.
     - type: String
     - required: true
 
     
-### Emitted Events
+## Emitted Events
 Each form component will emit specific events during the submit process. To be able to listen to those events from non parent components these events will be emitted on a predefined Vue component called `window.eventHub`.
 Each event name will end with a dynamic name. This name can be configured by setting the `eventName` prop on form components.
 - **prevented_submit-[eventName]**: Will be emitted when a submit of the form was requested but the form is not valid, i.e., one or more inputs within the form are still invalid.
@@ -792,22 +766,22 @@ How to listen to this event from other Vue instances:
     });
     ```  
 
-### Parsing responses from the server
+## Handling on server response
 Each response from the server based on an ajax request from the form components should provide the following data:
-- alert: _If this key is included, the form response handlers will try to show an alert message based on the following provided data:_
+- **alert**: _If this key is included, the form response handlers will try to show an alert message based on the following provided data:_
     - title: _The title to show on the alert._
     - message: _The message to show as the main content on the alert._ 
     - accept: _The text of the confirm button to show on the alert. If not provided, the alert will automatically disappear after the specified duration._
     - duration: _The duration after which the alert will automatically disappear, if not 'accept' prop is provided. Defaults to 3 seconds._
-- redirect: _If this key is included, the form response handlers will redirect the user to the url specified as the value of this key after a potential alert message was shown._
-- reload: _If this key is included, the form response handlers will reload the page after a potential alert message was shown._
-- data: _Further response data. Can be HTML content to append, prepend, or replace existing content on the page (see the shared props of the form components)._
-- error: _The error message to show if an error occurred during the request._
+- **redirect**: _If this key is included, the form response handlers will redirect the user to the url specified as the value of this key after a potential alert message was shown._
+- **reload**: _If this key is included, the form response handlers will reload the page after a potential alert message was shown._
+- **data**: _Further response data. Can be HTML content to append, prepend, or replace existing content on the page (see the shared props of the form components)._
+- **error**: _The error message to show if an error occurred during the request._
 
 _Note: The name of the keys can be customized by editing the `serverKeys` data on the file `resources/assets/js/mixins/AjaxFormMixin.js`._
 
 
-### Validation
+## Validation
 Each input component accepts a prop named `rules`. By defining this prop on your Vue instances you can validate the input's value.
 Therefore, the prop accepts an array of rule object which should have one of the following value-key-pairs to define a validation rule:
 - **min**: [Number: min length of input's value] (_The value must be at least X characters._)
@@ -833,25 +807,25 @@ The following values for 'trigger' are valid:
 
 **Note**: If any of a form component's child input components is invalid due to the defined validation rules, the parent form can not be submitted.
 
-#### Example
+### Example
 We want to define that a value on the input is required and should contain at least 5 characters:
 
 ```js
 [{required: true, message: 'Please enter a value.'}, {min: 5, message: 'Please enter at least 5 characters.'}]
 ```
 
-### Customizing
+## Customizing
 
-#### Server Response Parsing
+### Server Response Parsing
 The form response handlers will look for specific keys on the response from the server to define the further actions (see 'Parsing responses from the server'). The keys can be customized by editing the `serverKeys` data on the file `resources/assets/js/mixins/AjaxFormMixin.js`.
 
-#### Loading Button
+### Loading Button
 After the user clicks the submit button of a form component, a loading icon will automatically be inserted within the submit button. The content of the button can be customized by editing the `loadingContent` data on the file `resources/assets/js/mixins/AjaxFormMixin.js`.
 
-## Credits
+# 4. Credits
 - The date component `FormDateInput` is based on [the Bootstrap datetimepicker by eonasdan](https://eonasdan.github.io/bootstrap-datetimepicker/).
 - The alerts are handled by the [Sweetalert](https://sweetalert.js.org/) plugin
 - The tooltips are handled by the [Tooltip.js](https://popper.js.org/tooltip-examples.html) plugin
 
-## License
+# 5. License
 [MIT](https://github.com/ferdinandfrank/vue-forms/blob/master/LICENSE)
