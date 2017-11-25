@@ -96,7 +96,7 @@ This package tries to find the token within the meta tag and includes it in ever
 By doing this, you don't need to add a CSRF input field to your forms.
 
 ```php
-<meta name="csrf-token" content="{{ csrf_token() }}">
+<meta name="csrf-token" content="[CSRF_TOKEN]">
 ```
 
 ## Components
@@ -856,7 +856,7 @@ Additionally a rule object can have a 'message' key with a corresponding error m
 which will be shown when the given rule check fails.
 
 By default, every time the value of the input component changes, the value will be validated against the defined rules. 
-To change this behavior, you can specify a value for the key 'trigger' to define the activation of the validation check.
+To change this behavior, you can specify a value for the key `trigger` to define the activation of the validation check.
 The following values for 'trigger' are valid:
 - **input**: Triggered whenever the input's value is changed. [DEFAULT]
 - **change**: Triggered whenever the user is done editing an input's value. [DEFAULT for `FormSelect` component]
@@ -865,11 +865,17 @@ The following values for 'trigger' are valid:
 
 **Note**: If any of a form component's child input components is invalid due to the defined validation rules, the parent form can not be submitted.
 
-### Example
+### Examples
 We want to define that a value on the input is required and should contain at least 5 characters:
 
-```js
-[{required: true, message: 'Please enter a value.'}, {min: 5, message: 'Please enter at least 5 characters.'}]
+```html
+<form-input name="name" :rules="[{required: true, message: 'Please enter a value.'}, {min: 5, message: 'Please enter at least 5 characters.'}]"></form-input>
+```
+
+We want to define that a value on the input needs to be a valid email address. But we only want to validate this after the user leaves the input field.
+
+```html
+<form-input name="name" :rules="[{email: true, trigger: 'blur'}]"></form-input>
 ```
 
 ## Customizing
