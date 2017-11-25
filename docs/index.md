@@ -1,10 +1,6 @@
-<h1 style="text-align:center;">Vue Forms</h1>
-
-<div style="text-align:center;">
 [![GitHub package version](https://img.shields.io/github/package-json/v/badges/shields.svg)](https://github.com/ferdinandfrank/vue-forms)
 [![Packagist](https://img.shields.io/packagist/dt/ferdinandfrank/vue-forms.svg)](https://packagist.org/packages/ferdinandfrank/vue-forms)
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-</div>
 
 This package provides a collection of [Vue.js](https://vuejs.org/) form and input components to create pretty and easy ajax requests on a Laravel application.
 
@@ -99,9 +95,9 @@ Include a Laravel CSRF token in a meta tag on every view where you want to use t
 This package tries to find the token within the meta tag and includes it in every request to the server.
 By doing this, you don't need to add a CSRF input field to your forms.
 
-    ```php
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    ```
+```php
+<meta name="csrf-token" content="{{ csrf_token() }}">
+```
 
 ## Components
 The following form and input components can be used to make ajax requests to the server.
@@ -766,8 +762,8 @@ How to listen to this event from other Vue instances:
     });
     ```  
 
-## Handling on server response
-Each response from the server based on an ajax request from the form components should provide the following data:
+## Server Response Handling
+By specifying specific keys on the server response, the handling by the form components after the form submit can be controlled. Therefor, just return a JSON response with one or multiple of the following keys:
 - **alert**: _If this key is included, the form response handlers will try to show an alert message based on the following provided data:_
     - title: _The title to show on the alert._
     - message: _The message to show as the main content on the alert._ 
@@ -776,7 +772,69 @@ Each response from the server based on an ajax request from the form components 
 - **redirect**: _If this key is included, the form response handlers will redirect the user to the url specified as the value of this key after a potential alert message was shown._
 - **reload**: _If this key is included, the form response handlers will reload the page after a potential alert message was shown._
 - **data**: _Further response data. Can be HTML content to append, prepend, or replace existing content on the page (see the shared props of the form components)._
-- **error**: _The error message to show if an error occurred during the request._
+- **error**: _A simple error message to show if an error occurred during the request._
+
+### Examples
+#### Successful Response With Success Alert
+To show a success alert after the form was processed by the server, just return the following JSON response in your corresponding controller method:
+```php
+public function handleRequest(Request $request) {
+   // Handle the request
+
+   return response()->json([
+       'alert' => [
+           'title'   => 'Success',
+           'message' => 'Request was successful!',
+           'accept'  => 'Alright!'
+       ]
+   ]);
+}
+``` 
+
+#### Successful Response With Success Alert Followed By A Redirect
+To show a success alert after the form was processed by the server and to redirect the user right after the alert disappeared (4s), just return the following JSON response in your corresponding controller method:
+```php
+public function handleRequest(Request $request) {
+   // Handle the request
+
+   return response()->json([
+       'redirect' => route('home'),
+       'alert' => [
+           'title'   => 'Success',
+           'message' => 'Request was successful!',
+           'duration'  => 4000
+       ]
+   ]);
+}
+``` 
+
+#### Error Response With Error Alert
+To show an error alert after the form was processed by the server, just return the following JSON response in your corresponding controller method:
+```php
+public function handleRequest(Request $request) {
+   // Handle the request
+
+   return response()->json([
+       'alert' => [
+           'title'   => 'Error',
+           'message' => 'An error occurred!',
+           'accept'  => 'Alright!'
+       ]
+   ], 500);
+}
+``` 
+
+#### Error Response With Simple Error Message
+To show a simple error message after the form was processed by the server, just return the following JSON response in your corresponding controller method:
+```php
+public function handleRequest(Request $request) {
+   // Handle the request
+
+   return response()->json([
+       'error' => 'An error occurred!',
+   ], 500);
+}
+```
 
 _Note: The name of the keys can be customized by editing the `serverKeys` data on the file `resources/assets/js/mixins/AjaxFormMixin.js`._
 
