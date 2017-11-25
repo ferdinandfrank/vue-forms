@@ -116,7 +116,6 @@ class Validation {
 
     accepted(value) {
         return new Promise((resolve) => {
-            console.log(value);
             let valid = value === 'on' || value === 'true' || value === 1 || value === true;
             resolve({valid: valid, message: valid ? null : `This must be accepted.`})
         });
