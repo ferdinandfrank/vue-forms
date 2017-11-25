@@ -6,6 +6,8 @@
 
 This package provides a collection of [Vue.js](https://vuejs.org/) form and input components to create pretty and easy ajax requests on a Laravel application.
 
+Full documentation: [https://ferdinandfrank.github.io/vue-forms/](https://ferdinandfrank.github.io/vue-forms/)
+
 ## Example
 
 HTML form with two input components which get cleared after the submit. Additionally a success alert message will be shown after the server processed the request.
