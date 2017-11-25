@@ -1,10 +1,8 @@
-<h1 style="text-align:center;">Vue Forms</h1>
+<h1 style="text-align:center;">Vue.js Forms</h1>
 
-<div style="text-align:center;">
 [![GitHub package version](https://img.shields.io/github/package-json/v/badges/shields.svg)](https://github.com/ferdinandfrank/vue-forms)
 [![Packagist](https://img.shields.io/packagist/dt/ferdinandfrank/vue-forms.svg)](https://packagist.org/packages/ferdinandfrank/vue-forms)
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-</div>
 
 This package provides a collection of [Vue.js](https://vuejs.org/) form and input components to create pretty and easy ajax requests on a Laravel application.
 
