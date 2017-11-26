@@ -48,13 +48,13 @@ export default {
         /**
          * Will be called if an error occurred on the form submit.
          *
-         * @param errors The errors from the server.
+         * @param response The error response from the server.
          */
-        onError: function (errors) {
-            for (let errorKey in errors) {
-                if (errors.hasOwnProperty(errorKey)) {
-                    this.addErrorToInputComponent(this.getChildInputComponentByName(errorKey), errors[errorKey][0])
-                }
+        onError: function (response) {
+            if (response.hasOwnProperty('errors')) {
+                _.each(response.errors, (inputErrors, inputName) => {
+                    this.addErrorToInputComponent(this.getChildInputComponentByName(inputName), inputErrors[0]);
+                });
             }
         },
 
