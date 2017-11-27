@@ -821,6 +821,7 @@ By specifying specific keys on the server response, the handling by the form com
     - message: _The message to show as the main content on the alert._ 
     - accept: _The text of the confirm button to show on the alert. If not provided, the alert will automatically disappear after the specified duration._
     - duration: _The duration after which the alert will automatically disappear, if not 'accept' prop is provided. Defaults to 3 seconds._
+    - type: _The type of the alert to show. Can be one of the following: 'success', 'error', 'info'. Defaults to 'success' on successful server responses and to 'error' on server error responses._
 - **redirect**: _If this key is included, the form response handlers will redirect the user to the url specified as the value of this key after a potential alert message was shown._
 - **reload**: _If this key is included, the form response handlers will reload the page after a potential alert message was shown._
 - **data**: _Further response data. Can be HTML content to append, prepend, or replace existing content on the page (see the shared props of the form components)._

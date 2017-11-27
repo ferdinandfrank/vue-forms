@@ -116,7 +116,8 @@ export default {
                     title: 'title',
                     message: 'message',
                     accept: 'accept',
-                    duration: 'duration'
+                    duration: 'duration',
+                    type: 'type'
                 },
                 redirect: 'redirect',
                 reload: 'reload',
@@ -309,6 +310,7 @@ export default {
                 let title = '';
                 let accept = false;
                 let duration = this.alertDuration;
+                let type = success ? 'success' : 'error';
 
                 if (response && response.hasOwnProperty(this.serverKeys.showAlert) && response[this.serverKeys.showAlert].hasOwnProperty(this.serverKeys.alert.message)) {
                     let alertInfo = response[this.serverKeys.showAlert];
@@ -322,6 +324,9 @@ export default {
                     }
                     if (alertInfo.hasOwnProperty(this.serverKeys.alert.duration)) {
                         duration = alertInfo[this.serverKeys.alert.duration];
+                    }
+                    if (alertInfo.hasOwnProperty(this.serverKeys.alert.type)) {
+                        type = alertInfo[this.serverKeys.alert.type];
                     }
                 } else if (!success) {
                     title = 'Sorry!';
@@ -341,7 +346,7 @@ export default {
                 }
 
                 if (message) {
-                    new Alert(message, title, success ? 'success' : 'error').show(accept, accept ? null : duration).then(() => {
+                    new Alert(message, title, type).show(accept, accept ? null : duration).then(() => {
                         resolve();
                     });
                 } else {
