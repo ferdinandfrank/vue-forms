@@ -87,8 +87,60 @@ To have a nice design of the inputs out of the box, Bootstrap is required.
 7. Compile your scripts via webpack or any other compiler.    
     
 That's it! You can now use the Vue.js components of this package.
+
+# 3. Examples
+This package is build to create easy readable forms and submitting them via ajax using the power of Vue.js components.
+The following examples shall demonstrate common use cases:
+
+**HTML form with two input components which get cleared after the submit. Additionally a success alert message will be shown after the server successfully processed the request.**
+         
+In your HTML / Blade file:
+
+```html
+<ajax-form method="[METHOD]" action="[ACTION]" :clear="true">
+    <form-input name="name" label="Name" :value="MyName"></form-input>
+    <form-select name="gender" label="Gender" :value="m">
+        <option value="m">Male</option>
+        <option value="f">Female</option>
+    </form-select>
     
-# 3. Documentation
+    <button type="submit">Submit</button>
+</ajax-form>
+```
+  
+In your controller method:
+
+```php
+public function handleRequest(Request $request) {
+    // Handle the request
+    
+    return response()->json([
+        'alert' => [
+            'title'   => 'Success',
+            'message' => 'Request was successful!',
+            'accept'  => 'Alright!'
+        ]
+    ]);
+}
+```
+
+[See more examples regarding the server response here](#server-response-handling)
+
+***
+
+**HTML form with one input component that validates against specific rules.**
+         
+In your HTML / Blade file:
+
+```html
+<ajax-form method="[METHOD]" action="[ACTION]">
+    <form-input name="email" label="E-Mail" :rules="[{email: true, message: 'Please enter a valid email address.'}, {min: 5, message: 'Please enter at least 5 characters.'}]"></form-input>
+    
+    <button type="submit">Submit</button>
+</ajax-form>
+```
+    
+# 4. Documentation
 
 ## Things to make sure before using this package
 Include a Laravel CSRF token in a meta tag on every view where you want to use the form components.
@@ -886,10 +938,10 @@ The form response handlers will look for specific keys on the response from the 
 ### Loading Button
 After the user clicks the submit button of a form component, a loading icon will automatically be inserted within the submit button. The content of the button can be customized by editing the `loadingContent` data on the file `resources/assets/js/mixins/AjaxFormMixin.js`.
 
-# 4. Credits
+# 5. Credits
 - The date component `FormDateInput` is based on [the Bootstrap datetimepicker by eonasdan](https://eonasdan.github.io/bootstrap-datetimepicker/).
 - The alerts are handled by the [Sweetalert](https://sweetalert.js.org/) plugin
 - The tooltips are handled by the [Tooltip.js](https://popper.js.org/tooltip-examples.html) plugin
 
-# 5. License
+# 6. License
 [MIT](https://github.com/ferdinandfrank/vue-forms/blob/master/LICENSE)
