@@ -245,11 +245,27 @@ export default {
 
             let data = Object.assign(this.data, this.submitData);
             let children = getListOfChildren(this);
+            let formData = {};
+
             _.each(children, function (input) {
+
+                // If value already exists, build an array, e.g., multiple checkboxes, selects
+                if (formData.hasOwnProperty(input.name) && !_.isArray(formData[input.name])) {
+                    formData[input.name] = [formData[input.name]];
+                }
+
                 if (input.name && input.submitValue) {
-                    data[input.name] = input.submitValue;
+
+                    // If value already exists add the new value to previously built array, e.g., multiple checkboxes, selects
+                    if (formData.hasOwnProperty(input.name)) {
+                        formData[input.name].push(input.submitValue);
+                    } else {
+                        formData[input.name] = input.submitValue;
+                    }
                 }
             });
+
+            data = Object.assign(data, formData);
 
             $.ajax({
                 type: this.method.toLowerCase(),

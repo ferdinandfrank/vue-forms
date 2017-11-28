@@ -640,8 +640,12 @@ This component will render to the following HTML:
 #### Properties:
 This component inherits all of the shared properties listed above as well as the following:  
 
-- **value**: The predefined value of the checkbox.  Overrides the mixin's prop.
-    - type: Boolean,Number
+- **value**: The predefined value of the checkbox that gets submitted when the checkbox is checked. Overrides the mixin's prop.
+    - type: Boolean,Number,String
+    - default: true
+    
+- **checked**: States if the checkbox is initially checked. If checked this input will submit the component's `value` prop, otherwise `false` will be submitted.
+    - type: Boolean
     - default: false
  
 ### FormSwitch
@@ -672,8 +676,12 @@ This component will render to the following HTML:
 #### Properties:
 This component inherits all of the shared properties listed above as well as the following:  
 
-- **value**: The predefined value of the checkbox.  Overrides the mixin's prop.
-    - type: Boolean,Number
+- **value**: The predefined value of the checkbox that gets submitted when the checkbox is checked. Overrides the mixin's prop.
+    - type: Boolean,Number,String
+    - default: true
+    
+- **checked**: States if the checkbox is initially checked. If checked this input will submit the component's `value` prop, otherwise `false` will be submitted.
+    - type: Boolean
     - default: false
 
 ### FormRadio
