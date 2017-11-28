@@ -342,7 +342,7 @@ These components are used to represent inputs.
     - default: null
     
 ### FormInput
-Represents an input field in the style of [Bootstrap](https://getbootstrap.com/).
+Represents an input field in the style of [Bootstrap](https://getbootstrap.com/). For uploading files please use the [FormFileInput component](#formfileinput).
 
 #### Minimal Usage
 ```html
@@ -424,19 +424,6 @@ This component inherits all of the shared properties listed above as well as the
 - **rows**: The textarea's native 'rows' attribute to define the height of the textarea.
     - type: Number
     - default: 3
-
-- **min**: The minimum length of the input value.
-    - type: Number
-    - default: null
-
-- **max**: The maximum length of the input value.
-    - type: Number
-    - default: null
-
-- **confirmed**: If true, the input is treated as a confirmation input and needs to have a corresponding input with the same value.
-                 Ex.: If the name of this input is 'foo_confirmation', the input with the name 'foo' must have the same value.
-    - type: Boolean
-    - default: false
 
 - **placeholder**: The placeholder to show on the input.
     - type: String
@@ -553,19 +540,6 @@ This component inherits all of the shared properties listed above as well as the
 - **format**: The format to use on the date picker. If a time is specified, the picker will automatically show a time picker as well, e.g., for the format 'YYYY-MM-DD HH:mm:ss'
     - type: String
     - default: "YYYY-MM-DD"
-    
-- **min**: The minimum length of the input value.
-    - type: Number
-    - default: null
-
-- **max**: The maximum length of the input value.
-    - type: Number
-    - default: null
-
-- **confirmed**: If true, the input is treated as a confirmation input and needs to have a corresponding input with the same value.
-                 Ex.: If the name of this input is 'foo_confirmation', the input with the name 'foo' must have the same value.
-    - type: Boolean
-    - default: false
 
 - **placeholder**: The placeholder to show on the input.
     - type: String
@@ -591,6 +565,56 @@ This component inherits all of the shared properties listed above as well as the
 - **addonResetColor**: The color of the appended reset button, see 'addonSubmit'
     - type: String
     - default: null       
+    
+### FormFileInput
+Represents a file input field.
+**Important Note**: Files will be uploaded in a `base64` format.
+
+#### Minimal Usage
+```html
+<form-date-input name="[NAME]"></form-date-input>
+```
+
+This component will render to the following HTML:
+```html
+<div class="form-group">
+    <label for="[NAME]-input">
+        <span>[LABEL]</span>
+    </label>
+    <div class="input-group">
+        <input type="text" name="[NAME]" style="display: none">
+        <input id="[NAME]-input" type="file" name="[NAME]-selector" placeholder="" class="form-control">
+    </div>
+</div>
+```
+
+#### Properties:
+This component inherits all of the shared properties listed above as well as the following:  
+
+- **placeholder**: The placeholder to show on the input.
+    - type: String
+    - default: null
+
+- **icon**: The icon to show next to the input field.
+    - type: String
+    - default: null
+
+- **addonSubmit**: States, if a form submit button shall be appended on the input.
+                   Additionally a reset button will be appended if the form was already submitted.
+    - type: Boolean
+    - default: false
+
+- **addonSubmitContent**: The text to show in the appended submit button, see 'addonSubmit'
+    - type: String
+    - default: 'Go!'
+
+- **addonSubmitColor**: The color of the appended submit button, see 'addonSubmit'
+    - type: String
+    - default: null
+
+- **addonResetColor**: The color of the appended reset button, see 'addonSubmit'
+    - type: String
+    - default: null     
 
 ### FormCheckbox
 Represents a checkbox in the style of [Bootstrap](https://getbootstrap.com/).

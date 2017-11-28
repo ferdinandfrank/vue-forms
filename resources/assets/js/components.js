@@ -15,6 +15,7 @@ import formSwitch from "./components/inputs/FormSwitch.vue";
 import formLink from "./components/buttons/FormLink.vue";
 import formSelect from "./components/inputs/FormSelect.vue";
 import formDateInput from "./components/inputs/FormDateInput.vue";
+import formFileInput from "./components/inputs/FormFileInput.vue";
 import removeButton from "./components/buttons/RemoveButton.vue";
 import icon from "./components/Icon.vue";
 
@@ -29,5 +30,6 @@ Vue.component('form-switch', formSwitch);
 Vue.component('form-link', formLink);
 Vue.component('form-select', formSelect);
 Vue.component('form-date-input', formDateInput);
+Vue.component('form-file-input', formFileInput);
 Vue.component('remove-button', removeButton);
 Vue.component('icon', icon);
