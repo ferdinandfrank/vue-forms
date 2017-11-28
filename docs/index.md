@@ -159,63 +159,63 @@ These components are used to submit data to the server via an ajax request.
 
 **Shared Properties that all of these components inherit:**
 
-- **action**: The url where to submit the form.
+- **action:** The url where to submit the form.
     - type: String
     - required: true
 
-- **method**: The method to use for the submit.
+- **method:** The method to use for the submit.
     - type: String
     - required: true
  
-- **data**: The predefined data to submit with the form.
+- **data:** The predefined data to submit with the form.
     - type: Object
     - default: {}
  
-- **confirm**: An object to define the messages to show to the user within a confirm alert, before the form will be submitted.
+- **confirm:** An object to define the messages to show to the user within a confirm alert, before the form will be submitted.
                 If not defined, no confirm message will be shown.
     - type: Object
     - default: null
     
     The object can contain the following key-value-pairs to modify the confirm alert:
-    - **title**: _[The title of the confirm message]_
-    - **message**: _[The body message of the confirm message]_
-    - **accept**: _[The button text to show on the 'accept' button]_
-    - **cancel**: _[The button text to show on the 'cancel' button]_
-    - **type**: _[The alert type of the confirm dialog]_
+    - **title:** _[The title of the confirm message]_
+    - **message:** _[The body message of the confirm message]_
+    - **accept:** _[The button text to show on the 'accept' button]_
+    - **cancel:** _[The button text to show on the 'cancel' button]_
+    - **type:** _[The alert type of the confirm dialog]_
         -  'info'
         - 'success'
         - 'error'
         - 'warning' [DEFAULT]
  
-- **alertError**: States if an error alert message shall be shown, if an error occurred.
+- **alertError:** States if an error alert message shall be shown, if an error occurred.
     - type: Boolean
     - default: true
  
-- **alertDuration**: The duration of the alert that will be shown after the form has been submitted.
+- **alertDuration:** The duration of the alert that will be shown after the form has been submitted.
 Will only be used if the duration is not defined by the server response.
     - type: Number
     - default: 3000
  
-- **eventName**: The base name of the events that get triggered by the form during a submit.
+- **eventName:** The base name of the events that get triggered by the form during a submit.
     - type: String
     - default: 'ajaxForm'
  
-- **appendResponse**: The selector of the wrapper, where to append the response's data to.
+- **appendResponse:** The selector of the wrapper, where to append the response's data to.
     - type: String
     - default: null
  
-- **prependResponse**: The selector of the wrapper, where to prepend the response's data to.
+- **prependResponse:** The selector of the wrapper, where to prepend the response's data to.
     - type: String
     - default: null
   
-- **replaceResponse**: The selector of the element, to replace with the response's data.
+- **replaceResponse:** The selector of the element, to replace with the response's data.
     - type: String
     - default: null
     
-- **remove**: The selector of the element to remove after the form was submitted and a successful response from the server was received.
+- **remove:** The selector of the element to remove after the form was submitted and a successful response from the server was received.
     - type: String
  
-- **ajax**: States if the form shall be submitted with ajax. Even though this is the purpose of this package, it is sometimes useful to use the functionality of this package without submitting the form via ajax.
+- **ajax:** States if the form shall be submitted with ajax. Even though this is the purpose of this package, it is sometimes useful to use the functionality of this package without submitting the form via ajax.
     - type: Boolean
     - default: true
 
@@ -243,11 +243,11 @@ This component will render to the following HTML:
 #### Properties:
 This component inherits all of the shared properties listed above as well as the following:
 
-- **clear**: States if the form's inputs shall be cleared after the submit.
+- **clear:** States if the form's inputs shall be cleared after the submit.
     - type: Boolean
     - default: false
 
-- **reset**: States if the form's inputs shall be reset after the submit.
+- **reset:** States if the form's inputs shall be reset after the submit.
     - type: Boolean
     - default: false
     
@@ -272,14 +272,14 @@ This component will render to the following HTML:
 #### Properties:
 This component inherits all of the shared properties listed above as well as the following:  
 
-- **color**: The color class of the button.
+- **color:** The color class of the button.
     - type: String
     - default: 'danger'
 
-- **size**: The size class of the button.
+- **size:** The size class of the button.
     - type: String
 
-- **method**: The method to use for the submit. Overrides the mixin's prop.
+- **method:** The method to use for the submit. Overrides the mixin's prop.
     - type: String
     - default: 'delete'
     
@@ -309,35 +309,35 @@ These components are used to represent inputs.
 
 **Shared Properties that all of these components inherit:**
 
-- **name**: The name of the input. Will also be the key of the value when the form gets submitted.
+- **name:** The name of the input. Will also be the key of the value when the form gets submitted.
     - type: String
     - required: true
 
-- **value**: The predefined value of the input.
+- **value:** The predefined value of the input.
     - type: String,Number
     - default: ''
     
-- **rules**: Array of rule objects to validate the input's value. See section [Validation](#validation) for further docs.
+- **rules:** Array of rule objects to validate the input's value. See section [Validation](#validation) for further docs.
     - type: Array
     - default: []   
     
-- **label**: The text to show above the input as a label. If not specified, no label will be shown.
+- **label:** The text to show above the input as a label. If not specified, no label will be shown.
     - type: String
     - default: null
 
-- **disabled**: States if the input shall be disabled.
+- **disabled:** States if the input shall be disabled.
     - type: Boolean
     - default: false
 
-- **help**: The help text to show as a tooltip when hovering over the input's help icon.
+- **help:** The help text to show as a tooltip when hovering over the input's help icon.
     - type: String
     - default: null
 
-- **color**: The specific color of the input group.
+- **color:** The specific color of the input group.
     - type: String
     - default: null
 
-- **size**: The specific size of the input group.
+- **size:** The specific size of the input group.
     - type: String
     - default: null
     
@@ -364,37 +364,37 @@ This component will render to the following HTML:
 #### Properties:
 This component inherits all of the shared properties listed above as well as the following:  
 
-- **type**: The type of the input field.
+- **type:** The type of the input field.
     - type: String
     - default: 'text'
     
-- **step**: The step to increase the value if the input's type is set to "number".
+- **step:** The step to increase the value if the input's type is set to "number".
     - type: String
     - default: ''  
     
 
-- **placeholder**: The placeholder to show on the input.
+- **placeholder:** The placeholder to show on the input.
     - type: String
     - default: null
 
-- **icon**: The icon to show next to the input field.
+- **icon:** The icon to show next to the input field.
     - type: String
     - default: null
 
-- **addonSubmit**: States, if a form submit button shall be appended on the input.
+- **addonSubmit:** States, if a form submit button shall be appended on the input.
                    Additionally a reset button will be appended if the form was already submitted.
     - type: Boolean
     - default: false
 
-- **addonSubmitContent**: The text to show in the appended submit button, see 'addonSubmit'
+- **addonSubmitContent:** The text to show in the appended submit button, see 'addonSubmit'
     - type: String
     - default: 'Go!'
 
-- **addonSubmitColor**: The color of the appended submit button, see 'addonSubmit'
+- **addonSubmitColor:** The color of the appended submit button, see 'addonSubmit'
     - type: String
     - default: null
 
-- **addonResetColor**: The color of the appended reset button, see 'addonSubmit'
+- **addonResetColor:** The color of the appended reset button, see 'addonSubmit'
     - type: String
     - default: null    
 
@@ -421,32 +421,32 @@ This component will render to the following HTML:
 #### Properties:
 This component inherits all of the shared properties listed above as well as the following:  
 
-- **rows**: The textarea's native 'rows' attribute to define the height of the textarea.
+- **rows:** The textarea's native 'rows' attribute to define the height of the textarea.
     - type: Number
     - default: 3
 
-- **placeholder**: The placeholder to show on the input.
+- **placeholder:** The placeholder to show on the input.
     - type: String
     - default: null
 
-- **icon**: The icon to show next to the input field.
+- **icon:** The icon to show next to the input field.
     - type: String
     - default: null
 
-- **addonSubmit**: States, if a form submit button shall be appended on the input.
+- **addonSubmit:** States, if a form submit button shall be appended on the input.
                    Additionally a reset button will be appended if the form was already submitted.
     - type: Boolean
     - default: false
 
-- **addonSubmitContent**: The text to show in the appended submit button, see 'addonSubmit'
+- **addonSubmitContent:** The text to show in the appended submit button, see 'addonSubmit'
     - type: String
     - default: 'Go!'
 
-- **addonSubmitColor**: The color of the appended submit button, see 'addonSubmit'
+- **addonSubmitColor:** The color of the appended submit button, see 'addonSubmit'
     - type: String
     - default: null
 
-- **addonResetColor**: The color of the appended reset button, see 'addonSubmit'
+- **addonResetColor:** The color of the appended reset button, see 'addonSubmit'
     - type: String
     - default: null    
     
@@ -477,40 +477,40 @@ This component will render to the following HTML:
 #### Properties:
 This component inherits all of the shared properties listed above as well as the following:  
 
-- **value**: The predefined value of the input.
+- **value:** The predefined value of the input.
     - type: String,Number,Array
     - default: ''
 
-- **multiple**: States if multiple values can be selected on the input.
+- **multiple:** States if multiple values can be selected on the input.
     - type: Boolean
     - default: false
 
-- **options**: An array with objects containing a key 'value' with the option value and a key 'text' with the option text to show. These will be used as dropdown choices.
+- **options:** An array with objects containing a key 'value' with the option value and a key 'text' with the option text to show. These will be used as dropdown choices.
     - type: Array
     - default: []
 
-- **placeholder**: The placeholder to show on the input.
+- **placeholder:** The placeholder to show on the input.
     - type: String
     - default: null
 
-- **icon**: The icon to show next to the input field.
+- **icon:** The icon to show next to the input field.
     - type: String
     - default: null
 
-- **addonSubmit**: States, if a form submit button shall be appended on the input.
+- **addonSubmit:** States, if a form submit button shall be appended on the input.
                    Additionally a reset button will be appended if the form was already submitted.
     - type: Boolean
     - default: false
 
-- **addonSubmitContent**: The text to show in the appended submit button, see 'addonSubmit'
+- **addonSubmitContent:** The text to show in the appended submit button, see 'addonSubmit'
     - type: String
     - default: 'Go!'
 
-- **addonSubmitColor**: The color of the appended submit button, see 'addonSubmit'
+- **addonSubmitColor:** The color of the appended submit button, see 'addonSubmit'
     - type: String
     - default: null
 
-- **addonResetColor**: The color of the appended reset button, see 'addonSubmit'
+- **addonResetColor:** The color of the appended reset button, see 'addonSubmit'
     - type: String
     - default: null        
     
@@ -537,42 +537,42 @@ This component will render to the following HTML:
 #### Properties:
 This component inherits all of the shared properties listed above as well as the following:  
 
-- **format**: The format to use on the date picker. If a time is specified, the picker will automatically show a time picker as well, e.g., for the format 'YYYY-MM-DD HH:mm:ss'
+- **format:** The format to use on the date picker. If a time is specified, the picker will automatically show a time picker as well, e.g., for the format 'YYYY-MM-DD HH:mm:ss'
     - type: String
     - default: "YYYY-MM-DD"
 
-- **placeholder**: The placeholder to show on the input.
+- **placeholder:** The placeholder to show on the input.
     - type: String
     - default: null
 
-- **icon**: The icon to show next to the input field.
+- **icon:** The icon to show next to the input field.
     - type: String
     - default: null
 
-- **addonSubmit**: States, if a form submit button shall be appended on the input.
+- **addonSubmit:** States, if a form submit button shall be appended on the input.
                    Additionally a reset button will be appended if the form was already submitted.
     - type: Boolean
     - default: false
 
-- **addonSubmitContent**: The text to show in the appended submit button, see 'addonSubmit'
+- **addonSubmitContent:** The text to show in the appended submit button, see 'addonSubmit'
     - type: String
     - default: 'Go!'
 
-- **addonSubmitColor**: The color of the appended submit button, see 'addonSubmit'
+- **addonSubmitColor:** The color of the appended submit button, see 'addonSubmit'
     - type: String
     - default: null
 
-- **addonResetColor**: The color of the appended reset button, see 'addonSubmit'
+- **addonResetColor:** The color of the appended reset button, see 'addonSubmit'
     - type: String
     - default: null       
     
 ### FormFileInput
 Represents a file input field.
-**Important Note**: Files will be uploaded in a `base64` format.
+**Important Note:** Files will be uploaded in a `base64` format.
 
 #### Minimal Usage
 ```html
-<form-date-input name="[NAME]"></form-date-input>
+<form-file-input name="[NAME]"></form-file-input>
 ```
 
 This component will render to the following HTML:
@@ -591,28 +591,28 @@ This component will render to the following HTML:
 #### Properties:
 This component inherits all of the shared properties listed above as well as the following:  
 
-- **placeholder**: The placeholder to show on the input.
+- **placeholder:** The placeholder to show on the input.
     - type: String
     - default: null
 
-- **icon**: The icon to show next to the input field.
+- **icon:** The icon to show next to the input field.
     - type: String
     - default: null
 
-- **addonSubmit**: States, if a form submit button shall be appended on the input.
+- **addonSubmit:** States, if a form submit button shall be appended on the input.
                    Additionally a reset button will be appended if the form was already submitted.
     - type: Boolean
     - default: false
 
-- **addonSubmitContent**: The text to show in the appended submit button, see 'addonSubmit'
+- **addonSubmitContent:** The text to show in the appended submit button, see 'addonSubmit'
     - type: String
     - default: 'Go!'
 
-- **addonSubmitColor**: The color of the appended submit button, see 'addonSubmit'
+- **addonSubmitColor:** The color of the appended submit button, see 'addonSubmit'
     - type: String
     - default: null
 
-- **addonResetColor**: The color of the appended reset button, see 'addonSubmit'
+- **addonResetColor:** The color of the appended reset button, see 'addonSubmit'
     - type: String
     - default: null     
 
@@ -640,11 +640,11 @@ This component will render to the following HTML:
 #### Properties:
 This component inherits all of the shared properties listed above as well as the following:  
 
-- **value**: The predefined value of the checkbox that gets submitted when the checkbox is checked. Overrides the mixin's prop.
+- **value:** The predefined value of the checkbox that gets submitted when the checkbox is checked. Overrides the mixin's prop.
     - type: Boolean,Number,String
     - default: true
     
-- **checked**: States if the checkbox is initially checked. If checked this input will submit the component's `value` prop, otherwise `false` will be submitted.
+- **checked:** States if the checkbox is initially checked. If checked this input will submit the component's `value` prop, otherwise `false` will be submitted.
     - type: Boolean
     - default: false
  
@@ -676,11 +676,11 @@ This component will render to the following HTML:
 #### Properties:
 This component inherits all of the shared properties listed above as well as the following:  
 
-- **value**: The predefined value of the checkbox that gets submitted when the checkbox is checked. Overrides the mixin's prop.
+- **value:** The predefined value of the checkbox that gets submitted when the checkbox is checked. Overrides the mixin's prop.
     - type: Boolean,Number,String
     - default: true
     
-- **checked**: States if the checkbox is initially checked. If checked this input will submit the component's `value` prop, otherwise `false` will be submitted.
+- **checked:** States if the checkbox is initially checked. If checked this input will submit the component's `value` prop, otherwise `false` will be submitted.
     - type: Boolean
     - default: false
 
@@ -715,7 +715,7 @@ This component will render to the following HTML:
 #### Properties:
 This component inherits all of the shared properties listed above as well as the following:  
 
-- **options**: An object with keys as the value and values as the labels to be used as radio choices.
+- **options:** An object with keys as the value and values as the labels to be used as radio choices.
     - type: Object
     - default: {}
     
@@ -757,14 +757,14 @@ This component will render to the following HTML:
 
 #### Properties: 
 
-- **remove**: The selector of the element to remove after the form was submitted and a successful response from the server was received.
+- **remove:** The selector of the element to remove after the form was submitted and a successful response from the server was received.
     - type: String
     
-- **color**: The color class of the button.
+- **color:** The color class of the button.
     - type: String
     - default: 'danger'
 
-- **size**: The size class of the button.
+- **size:** The size class of the button.
     - type: String 
 
 ### Icon
@@ -782,7 +782,7 @@ This component will render to the following HTML:
 
 #### Properties: 
 
-- **icon**: The icon class.
+- **icon:** The icon class.
     - type: String
     - required: true
 
@@ -790,7 +790,7 @@ This component will render to the following HTML:
 ## Emitted Events
 Each form component will emit specific events during the submit process. To be able to listen to those events from non parent components these events will be emitted on a predefined Vue component called `window.eventHub`.
 Each event name will end with a dynamic name. This name can be configured by setting the `eventName` prop on form components.
-- **prevented_submit-[eventName]**: Will be emitted when a submit of the form was requested but the form is not valid, i.e., one or more inputs within the form are still invalid.
+- **prevented_submit-[eventName]:** Will be emitted when a submit of the form was requested but the form is not valid, i.e., one or more inputs within the form are still invalid.
 How to listen to this event from other Vue instances:
  
     ```js
@@ -799,7 +799,7 @@ How to listen to this event from other Vue instances:
       // handle the event
     });
     ```    
-- **submitting-[eventName]**: Will be emitted right before the data will be sent to the server.
+- **submitting-[eventName]:** Will be emitted right before the data will be sent to the server.
 How to listen to this event from other Vue instances:
  
     ```js
@@ -809,7 +809,7 @@ How to listen to this event from other Vue instances:
     });
     ```  
     
-- **response-[eventName]**: Will be emitted when the response from the server was received.
+- **response-[eventName]:** Will be emitted when the response from the server was received.
 How to listen to this event from other Vue instances:
  
     ```js
@@ -825,7 +825,7 @@ How to listen to this event from other Vue instances:
 Each input component will emit specific events. To be able to listen to those events from non parent components these events will be emitted on a predefined Vue component called `window.eventHub`.
 Each event name will begin with value of the input's `name` prop.
 
-- **[inputName]-input-changed**: Will be emitted as soon as the input's value changes.
+- **[inputName]-input-changed:** Will be emitted as soon as the input's value changes.
 How to listen to this event from other Vue instances:
  
     ```js
@@ -836,7 +836,7 @@ How to listen to this event from other Vue instances:
     });
     ```    
     
-- **[inputName]-input-validated**: Will be emitted as soon as the input's validation status changes.
+- **[inputName]-input-validated:** Will be emitted as soon as the input's validation status changes.
 How to listen to this event from other Vue instances:
  
     ```js
@@ -848,16 +848,16 @@ How to listen to this event from other Vue instances:
 
 ## Server Response Handling
 By specifying specific keys on the server response, the handling by the form components after the form submit can be controlled. Therefor, just return a JSON response with one or multiple of the following keys:
-- **alert**: _If this key is included, the form response handlers will try to show an alert message based on the following provided data:_
+- **alert:** _If this key is included, the form response handlers will try to show an alert message based on the following provided data:_
     - title: _The title to show on the alert._
     - message: _The message to show as the main content on the alert._ 
     - accept: _The text of the confirm button to show on the alert. If not provided, the alert will automatically disappear after the specified duration._
     - duration: _The duration after which the alert will automatically disappear, if not 'accept' prop is provided. Defaults to 3 seconds._
     - type: _The type of the alert to show. Can be one of the following: 'success', 'error', 'info'. Defaults to 'success' on successful server responses and to 'error' on server error responses._
-- **redirect**: _If this key is included, the form response handlers will redirect the user to the url specified as the value of this key after a potential alert message was shown._
-- **reload**: _If this key is included, the form response handlers will reload the page after a potential alert message was shown._
-- **data**: _Further response data. Can be HTML content to append, prepend, or replace existing content on the page (see the shared props of the form components)._
-- **error**: _A simple error message to show if an error occurred during the request._
+- **redirect:** _If this key is included, the form response handlers will redirect the user to the url specified as the value of this key after a potential alert message was shown._
+- **reload:** _If this key is included, the form response handlers will reload the page after a potential alert message was shown._
+- **data:** _Further response data. Can be HTML content to append, prepend, or replace existing content on the page (see the shared props of the form components)._
+- **error:** _A simple error message to show if an error occurred during the request._
 
 ### Examples
 #### Successful Response With Success Alert
@@ -927,14 +927,14 @@ _Note: The name of the keys can be customized by editing the `serverKeys` data o
 ## Validation
 Each input component accepts a prop named `rules`. By defining this prop on your Vue instances you can validate the input's value.
 Therefore, the prop accepts an array of rule object which should have one of the following value-key-pairs to define a validation rule:
-- **min**: [Number: min length of input's value] (_The value must be at least X characters._)
-- **max**: [Number: max length of inputs value] (_The value may not be greater than X characters._)
-- **required**: true (_A value is required._)
-- **confirmed**: [String: name of the input field that should contain the same value as this input field] (_The input's value must be the same as the value on an other input field._)
-- **email**: true (_The input must be a valid email address._)
-- **url**: true (_The input must be a valid url._)
-- **accepted**: true (_The input must have one of the following values: 'on', 'true', 1, true_)
-- **custom**: [Function: Custom validation function which accepts the params _name, value, callback_. The callback should return an object of the structure 
+- **min:** [Number: min length of input's value] (_The value must be at least X characters._)
+- **max:** [Number: max length of inputs value] (_The value may not be greater than X characters._)
+- **required:** true (_A value is required._)
+- **confirmed:** [String: name of the input field that should contain the same value as this input field] (_The input's value must be the same as the value on an other input field._)
+- **email:** true (_The input must be a valid email address._)
+- **url:** true (_The input must be a valid url._)
+- **accepted:** true (_The input must have one of the following values: 'on', 'true', 1, true_)
+- **custom:** [Function: Custom validation function which accepts the params _name, value, callback_. The callback should return an object of the structure 
     _{valid: [VALID], message: [DEFAULT_ERROR]}_] (_The input must be a valid against this validation function._)
 
 Additionally a rule object can have a 'message' key with a corresponding error message as the value,
@@ -943,12 +943,12 @@ which will be shown when the given rule check fails.
 By default, every time the value of the input component changes, the value will be validated against the defined rules. 
 To change this behavior, you can specify a value for the key `trigger` to define the activation of the validation check.
 The following values for 'trigger' are valid:
-- **input**: Triggered whenever the input's value is changed. [DEFAULT]
-- **change**: Triggered whenever the user is done editing an input's value. [DEFAULT for `FormSelect` component]
-- **blur**: Triggered whenever an input field looses its 'focus' state.
-- **focus**: Triggered whenever an input gets focused.
+- **input:** Triggered whenever the input's value is changed. [DEFAULT]
+- **change:** Triggered whenever the user is done editing an input's value. [DEFAULT for `FormSelect` component]
+- **blur:** Triggered whenever an input field looses its 'focus' state.
+- **focus:** Triggered whenever an input gets focused.
 
-**Note**: If any of a form component's child input components is invalid due to the defined validation rules, the parent form can not be submitted.
+**Note:** If any of a form component's child input components is invalid due to the defined validation rules, the parent form can not be submitted.
 
 ### Examples
 We want to define that a value on the input is required and should contain at least 5 characters:
