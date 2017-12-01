@@ -89,7 +89,10 @@ export default {
             validation: null,
 
             // States if a value is required. Will be fetched from the defined validation rules.
-            required: false
+            required: false,
+
+            // The current timeout instances for each validation rule to wait before we validate an input
+            validationTimeouts: []
         }
     },
 
@@ -119,7 +122,14 @@ export default {
                 }
 
                 $(this.$refs.input).on(trigger, () => {
-                    this.validate(ruleKey, value, message);
+
+                    // Set a timeout to not validate on every consecutive change
+                    if (this.validationTimeouts[ruleKey]) {
+                        clearTimeout(this.validationTimeouts[ruleKey]);
+                    }
+                    this.validationTimeouts[ruleKey] = setTimeout(() => {
+                        this.validate(ruleKey, value, message);
+                     }, 400);
                 });
             }
 
