@@ -23,6 +23,9 @@ export default {
     data() {
         return {
 
+            // The real value that gets submitted.
+            submitValue: this.checked ? this.value : false,
+
             // States if the checkbox is currently checked. If checked this input will submit the component's `value` prop,
             // otherwise `false` will be submitted.
             isChecked: this.checked
@@ -45,16 +48,6 @@ export default {
                 this.submitValue = false;
             }
         }
-    },
-
-    mounted() {
-        this.$nextTick(function () {
-            if (this.isChecked) {
-                this.submitValue = this.value;
-            } else {
-                this.submitValue = false;
-            }
-        });
     },
 
     methods: {
