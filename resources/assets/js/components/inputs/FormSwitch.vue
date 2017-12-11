@@ -29,7 +29,13 @@
     import checkboxInputMixin from '../../mixins/CheckboxInputMixin';
 
     export default {
-        mixins: [checkboxInputMixin]
+        mixins: [checkboxInputMixin],
+
+        watch: {
+            submitValue: function (val, oldValue) {
+                this.validate();
+            },
+        }
     }
 
 </script>

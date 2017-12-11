@@ -9,7 +9,7 @@ export default {
         // The predefined value of the checkbox that gets submitted when the checkbox is checked. Overrides the mixin's prop.
         value: {
             type: Boolean|Number|String,
-            default: true
+            default: 1
         },
 
         // States if the checkbox is initially checked. If checked this input will submit the component's `value` prop,

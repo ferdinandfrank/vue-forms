@@ -7,5 +7,11 @@
 
     export default {
         mixins: [formInputMixin],
+
+        watch: {
+            submitValue: function (val, oldValue) {
+                this.validate();
+            },
+        }
     }
 </script>
