@@ -358,6 +358,10 @@ export default {
                     // Check for custom error message from server
                     } else if (response && response.hasOwnProperty(this.serverKeys.error)) {
                         message = response[this.serverKeys.error];
+                        
+                    // Check for Laravel HTTP Exception error message
+                    } else if (response && response.hasOwnProperty('message')) {
+                        message = response['message'];
                     }
                 }
 
