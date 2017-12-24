@@ -948,6 +948,8 @@ The following values for 'trigger' are valid:
 - **blur:** Triggered whenever an input field looses its 'focus' state.
 - **focus:** Triggered whenever an input gets focused.
 
+By default a timeout of 100ms exists to wait after an input's trigger before the input's value gets validated. This prevents an input to not validate on every consecutive change. This default behavior can be changed by modifying the `VUE_FORMS_VALIDATION_TIMEOUT` value in the published `resources/assets/js/config.js` file.
+
 **Note:** If any of a form component's child input components is invalid due to the defined validation rules, the parent form can not be submitted.
 
 ### Examples
@@ -964,6 +966,9 @@ We want to define that a value on the input needs to be a valid email address. B
 ```
 
 ## Customizing
+
+### Input Validation Timeout
+By default a timeout of 100ms exists to wait after an input's trigger before the input's value gets validated. This prevents an input to not validate on every consecutive change. This default behavior can be changed by modifying the `VUE_FORMS_VALIDATION_TIMEOUT` value in the published `resources/assets/js/config.js` file.
 
 ### Server Response Parsing
 The form response handlers will look for specific keys on the response from the server to define the further actions (see 'Parsing responses from the server'). The keys can be customized by editing the `serverKeys` data on the file `resources/assets/js/mixins/AjaxFormMixin.js`.

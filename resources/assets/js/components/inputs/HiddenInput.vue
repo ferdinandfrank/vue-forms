@@ -9,9 +9,9 @@
         mixins: [formInputMixin],
 
         watch: {
-            submitValue: function (val, oldValue) {
-                this.validate();
-            },
+            submitValue: function () {
+                $(this.$refs.input).trigger('change');
+            }
         }
     }
 </script>

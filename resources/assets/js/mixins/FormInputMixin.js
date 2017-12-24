@@ -115,7 +115,7 @@ export default {
                 let ruleKey = Object.keys(rule)[0];
                 let value = rule[ruleKey];
                 let message = rule.hasOwnProperty('message') ? rule.message : null;
-                let trigger = rule.hasOwnProperty('trigger') ? rule.trigger : (this.$options._componentTag === 'form-select' ? 'change' : 'input');
+                let trigger = rule.hasOwnProperty('trigger') ? rule.trigger : (['form-select', 'hidden-input'].indexOf(this.$options._componentTag) > -1 ? 'change' : 'input');
 
                 if (ruleKey === 'required') {
                     this.required = true;
@@ -129,7 +129,7 @@ export default {
                     }
                     this.validationTimeouts[ruleKey] = setTimeout(() => {
                         this.validate(ruleKey, value, message);
-                     }, 400);
+                     }, VUE_FORMS_VALIDATION_TIMEOUT);
                 });
             }
 
