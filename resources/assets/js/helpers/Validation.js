@@ -113,7 +113,7 @@ class Validation {
         return new Promise((resolve) => {
             let valid = true;
             if (value) {
-                valid = value === $(this.form).find(':input[name=' + confirmInputName + ']').first().val();
+                valid = value === $(this.form).find(':input[name="' + confirmInputName + '"]').first().val();
             }
             resolve({valid: valid, message: valid ? null : `The confirmation does not match.`})
         });
@@ -149,7 +149,7 @@ class Validation {
     afterDate(value, comparisonDateInputName) {
         return new Promise((resolve) => {
             let valid = true;
-            let comparisonDateValue = moment($(this.form).find(':input[name=' + comparisonDateInputName + ']').first().val());
+            let comparisonDateValue = moment($(this.form).find(':input[name="' + comparisonDateInputName + '"]').first().val());
             let dateValue = moment(value);
 
             if (comparisonDateValue.isValid() && dateValue.isValid()) {
@@ -163,7 +163,7 @@ class Validation {
     beforeDate(value, comparisonDateInputName) {
         return new Promise((resolve) => {
             let valid = true;
-            let comparisonDateValue = moment($(this.form).find(':input[name=' + comparisonDateInputName + ']').first().val());
+            let comparisonDateValue = moment($(this.form).find(':input[name="' + comparisonDateInputName + '"]').first().val());
             let dateValue = moment(value);
 
             if (comparisonDateValue.isValid() && dateValue.isValid()) {
@@ -177,7 +177,7 @@ class Validation {
     sameDate(value, comparisonDateInputName) {
         return new Promise((resolve) => {
             let valid = true;
-            let comparisonDateValue = moment($(this.form).find(':input[name=' + comparisonDateInputName + ']').first().val());
+            let comparisonDateValue = moment($(this.form).find(':input[name="' + comparisonDateInputName + '"]').first().val());
             let dateValue = moment(value);
 
             if (comparisonDateValue.isValid() && dateValue.isValid()) {
