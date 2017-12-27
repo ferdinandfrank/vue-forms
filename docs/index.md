@@ -976,6 +976,14 @@ The form response handlers will look for specific keys on the response from the 
 ### Loading Button
 After the user clicks the submit button of a form component, a loading icon will automatically be inserted within the submit button. The content of the button can be customized by editing the `loadingContent` data on the file `resources/assets/js/mixins/AjaxFormMixin.js`.
 
+## Helpers
+### Sweet Alert Helpers
+The package contains a helper file to easily show Sweet Alert messages using JavaScript. This file with its methods can be found at `resources/assets/js/helpers/Alert.js`.
+Example:
+```javascript
+new Alert('my alert text', 'my alert title', 'info').show();
+ ```
+
 # 5. Credits
 - The date component `FormDateInput` is based on [the Bootstrap datetimepicker by eonasdan](https://eonasdan.github.io/bootstrap-datetimepicker/).
 - The alerts are handled by the [Sweetalert](https://sweetalert.js.org/) plugin
