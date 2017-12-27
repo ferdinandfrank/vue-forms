@@ -934,6 +934,9 @@ Therefore, the prop accepts an array of rule object which should have one of the
 - **email:** true (_The input must be a valid email address._)
 - **url:** true (_The input must be a valid url._)
 - **accepted:** true (_The input must have one of the following values: 'on', 'true', 1, true_)
+- **after_date:** [String: name of the input field that contains the date value that should be before the input's date value] (_The input's date value must be after the date value on an other input field._)
+- **before_date:** [String: name of the input field that contains the date value that should be after the input's date value] (_The input's date value must be before the date value on an other input field._)
+- **same_date:** [String: name of the input field that contains the date value that should be the same as the input's date value] (_The input's date value must be the same as the date value on an other input field._)
 - **custom:** [Function: Custom validation function which accepts the params _name, value, callback_. The callback should return an object of the structure 
     _{valid: [VALID], message: [DEFAULT_ERROR]}_] (_The input must be a valid against this validation function._)
 
