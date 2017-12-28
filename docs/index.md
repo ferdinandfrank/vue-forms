@@ -943,15 +943,10 @@ Therefore, the prop accepts an array of rule object which should have one of the
 Additionally a rule object can have a 'message' key with a corresponding error message as the value,
 which will be shown when the given rule check fails.
 
-By default, every time the value of the input component changes, the value will be validated against the defined rules. 
-To change this behavior, you can specify a value for the key `trigger` to define the activation of the validation check.
-The following values for 'trigger' are valid:
-- **input:** Triggered whenever the input's value is changed. [DEFAULT]
-- **change:** Triggered whenever the user is done editing an input's value. [DEFAULT for `FormSelect` component]
-- **blur:** Triggered whenever an input field looses its 'focus' state.
-- **focus:** Triggered whenever an input gets focused.
-
-By default a timeout of 100ms exists to wait after an input's trigger before the input's value gets validated. This prevents an input to not validate on every consecutive change. This default behavior can be changed by modifying the `VUE_FORMS_VALIDATION_TIMEOUT` value in the published `resources/assets/js/config.js` file.
+By default, every time the value of the input component changes, the value will be validated against the defined rules
+after a default timeout of 100ms. This prevents an input to not validate on every consecutive change. 
+This default behavior can be changed for all inputs by modifying the `VUE_FORMS_VALIDATION_TIMEOUT` value in the published `resources/assets/js/config.js` file.
+Additionally this timeout value can be defined for each individual input by specifying a value for the key `timeout` on the input's rule object.
 
 **Note:** If any of a form component's child input components is invalid due to the defined validation rules, the parent form can not be submitted.
 
@@ -962,16 +957,18 @@ We want to define that a value on the input is required and should contain at le
 <form-input name="name" :rules="[{required: true, message: 'Please enter a value.'}, {min: 5, message: 'Please enter at least 5 characters.'}]"></form-input>
 ```
 
-We want to define that a value on the input needs to be a valid email address. But we only want to validate this after the user leaves the input field.
+We want to define that a value on the input needs to be a valid email address. But we only want to validate this if the user didn't change the input for 1 second.
 
 ```html
-<form-input name="name" :rules="[{email: true, trigger: 'blur'}]"></form-input>
+<form-input name="name" :rules="[{email: true, timeout: 1000}]"></form-input>
 ```
 
 ## Customizing
 
 ### Input Validation Timeout
-By default a timeout of 100ms exists to wait after an input's trigger before the input's value gets validated. This prevents an input to not validate on every consecutive change. This default behavior can be changed by modifying the `VUE_FORMS_VALIDATION_TIMEOUT` value in the published `resources/assets/js/config.js` file.
+By default a timeout of 100ms exists to wait after an input's trigger before the input's value gets validated. 
+This prevents an input to not validate on every consecutive change. This default behavior can be changed by modifying the `VUE_FORMS_VALIDATION_TIMEOUT` value in the published `resources/assets/js/config.js` file.
+Additionally this timeout value can be defined for each individual input by specifying a value for the key `timeout` on the input's rule object.
 
 ### Server Response Parsing
 The form response handlers will look for specific keys on the response from the server to define the further actions (see 'Parsing responses from the server'). The keys can be customized by editing the `serverKeys` data on the file `resources/assets/js/mixins/AjaxFormMixin.js`.

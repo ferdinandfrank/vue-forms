@@ -6,12 +6,6 @@
     import formInputMixin from '../../mixins/FormInputMixin';
 
     export default {
-        mixins: [formInputMixin],
-
-        watch: {
-            submitValue: function () {
-                $(this.$refs.input).trigger('change');
-            }
-        }
+        mixins: [formInputMixin]
     }
 </script>

@@ -14,7 +14,7 @@ export default {
         // The predefined value of the input.
         // See data: 'submitValue'
         value: {
-            type: String | Number,
+            type: String | Number | Boolean,
             default: ''
         },
 
@@ -109,29 +109,8 @@ export default {
 
             this.validation = new Validation(this.parentForm.$el);
 
-            // Init validation
-            for (let i = 0; i < this.rules.length; i++) {
-                let rule = this.rules[i];
-                let ruleKey = Object.keys(rule)[0];
-                let value = rule[ruleKey];
-                let message = rule.hasOwnProperty('message') ? rule.message : null;
-                let trigger = rule.hasOwnProperty('trigger') ? rule.trigger : (['form-select', 'hidden-input'].indexOf(this.$options._componentTag) > -1 ? 'change' : 'input');
-
-                if (ruleKey === 'required') {
-                    this.required = true;
-                }
-
-                $(this.$refs.input).on(trigger, () => {
-
-                    // Set a timeout to not validate on every consecutive change
-                    if (this.validationTimeouts[ruleKey]) {
-                        clearTimeout(this.validationTimeouts[ruleKey]);
-                    }
-                    this.validationTimeouts[ruleKey] = setTimeout(() => {
-                        this.validate(ruleKey, value, message);
-                     }, VUE_FORMS_VALIDATION_TIMEOUT);
-                });
-            }
+            // Set required state for the input label if a required rule is specified
+            this.required  = !!_.find(this.rules, function(rule) { return rule.hasOwnProperty('required') && rule.required; });
 
             // Validate against all rules once to disable the parent's form submit, but do not show the error to the user
             this.validate().then((result) => {
@@ -147,14 +126,16 @@ export default {
             // Set server errors to true, because we can not validate if the server errors are gone
             this.addSuccess('server');
 
-            window.eventHub.$emit(this.name + '-input-changed', val, oldValue);
-            this.$emit('input', val);
+            this.validate().then(() => {
+                window.eventHub.$emit(this.name + '-input-changed', val, oldValue);
+                this.$emit('input', val);
 
-            if (this.submitFormAfterSubmitValueIsSet) {
-                setTimeout(() => {
-                    this.submit();
-                 }, 1000);
-            }
+                if (this.submitFormAfterSubmitValueIsSet) {
+                    setTimeout(() => {
+                        this.submit();
+                    }, 1000);
+                }
+            });
         },
 
         value: function (val) {
@@ -187,7 +168,7 @@ export default {
         /**
          * Validates the current value against the input rules or only against the specified rule.
          */
-        validate: function (rule = null, value = null, message = null) {
+        validate: function (rule = null, value = null, message = null, timeout = VUE_FORMS_VALIDATION_TIMEOUT) {
             if (!rule) {
                 return new Promise((resolve) => {
                     let validations = [];
@@ -196,8 +177,9 @@ export default {
                         let ruleKey = Object.keys(rule)[0];
                         let value = rule[ruleKey];
                         let message = rule.hasOwnProperty('message') ? rule.message : null;
+                        let timeout = rule.hasOwnProperty('timeout') ? rule.timeout : VUE_FORMS_VALIDATION_TIMEOUT;
 
-                        validations.push(this.validate(ruleKey, value, message));
+                        validations.push(this.validate(ruleKey, value, message, timeout));
                     }
 
                     Promise.all(validations).then(results => {
@@ -214,20 +196,28 @@ export default {
                 });
             }
 
-            return new Promise((resolve) => {
-                this.validation.check(this.name, rule, this.submitValue, value).then((result) => {
-                    let error = null;
-                    if (!result.valid) {
-                        error = message ? message : result.message;
-                        this.addError(rule, error);
-                    } else {
-                        this.addSuccess(rule);
-                    }
+            // Set a timeout to not validate on every consecutive change for that rule
+            if (this.validationTimeouts[rule]) {
+                clearTimeout(this.validationTimeouts[rule]);
+            }
 
-                    this.validateParentForm();
-                    resolve({valid: !!error, message: error});
-                });
+            return new Promise((resolve) => {
+                this.validationTimeouts[rule] = setTimeout(() => {
+                    this.validation.check(this.name, rule, this.submitValue, value).then((result) => {
+                        let error = null;
+                        if (!result.valid) {
+                            error = message ? message : result.message;
+                            this.addError(rule, error);
+                        } else {
+                            this.addSuccess(rule);
+                        }
+
+                        this.validateParentForm();
+                        resolve({valid: !!error, message: error});
+                    });
+                }, timeout);
             });
+
         },
 
         validateParentForm: function () {
