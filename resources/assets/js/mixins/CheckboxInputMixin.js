@@ -6,29 +6,26 @@ export default {
 
     props: {
 
-        // The predefined value of the checkbox that gets submitted when the checkbox is checked. Overrides the mixin's prop.
+        // The predefined value of the input. Overrides the mixin's prop.
+        // See data: 'submitValue'
         value: {
-            type: Boolean|Number|String,
-            default: 1
+            type: String | Number | Boolean,
+            default: 0
         },
 
-        // States if the checkbox is initially checked. If checked this input will submit the component's `value` prop,
-        // otherwise `false` will be submitted.
-        checked: {
-            type: Boolean,
-            default: false
+        // The value to submit when the checkbox is checked
+        checkedValue: {
+            type: String | Number | Boolean,
+            default: 1
         }
     },
 
     data() {
         return {
 
-            // The real value that gets submitted.
-            submitValue: this.checked ? this.value : false,
-
-            // States if the checkbox is currently checked. If checked this input will submit the component's `value` prop,
-            // otherwise `false` will be submitted.
-            isChecked: this.checked
+            // States if the checkbox is currently checked. If checked this input will submit the component's `checkedValue` prop,
+            // otherwise 0 will be submitted.
+            isChecked: !!this.value
         }
     },
 
@@ -43,9 +40,9 @@ export default {
     watch: {
         isChecked: function (checked) {
             if (checked) {
-                this.submitValue = this.value;
+                this.submitValue = this.checkedValue;
             } else {
-                this.submitValue = false;
+                this.submitValue = 0;
             }
         }
     },

@@ -314,7 +314,7 @@ These components are used to represent inputs.
     - required: true
 
 - **value:** The predefined value of the input.
-    - type: String,Number
+    - type: String,Number,Boolean
     - default: ''
     
 - **rules:** Array of rule objects to validate the input's value. See section [Validation](#validation) for further docs.
@@ -640,13 +640,13 @@ This component will render to the following HTML:
 #### Properties:
 This component inherits all of the shared properties listed above as well as the following:  
 
-- **value:** The predefined value of the checkbox that gets submitted when the checkbox is checked. Overrides the mixin's prop.
+- **value:** The predefined value of the input. Overrides the mixin's prop.
     - type: Boolean,Number,String
-    - default: true
+    - default: 0
     
-- **checked:** States if the checkbox is initially checked. If checked this input will submit the component's `value` prop, otherwise `false` will be submitted.
-    - type: Boolean
-    - default: false
+- **checkedValue:** The value to submit when the checkbox is checked, otherwise `0` will be submitted.
+    - type: Boolean,Number,String
+    - default: 1
  
 ### FormSwitch
 Represents a checkbox in the style of an iOS switch.
@@ -676,13 +676,13 @@ This component will render to the following HTML:
 #### Properties:
 This component inherits all of the shared properties listed above as well as the following:  
 
-- **value:** The predefined value of the checkbox that gets submitted when the checkbox is checked. Overrides the mixin's prop.
+- **value:** The predefined value of the input. Overrides the mixin's prop.
     - type: Boolean,Number,String
-    - default: true
+    - default: 0
     
-- **checked:** States if the checkbox is initially checked. If checked this input will submit the component's `value` prop, otherwise `false` will be submitted.
-    - type: Boolean
-    - default: false
+- **checkedValue:** The value to submit when the checkbox is checked, otherwise `0` will be submitted.
+    - type: Boolean,Number,String
+    - default: 1
 
 ### FormRadio
 Represents a radio input field in the style of [Bootstrap](https://getbootstrap.com/).

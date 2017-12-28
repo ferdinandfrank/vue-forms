@@ -249,12 +249,13 @@ export default {
 
             _.each(children, function (input) {
 
-                // If value already exists, build an array, e.g., multiple checkboxes, selects
-                if (formData.hasOwnProperty(input.name) && !_.isArray(formData[input.name])) {
-                    formData[input.name] = [formData[input.name]];
-                }
+                // Check if real input component
+                if (input.name !== undefined && input.submitValue !== undefined) {
 
-                if (input.name && input.submitValue) {
+                    // If value already exists, build an array, e.g., multiple checkboxes, selects
+                    if (formData.hasOwnProperty(input.name) && !_.isArray(formData[input.name])) {
+                        formData[input.name] = [formData[input.name]];
+                    }
 
                     // If value already exists add the new value to previously built array, e.g., multiple checkboxes, selects
                     if (formData.hasOwnProperty(input.name)) {
