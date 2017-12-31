@@ -53,18 +53,18 @@ class Validation {
                         resolve(result);
                     });
                     break;
-                case 'after_date':
-                    this.afterDate(inputValue, ruleValue).then((result) => {
+                case 'after':
+                    this.after(inputValue, ruleValue).then((result) => {
                         resolve(result);
                     });
                     break;
-                case 'before_date':
-                    this.beforeDate(inputValue, ruleValue).then((result) => {
+                case 'before':
+                    this.before(inputValue, ruleValue).then((result) => {
                         resolve(result);
                     });
                     break;
-                case 'same_date':
-                    this.sameDate(inputValue, ruleValue).then((result) => {
+                case 'same':
+                    this.same(inputValue, ruleValue).then((result) => {
                         resolve(result);
                     });
                     break;
@@ -146,7 +146,7 @@ class Validation {
         });
     }
 
-    afterDate(value, comparisonDateInputName) {
+    after(value, comparisonDateInputName) {
         return new Promise((resolve) => {
             let valid = true;
             let comparisonDateValue = moment($(this.form).find(':input[name="' + comparisonDateInputName + '"]').first().val());
@@ -160,7 +160,7 @@ class Validation {
         });
     }
 
-    beforeDate(value, comparisonDateInputName) {
+    before(value, comparisonDateInputName) {
         return new Promise((resolve) => {
             let valid = true;
             let comparisonDateValue = moment($(this.form).find(':input[name="' + comparisonDateInputName + '"]').first().val());
@@ -174,7 +174,7 @@ class Validation {
         });
     }
 
-    sameDate(value, comparisonDateInputName) {
+    same(value, comparisonDateInputName) {
         return new Promise((resolve) => {
             let valid = true;
             let comparisonDateValue = moment($(this.form).find(':input[name="' + comparisonDateInputName + '"]').first().val());
