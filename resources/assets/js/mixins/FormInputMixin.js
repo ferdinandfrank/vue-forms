@@ -76,6 +76,9 @@ export default {
             // States if the parent form shall be submitted when the submit value is synced on all other components.
             submitFormAfterSubmitValueIsSet: false,
 
+            // States if the input has currently been cleared and if the errors shall be ignored on the next validation
+            ignoreValidationDueToClear: false,
+
             // States if the content has changed since the page load.
             contentChanged: false,
 
@@ -129,6 +132,12 @@ export default {
             this.validate().then(() => {
                 window.eventHub.$emit(this.name + '-input-changed', val, oldValue);
                 this.$emit('input', val);
+
+                if (this.ignoreValidationDueToClear) {
+                    this.errorMessage = null;
+                    this.contentChanged = false;
+                    this.ignoreValidationDueToClear = false;
+                }
 
                 if (this.submitFormAfterSubmitValueIsSet) {
                     setTimeout(() => {
@@ -256,26 +265,16 @@ export default {
          * Resets the input's value.
          */
         reset: function () {
+            this.ignoreValidationDueToClear = true;
             this.submitValue = this.value;
-
-            // Validate against all rules once to disable the parent's form submit, but do not show the error to the user
-            this.validate().then((result) => {
-                this.errorMessage = null;
-                this.contentChanged = false;
-            });
         },
 
         /**
          * Clears the input's value.
          */
         clear: function () {
+            this.ignoreValidationDueToClear = true;
             this.submitValue = '';
-
-            // Validate against all rules once to disable the parent's form submit, but do not show the error to the user
-            this.validate().then((result) => {
-                this.errorMessage = null;
-                this.contentChanged = false;
-            });
         },
 
         /**
