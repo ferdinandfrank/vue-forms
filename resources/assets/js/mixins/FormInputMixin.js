@@ -1,4 +1,3 @@
-import Tooltip from 'tooltip.js';
 import Validation from '../helpers/Validation';
 
 export default {
@@ -117,7 +116,7 @@ export default {
 
             // Validate against all rules once to disable the parent's form submit, but do not show the error to the user
             this.validate().then((result) => {
-                this.errorMessage = null;
+                this.ignoreErrors();
             });
         })
     },
@@ -134,8 +133,7 @@ export default {
                 this.$emit('input', val);
 
                 if (this.ignoreValidationDueToClear) {
-                    this.errorMessage = null;
-                    this.contentChanged = false;
+                    this.ignoreErrors();
                     this.ignoreValidationDueToClear = false;
                 }
 
@@ -278,6 +276,14 @@ export default {
         },
 
         /**
+         * Hides the errors on the input. Important: the errors still exist, but are not visible to the user.
+         */
+        ignoreErrors: function () {
+            this.errorMessage = null;
+            this.contentChanged = false;
+        },
+
+        /**
          * Submits the parent form.
          */
         submit: function () {
@@ -290,7 +296,7 @@ export default {
         },
 
         /**
-         * Clears and submits the parent form.
+         * Clears the input's value and submits the parent form.
          */
         clearSubmit: function () {
             this.submitFormAfterSubmitValueIsSet = true;
