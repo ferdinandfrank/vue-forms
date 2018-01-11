@@ -847,6 +847,10 @@ How to listen to this event from other Vue instances:
     ```  
 
 ## Server Response Handling
+By default, an ajax form component will show an alert with an error message whenever the server responses with an error status code. This can be disabled by setting the 'alertError' prop to 'false'.
+Additionally, the form component will automatically fetch the error message from the server response for Laravel >= 5.5 validation errors as well as for thrown Laravel HTTP Exceptions.
+To fully customize the shown alert for a server error or even to show an alert on success responses, see the following:
+
 By specifying specific keys on the server response, the handling by the form components after the form submit can be controlled. Therefor, just return a JSON response with one or multiple of the following keys:
 - **alert:** _If this key is included, the form response handlers will try to show an alert message based on the following provided data:_
     - title: _The title to show on the alert._
@@ -858,6 +862,7 @@ By specifying specific keys on the server response, the handling by the form com
 - **reload:** _If this key is included, the form response handlers will reload the page after a potential alert message was shown._
 - **data:** _Further response data. Can be HTML content to append, prepend, or replace existing content on the page (see the shared props of the form components)._
 - **error:** _A simple error message to show if an error occurred during the request._
+
 
 ### Examples
 #### Successful Response With Success Alert

@@ -345,7 +345,7 @@ export default {
                     if (alertInfo.hasOwnProperty(this.serverKeys.alert.type)) {
                         type = alertInfo[this.serverKeys.alert.type];
                     }
-                } else if (!success) {
+                } else if (!success && this.alertError) {
                     title = 'Sorry!';
                     message = 'An unknown error occurred! Please try again later.';
                     accept = 'Ok!';

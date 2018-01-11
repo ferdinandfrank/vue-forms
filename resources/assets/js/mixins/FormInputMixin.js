@@ -60,8 +60,11 @@ export default {
     data: function () {
         return {
 
-            // The real value that gets submitted.
+            // The editable 'value' prop that gets submitted.
             submitValue: this.value,
+
+            // A value copy of the initially specified input value to reset the input
+            initialValue: this.value,
 
             // States if the input's value is valid.
             valid: true,
@@ -100,6 +103,7 @@ export default {
 
     mounted: function () {
         this.$nextTick(function () {
+            
             let parents = getListOfParents(this);
             for (let index in parents) {
                 let parent = parents[index];
@@ -132,7 +136,9 @@ export default {
                 window.eventHub.$emit(this.name + '-input-changed', val, oldValue);
                 this.$emit('input', val);
 
-                if (this.ignoreValidationDueToClear) {
+                // Visually hide the input's errors if a reset or a clear was executed. Will also be hidden when the
+                // initial input value is set again
+                if (this.ignoreValidationDueToClear || val === this.initialValue) {
                     this.ignoreErrors();
                     this.ignoreValidationDueToClear = false;
                 }
@@ -264,7 +270,7 @@ export default {
          */
         reset: function () {
             this.ignoreValidationDueToClear = true;
-            this.submitValue = this.value;
+            this.submitValue = this.initialValue;
         },
 
         /**
