@@ -356,6 +356,9 @@ export default {
                         // Get the first validation error to show on the alert
                         message = response.errors[Object.keys(response.errors)[0]];
 
+                        // Check if multiple error messages exist for that key
+                        message = _.isArray(message) ? message[0] : message;
+
                     // Check for custom error message from server
                     } else if (response && response.hasOwnProperty(this.serverKeys.error)) {
                         message = response[this.serverKeys.error];
