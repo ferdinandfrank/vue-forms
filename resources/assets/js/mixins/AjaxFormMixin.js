@@ -346,9 +346,9 @@ export default {
                         type = alertInfo[this.serverKeys.alert.type];
                     }
                 } else if (!success && this.alertError) {
-                    title = 'Sorry!';
-                    message = 'An unknown error occurred! Please try again later.';
-                    accept = 'Ok!';
+                    title = VUE_FORMS_ERROR_DEFAULT.title;
+                    message = VUE_FORMS_ERROR_DEFAULT.message;
+                    accept = VUE_FORMS_ERROR_DEFAULT.accept;
 
                     // Check for Laravel >= 5.5 validation errors
                     if (response && response.hasOwnProperty('errors')) {

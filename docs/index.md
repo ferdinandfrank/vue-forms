@@ -975,6 +975,10 @@ By default a timeout of 100ms exists to wait after an input's trigger before the
 This prevents an input to not validate on every consecutive change. This default behavior can be changed by modifying the `VUE_FORMS_VALIDATION_TIMEOUT` value in the published `resources/assets/js/config.js` file.
 Additionally this timeout value can be defined for each individual input by specifying a value for the key `timeout` on the input's rule object.
 
+### Default Error Message on Server Errors
+If an unknown server error occurs (an error without a message or an unknown json key), a default error message will be displayed to the server.
+This default message can be changed by modifying the `VUE_FORMS_ERROR_DEFAULT` value in the published `resources/assets/js/config.js` file.
+
 ### Server Response Parsing
 The form response handlers will look for specific keys on the response from the server to define the further actions (see 'Parsing responses from the server'). The keys can be customized by editing the `serverKeys` data on the file `resources/assets/js/mixins/AjaxFormMixin.js`.
 
