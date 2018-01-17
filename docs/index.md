@@ -932,18 +932,19 @@ _Note: The name of the keys can be customized by editing the `serverKeys` data o
 ## Validation
 Each input component accepts a prop named `rules`. By defining this prop on your Vue instances you can validate the input's value.
 Therefore, the prop accepts an array of rule object which should have one of the following value-key-pairs to define a validation rule:
-- **min:** [Number: min length of input's value] (_The value must be at least X characters._)
-- **max:** [Number: max length of inputs value] (_The value may not be greater than X characters._)
-- **required:** true (_A value is required._)
-- **confirmed:** [String: name of the input field that should contain the same value as this input field] (_The input's value must be the same as the value on an other input field._)
-- **email:** true (_The input must be a valid email address._)
-- **url:** true (_The input must be a valid url._)
-- **accepted:** true (_The input must have one of the following values: 'on', 'true', 1, true_)
-- **after:** [String: name of the input field that contains the date value that should be before the input's date value] (_The input's date value must be after the date value on an other input field._)
-- **before:** [String: name of the input field that contains the date value that should be after the input's date value] (_The input's date value must be before the date value on an other input field._)
-- **same:** [String: name of the input field that contains the date value that should be the same as the input's date value] (_The input's date value must be the same as the date value on an other input field._)
-- **custom:** [Function: Custom validation function which accepts the params _name, value, callback_. The callback should return an object of the structure 
-    _{valid: [VALID], message: [DEFAULT_ERROR]}_] (_The input must be a valid against this validation function._)
+- **min:_value_** The field under validation must have a minimum _value_.
+- **max:_value_** The field under validation must be less than or equal to a maximum _value_. 
+- **required:_true_** The field under validation must be present in the input data and not empty.
+- **required_if:_anotherfield,value_** The field under validation must be present and not empty if the _anotherfield_ is equal to any value.
+- **confirmed:_anotherfield_** The field under validation must be the same as _anotherfield_.
+- **email:_true_** The field under validation must be a valid email address.
+- **url:_true_** The field under validation must be a valid url.
+- **accepted:_true_** The field under validation must have one of the following values: 'on', 'true', 1, true
+- **after:_date_** The field under validation must be a value after a given date.
+- **before:_date_** The field under validation must be a value preceding the given date. 
+- **same:_date_** The given field must match the field under validation.
+- **custom:_function_** The field under validation must be valid against the validation function. [Function: Custom validation function which accepts the params _name, value, callback_. The callback should return an object of the structure 
+    _{valid: [VALID], message: [DEFAULT_ERROR]}_] 
 
 Additionally a rule object can have a 'message' key with a corresponding error message as the value,
 which will be shown when the given rule check fails.
@@ -966,6 +967,13 @@ We want to define that a value on the input needs to be a valid email address. B
 
 ```html
 <form-input name="name" :rules="[{email: true, timeout: 1000}]"></form-input>
+```
+
+We want to define that a value on the 'email' input is required when value on the 'contact_type' input is 'email'.
+
+```html
+<form-input name="contact_type"></form-input>
+<form-input name="email" :rules="[{required_if: 'contact_type,email'}]"></form-input>
 ```
 
 ## Customizing

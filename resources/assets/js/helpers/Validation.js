@@ -23,6 +23,11 @@ class Validation {
                         resolve(result);
                     });
                     break;
+                case 'required_if':
+                    this.requiredIf(inputValue).then((result) => {
+                        resolve(result);
+                    });
+                    break;
                 case 'min':
                     this.min(inputValue, ruleValue).then((result) => {
                         resolve(result);
@@ -84,7 +89,20 @@ class Validation {
 
     required(value) {
         return new Promise((resolve) => {
-            let valid = !!value;
+            let valid = !!value && value.length;
+            resolve({valid: valid, message: valid ? null : `The field is required.`})
+        });
+    }
+
+    requiredIf(value) {
+        return new Promise((resolve) => {
+            let valid = true;
+
+            if (!value && !value.length) {
+                let splits = _.split(value, ',');
+                valid = splits[1] === $(this.form).find(':input[name="' + value[0] + '"]').first().val() && (!!value && value.length);
+            }
+
             resolve({valid: valid, message: valid ? null : `The field is required.`})
         });
     }
