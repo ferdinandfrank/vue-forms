@@ -45,7 +45,7 @@ export default {
 
     data: function () {
         return {
-            showAddonSubmit: this.addonSubmit || this.addonSubmitContent,
+            showAddonSubmit: this.addonSubmit || this.addonSubmitContent || this.$slots.append,
 
             // The min length of the input's value. Will be retrieved from the rules.
             min: null,
