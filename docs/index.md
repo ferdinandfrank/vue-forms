@@ -940,6 +940,7 @@ Therefore, the prop accepts an array of rule object which should have one of the
 - **email:_true_** The field under validation must be a valid email address.
 - **url:_true_** The field under validation must be a valid url.
 - **accepted:_true_** The field under validation must have one of the following values: 'on', 'true', 1, true
+- **date:_date_** The field under validation must be a valid date string.
 - **after:_date_** The field under validation must be a value after a given date.
 - **before:_date_** The field under validation must be a value preceding the given date. 
 - **same:_date_** The given field must match the field under validation.
