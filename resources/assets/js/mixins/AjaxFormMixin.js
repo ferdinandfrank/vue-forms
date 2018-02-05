@@ -100,6 +100,9 @@ export default {
             // States, if the form can be submitted.
             valid: true,
 
+            // The input fields of the form
+            inputs: [],
+
             // The html content to put in the submit button, while the form is submitting.
             loadingContent: '<i class="fa fa-fw fa-circle-o-notch fa-spin"></i>',
 
@@ -168,6 +171,20 @@ export default {
     },
 
     methods: {
+
+        /**
+         * Registers the specified input component as an input component of the form. Will be called by the
+         * child input components themselves.
+         *
+         * @param inputComponent
+         */
+        registerChildInputComponent: function (inputComponent) {
+
+            // Check if component is already registered
+            if (_.findIndex(this.inputs, ['_uid', inputComponent._uid]) === -1) {
+                this.inputs.push(inputComponent);
+            }
+        },
 
         /**
          * Starts the form submitting process.
@@ -244,10 +261,9 @@ export default {
             window.eventHub.$emit('submitting-' + this.eventName, this);
 
             let data = Object.assign(this.data, this.submitData);
-            let children = getListOfChildren(this);
             let formData = {};
 
-            _.each(children, function (input) {
+            _.each(this.inputs, function (input) {
 
                 // Check if real input component
                 if (input.name !== undefined && input.submitValue !== undefined) {
@@ -359,11 +375,11 @@ export default {
                         // Check if multiple error messages exist for that key
                         message = _.isArray(message) ? message[0] : message;
 
-                    // Check for custom error message from server
+                        // Check for custom error message from server
                     } else if (response && response.hasOwnProperty(this.serverKeys.error)) {
                         message = response[this.serverKeys.error];
-                        
-                    // Check for Laravel HTTP Exception error message
+
+                        // Check for Laravel HTTP Exception error message
                     } else if (response && response.hasOwnProperty('message')) {
                         message = response['message'];
                     }
@@ -433,13 +449,11 @@ export default {
          */
         validate: function () {
             let allInputsValid = true;
-            let children = getListOfChildren(this);
-            for (let index in children) {
-                let child = children[index];
-                if (child.hasOwnProperty("valid") && !child.valid) {
+            _.each(this.inputs, input => {
+                if (input.hasOwnProperty("valid") && !input.valid) {
                     allInputsValid = false;
                 }
-            }
+            });
 
             this.valid = allInputsValid;
         },

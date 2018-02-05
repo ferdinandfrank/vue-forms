@@ -94,7 +94,11 @@ class Validation {
 
     required(value) {
         return new Promise((resolve) => {
-            let valid = !!value && value.length;
+            let valid = _.isNumber(value) || (!_.isNull(value) && !_.isUndefined(value));
+            if (_.isString(value)) {
+                valid = !!value && value.length;
+            }
+
             resolve({valid: valid, message: valid ? null : `The field is required.`})
         });
     }

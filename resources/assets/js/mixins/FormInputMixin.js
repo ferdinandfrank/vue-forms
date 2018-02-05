@@ -103,14 +103,9 @@ export default {
 
     mounted: function () {
         this.$nextTick(function () {
-            
-            let parents = getListOfParents(this);
-            for (let index in parents) {
-                let parent = parents[index];
-                if (_.isFunction(parent.validate)) {
-                    this.parentForm = parent;
-                    break;
-                }
+
+            if (this.$parent._isMounted) {
+                this.registerOnFormComponent();
             }
 
             this.validation = new Validation(this.parentForm.$el);
@@ -165,6 +160,20 @@ export default {
     methods: {
 
         /**
+         * Registers the component as input component on its parent form component.
+         */
+        registerOnFormComponent: function () {
+            let parents = getListOfParents(this);
+            for (let i = 0; i < parents.length; i++) {
+                if (_.isFunction(parents[i].registerChildInputComponent)) {
+                    this.parentForm = parents[i];
+                    parents[i].registerChildInputComponent(this);
+                    break;
+                }
+            }
+        },
+
+        /**
          * Activates the inputs editing style.
          */
         activate: function () {
@@ -182,6 +191,7 @@ export default {
          * Validates the current value against the input rules or only against the specified rule.
          */
         validate: function (rule = null, value = null, message = null, timeout = VUE_FORMS_VALIDATION_TIMEOUT) {
+
             if (!rule) {
                 return new Promise((resolve) => {
                     let validations = [];
@@ -233,6 +243,9 @@ export default {
 
         },
 
+        /**
+         * Validates all inputs of the parent form.
+         */
         validateParentForm: function () {
             if (this.parentForm && _.isFunction(this.parentForm.validate)) {
                 this.parentForm.validate();
