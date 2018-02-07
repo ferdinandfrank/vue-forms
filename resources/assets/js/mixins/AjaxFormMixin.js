@@ -187,6 +187,20 @@ export default {
         },
 
         /**
+         * Removes the specified input component as an input component from the form. Will be called by the
+         * child input components themselves.
+         *
+         * @param inputComponent
+         */
+        removeChildInputComponent: function (inputComponent) {
+
+            // Check if component is registered
+            if (_.findIndex(this.inputs, ['_uid', inputComponent._uid]) > -1) {
+                this.inputs.splice(this.inputs.indexOf(inputComponent), 1);
+            }
+        },
+
+        /**
          * Starts the form submitting process.
          */
         submit: function (event) {

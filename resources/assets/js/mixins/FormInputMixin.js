@@ -120,6 +120,12 @@ export default {
         })
     },
 
+    beforeDestroy() {
+        if (this.parentForm) {
+            this.parentForm.removeChildInputComponent(this);
+        }
+    },
+
     watch: {
         submitValue: function (val, oldValue) {
             this.contentChanged = true;
