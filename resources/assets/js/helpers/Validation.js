@@ -175,7 +175,7 @@ class Validation {
 
     date(value) {
         return new Promise((resolve) => {
-            let valid = moment(value).isValid();
+            let valid = value ? moment(value).isValid() : true;
             resolve({valid: valid, message: valid ? null : `Please enter a valid date.`})
         });
     }
