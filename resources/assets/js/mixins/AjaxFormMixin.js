@@ -1,10 +1,11 @@
 import Alert from "../helpers/Alert";
 
-import removeElementMixin from "./RemoveElementMixin";
+import RemoveElementMixin from "./RemoveElementMixin";
+import ValidationFormMixin from "./ValidationFormMixin";
 
 export default {
 
-    mixins: [removeElementMixin],
+    mixins: [RemoveElementMixin, ValidationFormMixin],
 
     props: {
 
@@ -97,12 +98,6 @@ export default {
     data() {
         return {
 
-            // States, if the form can be submitted.
-            valid: true,
-
-            // The input fields of the form
-            inputs: [],
-
             // The html content to put in the submit button, while the form is submitting.
             loadingContent: '<i class="fa fa-fw fa-circle-o-notch fa-spin"></i>',
 
@@ -155,9 +150,6 @@ export default {
                 this.originalLoadingContent = this.button.html();
             }
 
-            // Disable the submit permission to let the user make at least one change
-            this.validate();
-
             // Insert Laravel CSRF token, if normal submit is specified
             if (!this.ajax) {
                 let token = document.head.querySelector('meta[name="csrf-token"]');
@@ -171,34 +163,6 @@ export default {
     },
 
     methods: {
-
-        /**
-         * Registers the specified input component as an input component of the form. Will be called by the
-         * child input components themselves.
-         *
-         * @param inputComponent
-         */
-        registerChildInputComponent: function (inputComponent) {
-
-            // Check if component is already registered
-            if (_.findIndex(this.inputs, ['_uid', inputComponent._uid]) === -1) {
-                this.inputs.push(inputComponent);
-            }
-        },
-
-        /**
-         * Removes the specified input component as an input component from the form. Will be called by the
-         * child input components themselves.
-         *
-         * @param inputComponent
-         */
-        removeChildInputComponent: function (inputComponent) {
-
-            // Check if component is registered
-            if (_.findIndex(this.inputs, ['_uid', inputComponent._uid]) > -1) {
-                this.inputs.splice(this.inputs.indexOf(inputComponent), 1);
-            }
-        },
 
         /**
          * Starts the form submitting process.
@@ -455,21 +419,6 @@ export default {
             } else if (response && response.hasOwnProperty(this.serverKeys.reload)) {
                 window.location.reload(true);
             }
-        },
-
-        /**
-         * Updates the state of the submit button and checks if the form can be submitted,
-         * depending if the child inputs allow a submit.
-         */
-        validate: function () {
-            let allInputsValid = true;
-            _.each(this.inputs, input => {
-                if (input.hasOwnProperty("valid") && !input.valid) {
-                    allInputsValid = false;
-                }
-            });
-
-            this.valid = allInputsValid;
         },
 
         /**
