@@ -139,9 +139,14 @@ class Validation {
     confirmed(value, confirmInputName) {
         return new Promise((resolve) => {
             let valid = true;
-            if (value) {
-                valid = value === $(this.form).find(':input[name="' + confirmInputName + '"]').first().val();
+            let input = this.findClosestInput(confirmInputName);
+
+            // Only validate if an input to compare exists on the validated form
+            if (input && value) {
+                valid = value === input.val();
+
             }
+
             resolve({valid: valid, message: valid ? null : `The confirmation does not match.`})
         });
     }
@@ -183,11 +188,15 @@ class Validation {
     after(value, comparisonDateInputName) {
         return new Promise((resolve) => {
             let valid = true;
-            let comparisonDateValue = moment($(this.form).find(':input[name="' + comparisonDateInputName + '"]').first().val());
-            let dateValue = moment(value);
+            let comparisonValue = this.parseComparisonInputValue(comparisonDateInputName);
 
-            if (comparisonDateValue.isValid() && dateValue.isValid()) {
-                valid = dateValue.isAfter(comparisonDateValue);
+            // Only validate if a value to compare exists on the validated form
+            if (comparisonValue) {
+                let dateValue = moment(value);
+
+                if (dateValue.isValid()) {
+                    valid = dateValue.isAfter(comparisonValue);
+                }
             }
 
             resolve({valid: valid, message: valid ? null : `The date must be after ${comparisonDateInputName}.`})
@@ -197,11 +206,15 @@ class Validation {
     before(value, comparisonDateInputName) {
         return new Promise((resolve) => {
             let valid = true;
-            let comparisonDateValue = moment($(this.form).find(':input[name="' + comparisonDateInputName + '"]').first().val());
-            let dateValue = moment(value);
+            let comparisonValue = this.parseComparisonInputValue(comparisonDateInputName);
 
-            if (comparisonDateValue.isValid() && dateValue.isValid()) {
-                valid = dateValue.isBefore(comparisonDateValue);
+            // Only validate if a value to compare exists on the validated form
+            if (comparisonValue) {
+                let dateValue = moment(value);
+
+                if (dateValue.isValid()) {
+                    valid = dateValue.isBefore(comparisonValue);
+                }
             }
 
             resolve({valid: valid, message: valid ? null : `The date must be before ${comparisonDateInputName}.`})
@@ -211,15 +224,76 @@ class Validation {
     same(value, comparisonDateInputName) {
         return new Promise((resolve) => {
             let valid = true;
-            let comparisonDateValue = moment($(this.form).find(':input[name="' + comparisonDateInputName + '"]').first().val());
-            let dateValue = moment(value);
+            let comparisonValue = this.parseComparisonInputValue(comparisonDateInputName);
 
-            if (comparisonDateValue.isValid() && dateValue.isValid()) {
-                valid = dateValue.isSame(comparisonDateValue);
+            // Only validate if a value to compare exists on the validated form
+            if (comparisonValue) {
+                let dateValue = moment(value);
+
+                if (dateValue.isValid()) {
+                    valid = dateValue.isSame(comparisonValue);
+                }
             }
 
             resolve({valid: valid, message: valid ? null : `The date must be the same as ${comparisonDateInputName}.`})
         });
+    }
+
+    /**
+     * Tries to find the closest input with the specified name on the validated form.
+     *
+     * @param inputName
+     */
+    findClosestInput(inputName) {
+
+        let selector = ':input[name="' + inputName + '"]';
+
+        // Check if a wildcard is included in the input name. If so, we just use the part after the wildcard to find the input
+        if (inputName.indexOf('*') > -1) {
+            inputName = inputName.substring(inputName.lastIndexOf('*') + 1, inputName.length); // Make sure we split at the last occurrence of a wildcard
+            selector = ':input[name$="' + inputName + '"]'; // Retrieve the input whose name ends with our calculated input name
+        }
+
+        let input = $(this.form).find(selector).first();
+
+        return input.length ? input : null;
+    }
+
+    /**
+     * Tries to find the value for the specified input name. Can also be a date.
+     *
+     * @param inputName
+     */
+    parseComparisonInputValue(inputName) {
+
+        // Check if an input with the name exists on the validated form. If so, we retrieve its value.
+        let input = this.findClosestInput(inputName);
+        if (input) {
+            return input.val();
+        }
+
+        // Check if the input name represents the today's date
+        if (['now', 'today'].indexOf(inputName) > -1) {
+            return moment();
+        }
+
+        // Check if the input name represents the yesterday's date
+        if (['yesterday'].indexOf(inputName) > -1) {
+            return moment().subtract(1, 'days');
+        }
+
+        // Check if the input name represents the tomorrow's date
+        if (['tomorrow'].indexOf(inputName) > -1) {
+            return moment().add(1, 'days');
+        }
+
+        // Check if the input represents any date
+        let dateValue = moment(inputName);
+        if (dateValue.isValid()) {
+            return dateValue;
+        }
+
+        return null;
     }
 
 }
