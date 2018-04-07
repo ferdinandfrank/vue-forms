@@ -128,6 +128,14 @@ export default {
 
     watch: {
         submitValue: function (val, oldValue) {
+
+            // We only trigger a submit value change, if the value really changed,
+            // i.e., a change from 'null' to 'undefined' or '' is not a real change
+            let emptyValues = [undefined, null, ''];
+            if (emptyValues.indexOf(val) > -1 && emptyValues.indexOf(oldValue) > -1) {
+                return;
+            }
+
             this.contentChanged = true;
 
             // Set server errors to true, because we can not validate if the server errors are gone
