@@ -45,6 +45,11 @@ export default {
             // Check if component is already registered
             if (_.findIndex(this.inputs, ['_uid', inputComponent._uid]) === -1) {
                 this.inputs.push(inputComponent);
+
+                // Trigger an event that at least on form input was changed
+                inputComponent.$on('input', (value) => {
+                   this.$emit('change', inputComponent.name, value);
+                });
             }
         },
 
