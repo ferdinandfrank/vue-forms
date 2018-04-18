@@ -213,7 +213,10 @@ export default {
         startLoader: function () {
             this.loading = true;
             if (this.button) {
-                this.originalLoadingContent = this.button.html();
+                let buttonContent = this.button.html();
+                if (buttonContent !== this.loadingContent) {
+                    this.originalLoadingContent = buttonContent;
+                }
                 this.button.html(this.loadingContent);
                 this.button.prop('disabled', true);
             }
