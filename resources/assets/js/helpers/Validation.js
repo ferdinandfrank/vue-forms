@@ -23,8 +23,13 @@ class Validation {
                         resolve(result);
                     });
                     break;
+                case 'required_with':
+                    this.requiredWith(inputValue, ruleValue).then((result) => {
+                        resolve(result);
+                    });
+                    break;
                 case 'required_if':
-                    this.requiredIf(inputValue).then((result) => {
+                    this.requiredIf(inputValue, ruleValue).then((result) => {
                         resolve(result);
                     });
                     break;
@@ -103,16 +108,35 @@ class Validation {
         });
     }
 
-    requiredIf(value) {
+    requiredWith(value, additionalInputs) {
+        return new Promise((resolve) => {
+
+            if (!value && !value.length) {
+                let inputs = _.split(additionalInputs, ',');
+                _.each(inputs, input => {
+                    let inputEl = $(this.form).find(':input[name="' + input + '"]').first();
+                    if (inputEl.length > 0) {
+                        resolve({valid: false, message: `The field is required, if ${input} is present.`});
+                    }
+                });
+            }
+            resolve({valid: true, message: null})
+        });
+    }
+
+    requiredIf(value, keyValue) {
         return new Promise((resolve) => {
             let valid = true;
 
             if (!value && !value.length) {
-                let splits = _.split(value, ',');
-                valid = splits[1] === $(this.form).find(':input[name="' + value[0] + '"]').first().val() && (!!value && value.length);
+                let keyValuePair = _.split(keyValue, ',');
+                let input = keyValuePair[0];
+                let value = keyValuePair[1];
+                valid = value == $(this.form).find(':input[name="' + input + '"]').first().val();
+                resolve({valid: valid, message: valid ? null : `The field is required, if ${input} is equal to ${value}.`})
+            } else {
+                resolve({valid: true, message: null})
             }
-
-            resolve({valid: valid, message: valid ? null : `The field is required.`})
         });
     }
 

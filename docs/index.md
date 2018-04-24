@@ -935,6 +935,7 @@ Therefore, the prop accepts an array of rule object which should have one of the
 - **min:_value_** The field under validation must have a minimum _value_.
 - **max:_value_** The field under validation must be less than or equal to a maximum _value_. 
 - **required:_true_** The field under validation must be present in the input data and not empty.
+- **required_with:_anotherfield,..._** The field under validation must be present and not empty only if any of the other specified fields are present.
 - **required_if:_anotherfield,value_** The field under validation must be present and not empty if the _anotherfield_ is equal to any value.
 - **confirmed:_anotherfield_** The field under validation must be the same as _anotherfield_.
 - **email:_true_** The field under validation must be a valid email address.

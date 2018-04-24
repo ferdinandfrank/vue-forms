@@ -111,7 +111,7 @@ export default {
             this.validation = new Validation(this.parentForm.$el);
 
             // Set required state for the input label if a required rule is specified
-            this.required  = !!_.find(this.rules, function(rule) { return rule.hasOwnProperty('required') && rule.required; });
+            this.required  = !!_.find(this.rules, function(rule) { return rule.required || rule.required_with || rule.required_if; });
 
             // Validate against all rules once to disable the parent's form submit, but do not show the error to the user
             this.validate().then((result) => {
