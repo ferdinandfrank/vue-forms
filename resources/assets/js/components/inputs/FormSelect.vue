@@ -12,7 +12,7 @@
 
             <select :id="name + '-input'" :name="multiple ? (name + '[]') : name" v-model="submitValue" class="form-control"
                     :aria-label="placeholder" :multiple="multiple"
-                   :disabled="disabled" ref="input" @focus="activate" @blur="deactivate">
+                    :disabled="disabled" ref="input" @focus="activate" @blur="deactivate">
                 <option v-if="placeholder" value="" disabled selected>{{ placeholder }}</option>
                 <slot></slot>
                 <option v-for="option in options" :value="option.value">{{ option.text }}</option>
@@ -23,7 +23,8 @@
             </span>
 
             <span class="input-group-btn" v-if="showAddonSubmit">
-                <button class="btn" :class="addonSubmitColor ? 'btn-' + addonSubmitColor : ''"
+                 <slot name="appendbutton"></slot>
+                <button v-if="!$slots.appendbutton" class="btn" :class="addonSubmitColor ? 'btn-' + addonSubmitColor : ''"
                         type="submit">{{ addonSubmitContent }}</button>
             </span>
         </div>
@@ -54,7 +55,9 @@
              */
             options: {
                 type: Array,
-                default: () => {return []},
+                default: () => {
+                    return []
+                },
             },
 
             // States if multiple values can be selected on the input
