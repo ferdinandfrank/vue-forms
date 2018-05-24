@@ -32,12 +32,10 @@
             },
         },
 
-        computed: {
-
-            // The submit button of the form. Used to show the loader as soon as the submit request is pending.
-            button: function () {
-                return $(this.$el);
-            },
+        mounted() {
+            this.$nextTick(function () {
+                this.button = $(this.$el);
+            });
         },
 
         methods: {
