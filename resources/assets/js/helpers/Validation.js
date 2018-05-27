@@ -111,7 +111,7 @@ class Validation {
     requiredWith(value, additionalInputs) {
         return new Promise((resolve) => {
 
-            if (!value && !value.length) {
+            if (!value || !value.length) {
                 let inputs = _.split(additionalInputs, ',');
                 _.each(inputs, input => {
                     let inputEl = $(this.form).find(':input[name="' + input + '"]').first();
@@ -128,7 +128,7 @@ class Validation {
         return new Promise((resolve) => {
             let valid = true;
 
-            if (!value && !value.length) {
+            if (!value || !value.length) {
                 let keyValuePair = _.split(keyValue, ',');
                 let input = keyValuePair[0];
                 let value = keyValuePair[1];
