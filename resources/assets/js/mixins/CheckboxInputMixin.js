@@ -47,6 +47,16 @@ export default {
         }
     },
 
+    mounted() {
+        this.$nextTick(function () {
+            if (this.value) {
+                this.submitValue = this.checkedValue;
+            } else {
+                this.submitValue = 0;
+            }
+        });
+    },
+
     methods: {
 
         /**
