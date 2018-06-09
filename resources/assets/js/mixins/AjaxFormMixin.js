@@ -244,6 +244,7 @@ export default {
 
             // Let the parent chain know, that the submit will be processed.
             window.eventHub.$emit('submitting-' + this.eventName, this);
+            this.$emit('submitting');
 
             let data = Object.assign(this.data, this.submitData);
             let formData = {};
