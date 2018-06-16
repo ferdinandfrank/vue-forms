@@ -387,10 +387,6 @@ export default {
          * @param response The response from the server.
          */
         handleSuccess(response) {
-            if (this.method.toLowerCase() === 'get') {
-                updateHrefParamsWithData(this.form.data());
-            }
-
             let data = null;
             if (response.hasOwnProperty(this.serverKeys.data)) {
                 data = response[this.serverKeys.data];
