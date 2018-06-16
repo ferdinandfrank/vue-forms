@@ -53,6 +53,11 @@ class Validation {
                         resolve(result);
                     });
                     break;
+                case 'phone':
+                    this.phone(inputValue).then((result) => {
+                        resolve(result);
+                    });
+                    break;
                 case 'url':
                     this.url(inputValue).then((result) => {
                         resolve(result);
@@ -182,6 +187,16 @@ class Validation {
                 valid = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i.test(value);
             }
             resolve({valid: valid, message: valid ? null : `Please enter a valid email address.`})
+        });
+    }
+
+    phone(value) {
+        return new Promise((resolve) => {
+            let valid = true;
+            if (value) {
+                valid = /^[0-9 +-]*$/.test(value);
+            }
+            resolve({valid: valid, message: valid ? null : `Please enter a valid phone number.`})
         });
     }
 
