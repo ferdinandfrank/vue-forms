@@ -192,6 +192,7 @@ export default {
          */
         activate: function () {
             this.active = true;
+            this.$emit('focus');
         },
 
         /**
@@ -199,6 +200,7 @@ export default {
          */
         deactivate: function () {
             this.active = false;
+            this.$emit('blur');
         },
 
         /**

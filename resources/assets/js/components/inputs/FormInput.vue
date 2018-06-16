@@ -25,8 +25,9 @@
             </span>
 
             <span class="input-group-btn" v-if="showAddonSubmit">
-                <button class="btn" :class="addonSubmitColor ? 'btn-' + addonSubmitColor : ''"
-                        :id="'btn-submit-' + name + '-input'" type="submit">{{ addonSubmitContent }}</button>
+               <slot name="appendbutton"></slot>
+                <button v-if="!$slots.appendbutton" class="btn" :class="addonSubmitColor ? 'btn-' + addonSubmitColor : ''"
+                        type="submit">{{ addonSubmitContent }}</button>
             </span>
         </div>
 

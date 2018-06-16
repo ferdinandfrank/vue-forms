@@ -87,16 +87,11 @@ export default {
         }
     },
 
-    computed: {
-
-        // The submit button of the form. Used to show the loader as soon as the submit request is pending.
-        button: function () {
-            return $(this.$el).find('button[type=submit]').last();
-        }
-    },
-
     data() {
         return {
+
+            // The submit button of the form. Used to show the loader as soon as the submit request is pending.
+            button: null,
 
             // The html content to put in the submit button, while the form is submitting.
             loadingContent: '<i class="fa fa-fw fa-circle-o-notch fa-spin"></i>',
@@ -135,20 +130,16 @@ export default {
          *
          * @param isValid {@code true} if a submit is allowed, {@code false} otherwise.
          */
-        valid: function (isValid) {
+        valid(isValid) {
             window.eventHub.$emit('validated-' + this.eventName, isValid);
             this.button.prop('disabled', !isValid);
         },
     },
 
-    mounted: function () {
+    mounted() {
         this.$nextTick(function () {
 
-            // Get the original content from the submit button to replace the loader with the original content
-            // after the serve response was received
-            if (this.button) {
-                this.originalLoadingContent = this.button.html();
-            }
+            this.initSubmitButton();
 
             // Insert Laravel CSRF token, if normal submit is specified
             if (!this.ajax) {
@@ -165,9 +156,22 @@ export default {
     methods: {
 
         /**
+         * Tries to find a submit button within the form to use for showing a loading state on submit.
+         */
+        initSubmitButton() {
+            this.button = $(this.$el).find('button[type=submit]').last();
+
+            // Get the original content from the submit button to replace the loader with the original content
+            // after the serve response was received
+            if (this.button && this.button.length) {
+                this.originalLoadingContent = this.button.html();
+            }
+        },
+
+        /**
          * Starts the form submitting process.
          */
-        submit: function (event) {
+        submit(event) {
 
             // Check if the ajax submit of the form is disabled or enabled
             if (this.ajax) {
@@ -210,7 +214,7 @@ export default {
         /**
          * Shows the loader, if a loader shall be shown.
          */
-        startLoader: function () {
+        startLoader() {
             this.loading = true;
             if (this.button) {
                 let buttonContent = this.button.html();
@@ -225,7 +229,7 @@ export default {
         /**
          * Stops the loader, if a loader is shown.
          */
-        stopLoader: function () {
+        stopLoader() {
             this.loading = false;
             if (this.button) {
                 this.button.html(this.originalLoadingContent);
@@ -236,10 +240,11 @@ export default {
         /**
          * Sends the data of the form to the server.
          */
-        sendData: function () {
+        sendData() {
 
             // Let the parent chain know, that the submit will be processed.
             window.eventHub.$emit('submitting-' + this.eventName, this);
+            this.$emit('submitting');
 
             let data = Object.assign(this.data, this.submitData);
             let formData = {};
@@ -284,7 +289,7 @@ export default {
          * @param success {@code true} if the submit was successful, {@code false} otherwise.
          * @param response The response from the server.
          */
-        handleResponse: function (success, response) {
+        handleResponse(success, response) {
             this.stopLoader();
 
             this.validate();
@@ -317,7 +322,7 @@ export default {
          * @param success
          * @returns {Promise}
          */
-        showAlert: function (response, success = true) {
+        showAlert(response, success = true) {
             return new Promise((resolve) => {
 
                 let message = null;
@@ -381,7 +386,7 @@ export default {
          *
          * @param response The response from the server.
          */
-        handleSuccess: function (response) {
+        handleSuccess(response) {
             if (this.method.toLowerCase() === 'get') {
                 updateHrefParamsWithData(this.form.data());
             }
@@ -411,7 +416,7 @@ export default {
         /**
          * Redirects the user to the redirect path specified in the response
          */
-        redirectUser: function (response) {
+        redirectUser(response) {
             if (response && response.hasOwnProperty(this.serverKeys.redirect)) {
                 let redirect = response[this.serverKeys.redirect];
                 let isSamePage = redirect.startsWith(window.location.href);
@@ -429,7 +434,7 @@ export default {
          *
          * @param response The response from the server.
          */
-        onSuccess: function (response) {
+        onSuccess(response) {
         },
 
         /**
@@ -437,7 +442,7 @@ export default {
          *
          * @param response The response from the server.
          */
-        onError: function (response) {
+        onError(response) {
         },
     }
 };

@@ -191,6 +191,7 @@ class Alert {
                             });
                         },
                         error: error => {
+
                             this.showAlert(error.responseJSON, false).then(() => {
                                 reject(error.responseJSON);
                             });
@@ -259,8 +260,8 @@ class Alert {
                     message = response.errors[Object.keys(response.errors)[0]];
 
                     // Check for custom error message from server
-                } else if (response && response.hasOwnProperty(this.serverKeys.error)) {
-                    message = response[this.serverKeys.error];
+                } else if (response && response.hasOwnProperty(serverKeys.error)) {
+                    message = response[serverKeys.error];
 
                     // Check for Laravel HTTP Exception error message
                 } else if (response && response.hasOwnProperty('message')) {

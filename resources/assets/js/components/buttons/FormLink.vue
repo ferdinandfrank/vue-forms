@@ -19,7 +19,13 @@
             onSuccess: function () {
                 this.removeElement();
             }
-        }
+        },
+
+        mounted() {
+            this.$nextTick(function () {
+                this.button = $(this.$el);
+            });
+        },
     }
 
 </script>
