@@ -55,10 +55,16 @@ window.replaceData = function (element, data) {
  */
 window.serializeData = function (data) {
     let str = [];
-    for (let key in data)
-        if (data.hasOwnProperty(key)) {
-            str.push(encodeURIComponent(key) + "=" + encodeURIComponent(data[key]));
+
+    _.each(data, (value, key) => {
+        if (_.isArray(value)) {
+            value = value.join(',');
         }
+        if (value !== null && value !== undefined && value.length) {
+            str.push(encodeURIComponent(key) + "=" + encodeURIComponent(value));
+        }
+    });
+
     return str.join("&");
 };
 
