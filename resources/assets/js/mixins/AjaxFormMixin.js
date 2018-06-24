@@ -292,8 +292,6 @@ export default {
         handleResponse(success, response) {
             this.stopLoader();
 
-            this.validate();
-
             this.showAlert(response, success).then(() => {
                 if (success) {
                     this.handleSuccess(response);
@@ -312,6 +310,8 @@ export default {
                 window.eventHub.$emit('response-' + this.eventName, success, response, this.method.toLowerCase(), this);
 
                 this.redirectUser(response);
+
+                this.validate();
             });
         },
 

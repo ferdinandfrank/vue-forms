@@ -230,6 +230,7 @@ export default {
                                 errors.push(result.message);
                             }
                         });
+                        this.validateParentForm();
                         resolve({valid: valid, message: errors});
                     });
                 });
