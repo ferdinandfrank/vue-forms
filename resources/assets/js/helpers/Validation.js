@@ -28,6 +28,11 @@ class Validation {
                         resolve(result);
                     });
                     break;
+                case 'required_without':
+                    this.requiredWithout(inputValue, ruleValue).then((result) => {
+                        resolve(result);
+                    });
+                    break;
                 case 'required_if':
                     this.requiredIf(inputValue, ruleValue).then((result) => {
                         resolve(result);
@@ -122,6 +127,22 @@ class Validation {
                     let inputEl = $(this.form).find(':input[name="' + input + '"]').first();
                     if (inputEl.length > 0) {
                         resolve({valid: false, message: `The field is required, if ${input} is present.`});
+                    }
+                });
+            }
+            resolve({valid: true, message: null})
+        });
+    }
+
+    requiredWithout(value, additionalInputs) {
+        return new Promise((resolve) => {
+
+            if (!value || !value.length) {
+                let inputs = _.split(additionalInputs, ',');
+                _.each(inputs, input => {
+                    let inputEl = $(this.form).find(':input[name="' + input + '"]').first();
+                    if (inputEl.length < 1) {
+                        resolve({valid: false, message: `The field is required, if ${input} is not present.`});
                     }
                 });
             }
