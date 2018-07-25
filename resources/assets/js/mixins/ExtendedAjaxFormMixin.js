@@ -103,6 +103,16 @@ export default {
          * @returns {*}
          */
         getChildInputComponentByName: function (inputName) {
+
+            // Check if input name has array syntax. If so, we transform the name into a valid array input name
+            if (inputName.indexOf('.') > -1) {
+                let nameParts = inputName.split('.');
+                inputName = nameParts[0];
+                for (let i = 1; i < nameParts.length; i++) {
+                    inputName += '[' + nameParts[i] + ']';
+                }
+            }
+
             let children = getListOfChildren(this);
             for (let index in children) {
                 let child = children[index];
