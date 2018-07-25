@@ -246,7 +246,7 @@ export default {
             window.eventHub.$emit('submitting-' + this.eventName, this);
             this.$emit('submitting');
 
-            let data = Object.assign(this.data, this.submitData);
+            let data = Object.assign(_.cloneDeep(this.data), _.cloneDeep(this.submitData));
             let formData = {};
 
             _.each(this.inputs, function (input) {
@@ -259,11 +259,18 @@ export default {
                         formData[input.name] = [formData[input.name]];
                     }
 
+                    let value = input.submitValue;
+
+                    // If a boolean value, we transform it into an int for better server support
+                    if (_.isBoolean(value)) {
+                        value = value ? 1 : 0;
+                    }
+
                     // If value already exists add the new value to previously built array, e.g., multiple checkboxes, selects
                     if (formData.hasOwnProperty(input.name)) {
-                        formData[input.name].push(input.submitValue);
+                        formData[input.name].push(value);
                     } else {
-                        formData[input.name] = input.submitValue;
+                        formData[input.name] = value;
                     }
                 }
             });
