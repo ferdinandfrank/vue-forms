@@ -186,6 +186,25 @@ These components are used to submit data to the server via an ajax request.
         - 'success'
         - 'error'
         - 'warning' [DEFAULT]
+        
+- **ask:** An object to define the messages to show to the user within an ask/input alert, before the form will be submitted.
+                If not defined, no ask/input message will be shown.
+    - type: Object
+    - default: null
+    
+    The object can contain the following key-value-pairs to modify the ask/input alert:
+    - **title:** _[The title of the ask message]_
+    - **message:** _[The body message of the ask message]_
+    - **accept:** _[The button text to show on the 'accept' button]_
+    - **cancel:** _[The button text to show on the 'cancel' button]_
+    - **type:** _[The alert type of the ask dialog]_
+        -  'info' [DEFAULT] 
+        - 'success'
+        - 'error'
+        - 'warning' 
+    - **placeholder:** _[The placeholder text to show on the input field]_           
+    - **value:** _[The predefined value of the input field]_           
+    - **name:** _[The name the input field to use for the submit]_           
  
 - **alertError:** States if an error alert message shall be shown, if an error occurred.
     - type: Boolean

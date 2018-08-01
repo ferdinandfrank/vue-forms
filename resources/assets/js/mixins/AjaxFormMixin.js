@@ -42,6 +42,22 @@ export default {
             default: null
         },
 
+        // An object to define the message and the input field to show to the user within an ask/input alert, before the form will be submitted.
+        // If not defined, no input message will be shown.
+        // This object can contain the following key-value-pairs to modify the ask alert:
+        // - 'title': [The title of the confirm message]
+        // - 'message': [The body message of the confirm message]
+        // - 'type': [The alert type of the confirm dialog (info, success, warning [DEFAULT], error]
+        // - 'accept': [The button text to show on the 'accept' button]
+        // - 'cancel': [The button text to show on the 'cancel' button]
+        // - 'placeholder': [The placeholder text to show on the input field]
+        // - 'name': [The name the input field to use for the submit]
+        // - 'value': [The predefined value of the input field]
+        ask: {
+            type: Object,
+            default: null
+        },
+
         // States if an error alert message shall be shown, if an error occurred.
         alertError: {
             type: Boolean,
@@ -190,7 +206,7 @@ export default {
                 return;
             }
 
-            // Let the user confirm his submit action, if a confirm is specified in the properties.
+            // Let the user confirm his submit action, if a confirm or ask is specified in the properties.
             if (this.confirm && _.isObject(this.confirm)) {
                 let confirmTitle = this.confirm.hasOwnProperty('title') ? this.confirm.title : null;
                 let confirmMessage = this.confirm.hasOwnProperty('message') ? this.confirm.message : null;
@@ -200,6 +216,24 @@ export default {
 
                 new Alert(confirmMessage, confirmTitle, confirmType).confirm(confirmAccept, confirmCancel).then((confirmed) => {
                     if (confirmed) {
+                        this.startLoader();
+                        this.sendData();
+                    }
+                });
+
+            } else if (this.ask && _.isObject(this.ask)) {
+                let askTitle = this.ask.hasOwnProperty('title') ? this.ask.title : null;
+                let askMessage = this.ask.hasOwnProperty('message') ? this.ask.message : null;
+                let askAccept = this.ask.hasOwnProperty('accept') ? this.ask.accept : null;
+                let askCancel = this.ask.hasOwnProperty('cancel') ? this.ask.cancel : null;
+                let askType = this.ask.hasOwnProperty('type') ? this.ask.type : 'info';
+                let askPlaceholder = this.ask.hasOwnProperty('placeholder') ? this.ask.placeholder : null;
+                let askValue = this.ask.hasOwnProperty('value') ? this.ask.value : null;
+                let askName = this.ask.hasOwnProperty('name') ? this.ask.name : 'ask';
+
+                new Alert(askMessage, askTitle, askType).ask(askAccept, askCancel, askPlaceholder, 'text', askValue).then((inputValue) => {
+                    if (inputValue) {
+                        this.submitData[askName] = inputValue;
                         this.startLoader();
                         this.sendData();
                     }
