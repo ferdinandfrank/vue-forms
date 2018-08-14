@@ -64,6 +64,7 @@ export default {
             // Check if component is registered
             if (_.findIndex(this.inputs, ['_uid', inputComponent._uid]) > -1) {
                 this.inputs.splice(this.inputs.indexOf(inputComponent), 1);
+                this.validate();
             }
         },
 
