@@ -12,6 +12,7 @@
             </span>
 
             <input :id="name + '-input'" type="text" :name="name" v-model="submitValue" class="form-control"
+                   :autocomplete="autoComplete ? 'on' : 'off'"
                    :placeholder="placeholder ? placeholder : ''" :step="step" :aria-label="placeholder ? placeholder : ''"
                    :disabled="disabled" ref="input" @focus="activate" @blur="deactivate">
 

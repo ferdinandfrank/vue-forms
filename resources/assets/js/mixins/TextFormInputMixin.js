@@ -41,6 +41,12 @@ export default {
             type: String,
             default: null
         },
+
+        // States if a browser auto complete on the input is enabled
+        autoComplete: {
+            type: Boolean,
+            default: true
+        }
     },
 
     data: function () {
