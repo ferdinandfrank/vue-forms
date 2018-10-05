@@ -49,7 +49,8 @@ export default {
 
     mounted() {
         this.$nextTick(function () {
-            if (this.value) {
+            // Check necessary since we can not mutate nested json booleans (false = '0')
+            if (this.value && this.value !== '0') {
                 this.submitValue = this.checkedValue;
             } else {
                 this.submitValue = 0;
