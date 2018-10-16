@@ -100,6 +100,12 @@ export default {
         ajax: {
             type: Boolean,
             default: true
+        },
+
+        // A Promise function to be called before a submit
+        beforeSubmit: {
+            type: Function,
+            default: null
         }
     },
 
@@ -200,6 +206,23 @@ export default {
                 return true;
             }
 
+            // Check if a function shall be called before the submit
+            if (_.isFunction(this.beforeSubmit)) {
+                this.beforeSubmit().then((proceed) => {
+                    if (proceed) {
+                        this.proceedSubmit();
+                    } else {
+                        this.stopLoader();
+                    }
+                }).catch(() => {
+                    this.stopLoader();
+                });
+            } else {
+                this.proceedSubmit();
+            }
+        },
+
+        proceedSubmit() {
             // Don't let the user submit the form, if some inputs are not valid
             if (!this.valid) {
                 window.eventHub.$emit('prevented_submit-' + this.eventName, this);
