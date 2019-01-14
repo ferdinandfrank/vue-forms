@@ -303,6 +303,32 @@ export default {
             window.eventHub.$emit('submitting-' + this.eventName, this);
             this.$emit('submitting');
 
+            let data = this.getDataToSend();
+
+            $.ajax({
+                type: this.method.toLowerCase(),
+                url: this.action,
+                data: data,
+                success: response => {
+                    this.handleResponse(true, response);
+                },
+                error: error => {
+                    this.handleResponse(false, error.responseJSON);
+                }
+            });
+        },
+
+        /**
+         * Prepares the data to send from the form's inputs and returns them "submit ready".
+         *
+         * @returns {*}
+         */
+        getDataToSend() {
+
+            // Let the parent chain know, that the submit will be processed.
+            window.eventHub.$emit('submitting-' + this.eventName, this);
+            this.$emit('submitting');
+
             let data = Object.assign(_.cloneDeep(this.data), _.cloneDeep(this.submitData));
             let formData = {};
 
@@ -334,17 +360,15 @@ export default {
 
             data = Object.assign(data, formData);
 
-            $.ajax({
-                type: this.method.toLowerCase(),
-                url: this.action,
-                data: data,
-                success: response => {
-                    this.handleResponse(true, response);
-                },
-                error: error => {
-                    this.handleResponse(false, error.responseJSON);
+            // Filter the data by removing all empty values
+            let emptyValues = [null, undefined, ''];
+            _.each(data, (value, key) => {
+                if (emptyValues.indexOf(value) > -1) {
+                    delete data[key];
                 }
             });
+
+            return data;
         },
 
         /**
