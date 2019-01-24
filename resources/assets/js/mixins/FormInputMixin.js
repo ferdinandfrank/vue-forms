@@ -93,11 +93,18 @@ export default {
             // The validation instance for the input.
             validation: null,
 
-            // States if a value is required. Will be fetched from the defined validation rules.
-            required: false,
-
             // The current timeout instances for each validation rule to wait before we validate an input
             validationTimeouts: []
+        }
+    },
+
+    computed: {
+
+        // States if a value is required. Will be fetched from the defined validation rules.
+        required() {
+
+            // Set required state for the input label if a required rule is specified
+            return !!_.find(this.rules, function(rule) { return rule.required || rule.required_with || rule.required_if || rule.required_without; });
         }
     },
 
@@ -109,9 +116,6 @@ export default {
             }
 
             this.validation = new Validation(this.parentForm.$el);
-
-            // Set required state for the input label if a required rule is specified
-            this.required  = !!_.find(this.rules, function(rule) { return rule.required || rule.required_with || rule.required_if; });
 
             // Validate against all rules once to disable the parent's form submit, but do not show the error to the user
             this.validate().then((result) => {
