@@ -137,7 +137,7 @@ class Validation {
     requiredWithout(value, additionalInputs) {
         return new Promise((resolve) => {
 
-            if (!value || !value.length) {
+            if (!value || value === '') {
                 let inputs = _.split(additionalInputs, ',');
                 _.each(inputs, input => {
                     let inputEl = $(this.form).find(':input[name="' + input + '"]').first();
