@@ -360,14 +360,6 @@ export default {
 
             data = Object.assign(data, formData);
 
-            // Filter the data by removing all empty values
-            let emptyValues = [null, undefined, ''];
-            _.each(data, (value, key) => {
-                if (emptyValues.indexOf(value) > -1) {
-                    delete data[key];
-                }
-            });
-
             return data;
         },
 
