@@ -4,6 +4,8 @@
 [![Packagist](https://img.shields.io/packagist/dt/ferdinandfrank/vue-forms.svg)](https://packagist.org/packages/ferdinandfrank/vue-forms)
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
+<b style="color: red;">Warning: This package is not maintained anymore!</b>
+
 This package provides a collection of [Vue.js](https://vuejs.org/) form and input components to create pretty and easy ajax requests on a Laravel application.
 
 Full documentation: [https://ferdinandfrank.github.io/vue-forms/](https://ferdinandfrank.github.io/vue-forms/)
